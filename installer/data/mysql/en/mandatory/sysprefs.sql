@@ -226,3 +226,6 @@ INSERT INTO systempreferences (variable,value,explanation,options,type) VALUES (
 INSERT INTO systempreferences (variable,value,explanation,options,type) VALUES ('OPACAmazonCoverImages', '0', 'Display cover images on OPAC from Amazon Web Services','','YesNo');
 INSERT INTO `systempreferences` (variable,value,explanation,options,type) VALUES('ReadingHistory', '0', 'If on display reading history for user', NULL, 'YesNo');
 INSERT INTO `systempreferences` (variable,value,explanation,options,type) VALUES('ReceiveBackIssues', '5', 'Number of Previous journals to display when on subscription detail', '', '');
+INSERT INTO `systempreferences` (variable,value,options,explanation,type) VALUES
+	('SCISUsername','0','','Assigned username to accees SCIS website',''),
+	('SCISUsername','0','','Assigned password to accees SCIS website','');

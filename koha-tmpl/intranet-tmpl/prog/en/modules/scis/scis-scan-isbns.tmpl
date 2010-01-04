@@ -1,0 +1,171 @@
+<!-- TMPL_INCLUDE NAME="doc-head-open.inc" -->
+<title>Koha &rsaquo; SCIS &rsaquo; Scan ISBNs <!-- TMPL_VAR Name="title" --></title>
+<!-- TMPL_INCLUDE NAME="doc-head-close.inc" -->
+<script type="text/javascript">
+//<![CDATA[
+
+function ding() {
+  document.getElementById("ding_span").innerHTML='<embed src="/ding.wav"  type="audio/wav" autostart=true hidden=true loop=1 volume="100"  hidden=true autostart=true  >';
+}
+
+//]]>
+</script>
+</head>
+
+<body>
+<!-- TMPL_INCLUDE NAME="header.inc" -->
+<!-- TMPL_INCLUDE NAME="checkin-search.inc" -->
+
+<!-- IMPORTANT: USED FOR DING SOUND --><span id=ding_span></span>
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; <a href="/cgi-bin/koha/scis/scis-home.pl">SCIS</a> &rsaquo; Scan ISBNs</div>
+<div id="doc3" class="yui-t2">
+<div id="bd">
+<div id="yui-main">
+<div class="yui-b">
+
+<div class="yui-g">
+<form method="post" action="/cgi-bin/koha/scis/scis-scan-isbns.pl" >
+
+<!-- TMPL_UNLESS  Name="batch_status" -->
+    <div class="yui-u first">
+
+    <fieldset  id="circ_circulation_issue" >
+    <!-- TMPL_UNLESS  Name="op_scan_barcode" -->
+        <legend>Add ISBNs to SCIS batch <!-- TMPL_VAR Name="scis_batch_id" -->
+        </legend>
+        <div class="hint">Enter ISBN: </div>
+        <input name="isbn" id="isbn" size="14" class="barcode focus"/>
+
+        <input type="submit" onclick="ding()"   class="submit" value="Add ISBN" />
+        <input type="hidden" name="op_add_isbn"  value="1" />
+        <input type="hidden" name="scis_batch_id" value="<!-- TMPL_VAR Name="scis_batch_id" -->" />
+
+    <!-- TMPL_ELSE   -->
+
+
+        <legend>Add Barcode for ISBN <!-- TMPL_VAR Name="isbn" --></legend>
+        <div class="hint">Enter barcode: </div>
+        <input name="barcode" id="barcode" size="14" class="barcode focus"/>
+
+        <input type="submit" onclick="ding()" class="submit" value="Add barcode" />
+        <input type="hidden" name="op_add_barcode"  value="1" />
+        <input type="hidden" name="isbn"  value="<!-- TMPL_VAR Name="isbn" -->" />
+        <input type="hidden" name="scis_batch_id" value="<!-- TMPL_VAR Name="scis_batch_id" -->" />
+
+    <!-- /TMPL_UNLESS   -->
+    </fieldset>
+    </div>
+<!-- /TMPL_UNLESS   -->
+
+<!-- TMPL_UNLESS  Name="batch_status" -->
+    <div class="yui-u">
+    <fieldset class='rows'>
+
+    <legend>Options</legend>
+    <ol>
+    <li>
+    <label for="auto_barcode">Auto assign barcode</label>
+    <input type="checkbox" id="auto_barcode" name="auto_barcode"
+    <!-- TMPL_IF Name="auto_barcode" --> checked <!-- /TMPL_IF -->  />
+    </li>
+
+    <li>
+    <label for="itemtype">Itemtype</label>
+    <select name="itemtype">
+    <!-- TMPL_LOOP name="itemtypeloop" -->
+        <option value="<!-- TMPL_VAR name="value" -->"
+         <!-- TMPL_IF name="selected" -->selected<!-- /TMPL_IF -->><!-- TMPL_VAR name="description" --></option>
+    <!-- /TMPL_LOOP -->
+    </select>
+    </li>
+
+    <li>
+    <label for="branchcode">Branchcode</label>
+    <select name="branchcode">
+    <!-- TMPL_LOOP name="branches_loop" -->
+        <option value="<!-- TMPL_VAR name="value" -->"
+         <!-- TMPL_IF name="selected" -->selected<!-- /TMPL_IF -->><!-- TMPL_VAR name="description" --></option>
+    <!-- /TMPL_LOOP -->
+    </select>
+    </li>
+
+    <input type="submit" value="Save Options" class="button">
+    </ol>
+    <br>
+    </fieldset>
+    </div>
+<!-- /TMPL_UNLESS   -->
+
+</form>
+</div>
+
+<!-- TMPL_IF Name="items_loop" -->
+    <h2>Current items in SCIS batch <!-- TMPL_VAR Name="scis_batch_id" --></h2>
+    <table>
+    <tr><th>SCIS ID</th>
+    <th>ISBN</th>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Itemtype</th>
+    <th>Branchcode</th>
+    <th>Barcode</th>
+    <th>Action</th>
+    </tr>
+
+    <!-- TMPL_LOOP Name="items_loop" -->
+        <!-- TMPL_UNLESS  Name="batch_status" -->
+        <tr>
+        <!-- TMPL_ELSE  -->  
+            <!-- TMPL_UNLESS  Name="scis_id" -->  
+                <tr  class="warn" >
+            <!-- TMPL_ELSE  -->  
+                <tr>
+            <!-- /TMPL_UNLESS -->
+        <!-- /TMPL_UNLESS -->
+
+        <td><!-- TMPL_VAR Name="scis_id" --></td>
+        <td><b><!-- TMPL_VAR Name="isbn" --></b></td>
+        <td><!-- TMPL_VAR Name="title" --></td>
+        <td><!-- TMPL_VAR Name="author" --></td>
+        <td><!-- TMPL_VAR Name="itemtype" --></td>
+        <td><!-- TMPL_VAR Name="branchcode" --></td>
+        <td><b><!-- TMPL_VAR Name="barcode" --></b></td>
+
+        <td>
+        <!-- TMPL_UNLESS  Name="batch_status" -->
+        <a href="/cgi-bin/koha/scis/scis-scan-isbns.pl?op_del_item=1&item_id=<!-- TMPL_VAR Name="id" -->&scis_batch_id=<!-- TMPL_VAR Name="scis_batch_id" -->">Delete</a>
+        <!-- TMPL_ELSE -->
+        <div style="color:grey;">delete</div>
+        <!-- /TMPL_UNLESS -->
+        </td>
+
+        </tr>
+    <!-- /TMPL_LOOP -->
+    </table>
+    <p>
+    <br>
+
+    <!-- TMPL_UNLESS  Name="batch_status" -->
+     <form method="post" action="/cgi-bin/koha/scis/scis-home.pl" >
+        <input type="submit" class="submit" value="Import SCIS order" />
+        <input type="hidden" name="op_import_order" value='1' />
+        <input type="hidden" name="scis_batch_id" value="<!-- TMPL_VAR Name="scis_batch_id" -->" />
+     </form>
+    <!-- TMPL_ELSE   -->
+    <form method="post" action="/cgi-bin/koha/tools/manage-marc-import.pl?import_batch_id=<!-- TMPL_VAR Name="import_batch_id" -->" />
+        <input type="hidden" name="import_batch_id" value="<!-- TMPL_VAR Name="import_batch_id" -->" />
+        <input type="submit" class="submit" value="Go to <!-- TMPL_VAR Name="batch_status" --> batch" />
+     </form>
+    <!-- /TMPL_UNLESS   -->
+<!-- /TMPL_IF -->
+
+</div>
+</div>
+
+<div class="yui-b">
+<!-- TMPL_INCLUDE NAME="scis-menu.inc" -->
+</div>
+
+</div>
+<!-- TMPL_INCLUDE NAME="intranet-bottom.inc" -->

@@ -249,6 +249,10 @@ $tabsysprefs{TagsModeration}         = 'EnhancedContent';
 $tabsysprefs{GoogleJackets}          = 'EnhancedContent';
 $tabsysprefs{AuthorisedValueImages}  = "EnhancedContent";
 
+# SCIS
+$tabsysprefs{ScisUsername}           = "EnhancedContent";
+$tabsysprefs{ScisPassword}           = "EnhancedContent";
+
 # OPAC
 $tabsysprefs{BiblioDefaultView}          = "OPAC";
 $tabsysprefs{LibraryName}                = "OPAC";

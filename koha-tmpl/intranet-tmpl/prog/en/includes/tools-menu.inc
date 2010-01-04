@@ -54,4 +54,9 @@
     <!-- TMPL_IF NAME="CAN_user_tools_schedule_tasks" -->
 	<li><a href="/cgi-bin/koha/tools/scheduler.pl">Task Scheduler</a></li>
     <!-- /TMPL_IF -->
+
+    <!-- TMPL_IF NAME="CAN_user_tools_stage_marc_import" -->
+    <li><a href="/cgi-bin/koha/scis/scis-home.pl">SCIS Managment</a></li>
+    <!-- /TMPL_IF -->
+
 </ul></div>

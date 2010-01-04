@@ -1,0 +1,87 @@
+<!-- TMPL_INCLUDE NAME="doc-head-open.inc" --><title>Koha &rsaquo; Tools &rsaquo; Labels</title>
+<!-- TMPL_INCLUDE NAME="doc-head-close.inc" -->
+</head>
+<body>
+<!-- TMPL_INCLUDE NAME="header.inc" -->
+<!-- TMPL_INCLUDE NAME="cat-search.inc" -->
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; <a href="/cgi-bin/koha/tools/tools-home.pl">Tools</a> &rsaquo; SCIS</div>
+<div id="doc3" class="yui-t2">
+<div id="bd">
+<div id="yui-main">
+<div class="yui-b">
+
+<!-- TMPL_INCLUDE NAME="scis-toolbar.inc" -->
+
+<!-- TMPL_IF name="op_add_batch" -->
+<form name="input" action="/cgi-bin/koha/scis/scis-home.pl" method="get">
+<fieldset class="rows">
+<legend>Create SCIS batch</legend>
+
+<ol>
+<li><label for="comments">Comments:</label> <input type="text"  size="40" name="comments" id="comments" /></li>
+</ol>
+
+</fieldset>
+        <fieldset class="action">
+        <input type="submit" name="op" value="Add Batch" />
+        <input type="hidden" name="op_save_batch" value="1" />
+        </fieldset>
+</form></div>
+
+<!-- TMPL_ELSE  -->
+
+<form name="input" action="/cgi-bin/koha/scis/scis-home.pl" method="get">
+<h2>SCIS Batches</h2>
+
+<table>
+<tr>
+    <th>Date/time</th>
+    <th>SCIS order</th>
+    <th>Import batch</th>
+    <th>Comments</th>
+    <th>Item count</th>
+    <th>Created by</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+<!-- TMPL_LOOP name="batches_loop" -->
+<tr>
+    <td><!-- TMPL_VAR name="create_timestamp"--></td>
+    <td><!-- TMPL_IF  name="scis_order_id"--><!-- TMPL_VAR name="scis_order_id"--><!-- TMPL_ELSE  -->none<!-- /TMPL_IF  --></td>
+
+    <td>
+    <!-- TMPL_IF name="import_batch_id"-->
+    <a href="/cgi-bin/koha/tools/manage-marc-import.pl?import_batch_id=<!-- TMPL_VAR name='import_batch_id' -->"><!-- TMPL_VAR name='import_batch_id' --></a><!-- TMPL_ELSE  -->none <!-- /TMPL_IF  -->
+    </td>
+
+    <td><!-- TMPL_VAR name="comments"--></td>
+    <td><!-- TMPL_VAR name="item_count"--></td>
+    <td><!-- TMPL_VAR name="user"--></td>
+    <td><!-- TMPL_IF name="status"--><!-- TMPL_VAR name="status"--><!-- TMPL_ELSE  -->open<!-- /TMPL_IF  -->
+    </td>
+
+    <td ALIGN=center>
+<a href="/cgi-bin/koha/scis/scis-scan-isbns.pl?scis_batch_id=<!-- TMPL_VAR name='scis_batch_id' -->"><!-- TMPL_IF name="status"-->View <!-- TMPL_ELSE  -->Manage<!-- /TMPL_IF  --></a>&nbsp;
+
+<!-- TMPL_IF name="status"--><span style="color:grey;">Delete</span>
+<!-- TMPL_ELSE  -->
+<a href="/cgi-bin/koha/scis/scis-scan-isbns.pl?scis_batch_id=<!-- TMPL_VAR name='scis_batch_id' -->">Delete</a>
+<!-- /TMPL_IF  -->
+    </td>
+</tr>
+<!-- /TMPL_LOOP -->
+
+</table>
+</form>
+</div>
+<!-- /TMPL_IF  -->
+
+</div>
+<div class="yui-b">
+<!-- TMPL_INCLUDE NAME="scis-menu.inc" -->
+</div>
+</div>
+
+<!-- TMPL_INCLUDE NAME="intranet-bottom.inc" -->

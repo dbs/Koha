@@ -2343,6 +2343,40 @@ CREATE TABLE `fieldmapping` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Table structure for table `scis_batches`
+--
+
+DROP TABLE IF EXISTS `scis_batches`;
+ CREATE TABLE `scis_batches` (
+  `scis_order_id` int(11) NOT NULL default '0',
+  `import_batch_id` int(11) NOT NULL,
+  `create_timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  `marc` longblob,
+  `user_id` int(11) default NULL,
+  `comments` mediumtext,
+  `scis_batch_id` int(11) NOT NULL auto_increment,
+  `auto_barcode` tinyint(1) default NULL,
+  PRIMARY KEY  (`scis_batch_id`)
+) ENGINE=InnoDB CHARSET=utf8;
+
+--
+-- Table structure for table `scis_items`
+--
+
+DROP TABLE IF EXISTS `scis_items` (
+CREATE TABLE `scis_items` (
+  `id` int(11) NOT NULL auto_increment,
+  `scis_batch_id` int(11) NOT NULL,
+  `isbn` varchar(14) default NULL,
+  `itemtype` varchar(10) default NULL,
+  `barcode` varchar(20) default NULL,
+  `branchcode` varchar(10) default NULL,
+  `scis_id` int(11) default NULL,
+  `title` mediumtext,
+  `author` mediumtext,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
