@@ -26,7 +26,7 @@ use C4::Installer;
 
 use MARC::Record;
 use MARC::File::XML ( BinaryEncoding => 'utf8' );
- 
+
 # FIXME - The user might be installing a new database, so can't rely
 # on /etc/koha.conf anyway.
 
@@ -688,6 +688,12 @@ if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
     SetVersion ($DBversion);
 }
 
+$DBversion = "3.00.05.004";
+if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
+    $dbh->do("INSERT INTO systempreferences (variable,value,explanation,options,type) VALUES ('OpacNotPublic','0','If set, all OPAC pages require authentication, and OPAC-searchbar is hidden - if user is not logged in','','YesNo')");
+    print "Upgrade to $DBversion done (added 'OpacNotPublic' syspref)\n";
+    SetVersion ($DBversion);
+}
 
 =item DropAllForeignKeys($table)
 

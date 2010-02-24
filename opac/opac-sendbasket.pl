@@ -61,7 +61,7 @@ if ( $email_add ) {
             template_name   => "opac-sendbasket.tmpl",
             query           => $query,
             type            => "opac",
-            authnotrequired => 1,
+            authnotrequired => (C4::Context->preference("OpacNotPublic") ? 0 : 1),
             flagsrequired   => { borrow => 1 },
         }
     );

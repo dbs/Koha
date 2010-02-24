@@ -56,7 +56,7 @@ else {
     template_name => $template_name,
     query => $cgi,
     type => "opac",
-    authnotrequired => 1,
+    authnotrequired => (C4::Context->preference("OpacNotPublic") ? 0 : 1),
     }
 );
 

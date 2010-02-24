@@ -66,7 +66,7 @@ if ( $updateemailaddress eq '' ) {
             template_name   => "kohaerror.tmpl",
             query           => $query,
             type            => "opac",
-            authnotrequired => 1,
+            authnotrequired => (C4::Context->preference("OpacNotPublic") ? 0 : 1),
             flagsrequired   => { borrow => 1 },
             debug           => 1,
         }

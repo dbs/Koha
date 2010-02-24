@@ -48,7 +48,7 @@ if ( $selectview eq "full" ) {
             template_name   => "opac-full-serial-issues.tmpl",
             query           => $query,
             type            => "opac",
-            authnotrequired => 1,
+            authnotrequired => (C4::Context->preference("OpacNotPublic") ? 0 : 1),
             debug           => 1,
         }
     );
@@ -86,7 +86,7 @@ else {
             template_name   => "opac-serial-issues.tmpl",
             query           => $query,
             type            => "opac",
-            authnotrequired => 1,
+            authnotrequired => (C4::Context->preference("OpacNotPublic") ? 0 : 1),
             debug           => 1,
         }
     );

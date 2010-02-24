@@ -75,7 +75,7 @@ if ( $op eq "do_search" ) {
             template_name   => "opac-authoritiessearchresultlist.tmpl",
             query           => $query,
             type            => 'opac',
-            authnotrequired => 1,
+            authnotrequired => (C4::Context->preference("OpacNotPublic") ? 0 : 1),
             debug           => 1,
         }
     );
@@ -150,7 +150,7 @@ else {
             template_name   => "opac-authorities-home.tmpl",
             query           => $query,
             type            => 'opac',
-            authnotrequired => 1,
+            authnotrequired => (C4::Context->preference("OpacNotPublic") ? 0 : 1),
             debug           => 1,
         }
     );

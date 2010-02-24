@@ -7,6 +7,9 @@
   <!-- TMPL_IF NAME="opacheader" -->
 	<!-- TMPL_VAR NAME="opacheader" -->
   <!-- /TMPL_IF -->
+
+
+
 <div id="opac-main-search" class="yui-g">
    <!-- TMPL_IF NAME="opacsmallimage" -->
    <h1 id="libraryname" style="background-image: url('<!-- TMPL_VAR NAME="opacsmallimage" -->');">
@@ -15,6 +18,10 @@
    <!-- /TMPL_IF --><a href="/cgi-bin/koha/opac-main.pl"><!-- TMPL_IF NAME="LibraryName" --><!-- TMPL_VAR NAME="LibraryName" --><!-- TMPL_ELSE -->Koha Online Catalog<!-- /TMPL_IF --></a></h1>
 
 <div id="fluid">
+
+<!-- TMPL_UNLESS NAME="OpacNotPublic" -->
+
+
 <div id="fluid-offset">
 <!-- TMPL_UNLESS NAME="advsearch" --><form name="searchform" method="get" action="/cgi-bin/koha/opac-search.pl" id="searchform">
     <label for="masthead_search" class="left"> Search <!-- TMPL_IF name="mylibraryfirst" --> (in <!-- TMPL_VAR name="mylibraryfirst" --> only)<!-- /TMPL_IF --></label>
@@ -88,8 +95,12 @@
   <!-- /TMPL_IF -->
 <!-- /TMPL_IF -->
 </div>
- </div>
+
 </div>
+</div>
+
+<!-- /TMPL_UNLESS -->
+
 
 <!-- TMPL_IF NAME="opacbookbag" --><div id="cartDetails">Your cart is empty.</div><!-- /TMPL_IF -->
 

@@ -29,6 +29,8 @@ use C4::Koha;
 use C4::Branch; # GetBranches
 use C4::VirtualShelves;
 
+#use Smart::Comments '####';
+
 # use utf8;
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $debug $ldap);
 
@@ -308,6 +310,8 @@ sub get_template_and_user {
         } elsif($mylibraryfirst){
             $opac_name = C4::Branch::GetBranchName($mylibraryfirst);
         }
+
+
         $template->param(
             OPACAmazonContent             => "" . C4::Context->preference("OPACAmazonContent"),
             OPACAmazonCoverImages         => "" . C4::Context->preference("OPACAmazonCoverImages"),
@@ -361,6 +365,10 @@ sub get_template_and_user {
             suggestion                => "" . C4::Context->preference("suggestion"),
             virtualshelves            => "" . C4::Context->preference("virtualshelves"),
         );
+
+        $template->param(  OpacNotPublic   => C4::Context->preference("OpacNotPublic") )  
+            unless (  $template->param( 'loggedinusername'  ) );
+
     }
     return ( $template, $borrowernumber, $cookie, $flags);
 }
@@ -492,6 +500,8 @@ sub _session_log {
     printf L join("\n",@_);
     close L;
 }
+
+
 
 sub checkauth {
     my $query = shift;
@@ -821,8 +831,8 @@ sub checkauth {
         OpacAuthorities      => C4::Context->preference("OpacAuthorities"),
         OpacBrowser          => C4::Context->preference("OpacBrowser"),
         opacheader           => C4::Context->preference("opacheader"),
-        TagsEnabled                  => C4::Context->preference("TagsEnabled"),
-        OPACUserCSS           => C4::Context->preference("OPACUserCSS"),
+        OpacNotPublic        => C4::Context->preference("OpacNotPublic"),
+        OPACUserCSS          => C4::Context->preference("OPACUserCSS"),
         intranetcolorstylesheet =>
 								C4::Context->preference("intranetcolorstylesheet"),
         intranetstylesheet => C4::Context->preference("intranetstylesheet"),
