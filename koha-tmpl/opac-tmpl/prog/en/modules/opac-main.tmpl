@@ -1,6 +1,11 @@
 <!-- TMPL_INCLUDE NAME="doc-head-open.inc" -->
 <!-- TMPL_IF NAME="LibraryNameTitle" --><!-- TMPL_VAR NAME="LibraryNameTitle" --><!-- TMPL_ELSE -->Koha Online<!-- /TMPL_IF --> Catalog
 <!-- TMPL_INCLUDE NAME="doc-head-close.inc" -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        if ( $("#auth" ) ) { $("#members ul li a").hide(); }
+    });
+</script>
 </head>
 <body>
 <!-- TMPL_IF NAME="OpacNav" --><div id="doc3" class="yui-t1"><!-- TMPL_ELSE --><div id="doc3" class="yui-t7"><!-- /TMPL_IF -->
@@ -22,7 +27,7 @@
 		<div class="yui-g">
 		<div>
 	<!-- /TMPL_IF -->
-	
+
 	<!-- TMPL_IF name="koha_news_count" -->
 <div id="news" class="container">
     <table>
@@ -90,7 +95,7 @@
      </div>
 <!-- /TMPL_IF -->
 </div>
-		
+
 	<!-- TMPL_IF NAME="opacuserlogin" -->
     <!-- TMPL_UNLESS NAME="loggedinusername" -->
     <div class="yui-u">
@@ -109,7 +114,7 @@
 	</div>
 	 </div>
     <!-- /TMPL_UNLESS -->
-	
+
 <!-- /TMPL_IF -->
 </div>
 </div>
