@@ -29,7 +29,7 @@
 <!-- /TMPL_IF -->
 <!-- TMPL_IF NAME="loginprompt" -->
 <!-- login prompt time-->
-<h3>Welcome to xxx</h3>
+<h3>Welcome to <!-- TMPL_VAR NAME="LibraryName" --></h3>
 <!-- TMPL_IF NAME="timed_out" -->
 <!-- This is what is displayed if login has timed out -->
 <p>Sorry, your session has timed out.  Please log in again.</p>
@@ -57,8 +57,12 @@
 </ol></fieldset>
 
 <input type="submit" value="Log In" class="submit" />
+
+<!--
 <div>  <h5>Don't have a password yet?</h5><p> If you don't have a password yet, stop by the circulation desk the next time you're in the library. We'll happily set one up for you.</p>
 <h5>Don't have a library card?</h5><p> If you don't have a library card, stop by your local library to sign up.  </p></div>
+-->
+
 </form>
 
 
