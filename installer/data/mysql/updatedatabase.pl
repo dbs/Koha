@@ -3744,6 +3744,12 @@ if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
     SetVersion ($DBversion);
 }
 
+$DBversion = "3.00.xx.xxx";
+if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
+    $dbh->do("INSERT INTO systempreferences (variable,value,explanation,options,type) VALUES ('OpacPublic','1','If set to OFF and user is not logged in, all  OPAC pages require authentication, and OPAC searchbar is removed)','','YesNo')");
+    print "Upgrade to $DBversion done (added 'OpacNotPublic' syspref)\n";
+    SetVersion ($DBversion);
+}
 
 =item DropAllForeignKeys($table)
 

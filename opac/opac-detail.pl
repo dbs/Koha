@@ -42,6 +42,8 @@ use C4::VirtualShelves;
 use C4::XSLT;
 use Switch;
 
+# use Smart::Comments '####';
+
 BEGIN {
 	if (C4::Context->preference('BakerTaylorEnabled')) {
 		require C4::External::BakerTaylor;
@@ -50,15 +52,25 @@ BEGIN {
 }
 
 my $query = new CGI;
+
+
+
+my $aa =   C4::Context->preference("OpacPublic")  ;
+#### $aa
+
 my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
     {
         template_name   => "opac-detail.tmpl",
         query           => $query,
         type            => "opac",
-        authnotrequired => 1,
+        authnotrequired =>( C4::Context->preference("OpacPublic") ? 1 : 0 ),
         flagsrequired   => { borrow => 1 },
     }
 );
+
+
+
+
 
 my $biblionumber = $query->param('biblionumber') || $query->param('bib');
 

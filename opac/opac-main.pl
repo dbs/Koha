@@ -27,6 +27,7 @@ use C4::Members;         # GetMember
 use C4::NewsChannels;    # get_opac_news
 use C4::Acquisition;     # GetRecentAcqui
 use C4::Languages qw(getTranslatedLanguages accept_language);
+use Smart::Comments '####';
 
 my $input = new CGI;
 my $dbh   = C4::Context->dbh;
@@ -36,7 +37,7 @@ my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
         template_name   => "opac-main.tmpl",
         type            => "opac",
         query           => $input,
-        authnotrequired => 1,
+        authnotrequired =>( C4::Context->preference("OpacPublic") ? 1 : 0 ),
         flagsrequired   => { borrow => 1 },
     }
 );
