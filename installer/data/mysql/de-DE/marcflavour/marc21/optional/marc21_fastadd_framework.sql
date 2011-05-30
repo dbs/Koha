@@ -115,7 +115,7 @@ INSERT IGNORE INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblib
 		('952','c','Aufstellungsort','Aufstellungsort',0,0,'items.location',10,'LOC','','',NULL,0,'FA','',NULL,NULL),
 		('952','d','Erwerbungsdatum','Erwerbungsdatum',0,0,'items.dateaccessioned',10,'','','dateaccessioned.pl',NULL,0,'FA','',NULL,NULL),
 		('952','e','Lieferant','Lieferant',0,0,'items.booksellerid',10,'','','',NULL,0,'FA','',NULL,NULL),
-		('952','f','Kodierter Standort-Qualifier','Kodierter Standort-Qualifier',0,0,'items.coded_location_qualifier',10,'','','',NULL,-5,'FA','',NULL,NULL),
+		('952','f','Kodierter Standort-Qualifier','Kodierter Standort-Qualifier',0,0,'',10,'','','',NULL,-5,'FA','',NULL,NULL),
 		('952','g','Kaufpreis','Kaufpreis',0,0,'items.price',10,'','','',NULL,0,'FA','',NULL,NULL),
 		('952','h','Jahrgang/Heft','Jahrgang/Heft',0,0,'items.enumchron',10,'','','',NULL,0,'FA','',NULL,NULL),
         ('952','i','Inventarnummer','Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'FA', '', NULL, NULL),
