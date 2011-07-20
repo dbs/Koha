@@ -85,7 +85,7 @@ if (C4::Context->preference("OPACXSLTDetailsDisplay") ) {
 
 $template->param('OPACShowCheckoutName' => C4::Context->preference("OPACShowCheckoutName") ); 
 # change back when ive fixed request.pl
-my @all_items = &GetItemsInfo( $biblionumber, 'opac' );
+my @all_items = GetItemsInfo( $biblionumber );
 my @items;
 
 # Getting items to be hidden
@@ -281,7 +281,10 @@ my $upc = GetNormalizedUPC($record,$marcflavour);
 my $ean = GetNormalizedEAN($record,$marcflavour);
 my $oclc = GetNormalizedOCLCNumber($record,$marcflavour);
 my $isbn = GetNormalizedISBN(undef,$record,$marcflavour);
-my $content_identifier_exists = 1 if ($isbn or $ean or $oclc or $upc);
+my $content_identifier_exists;
+if ( $isbn or $ean or $oclc or $upc ) {
+    $content_identifier_exists = 1;
+}
 $template->param(
 	normalized_upc => $upc,
 	normalized_ean => $ean,
@@ -295,6 +298,12 @@ $template->param(
     ocoins => GetCOinSBiblio($biblionumber),
 );
 
+my $libravatar_enabled = 0;
+eval 'use Libravatar::URL';
+if (!$@ and C4::Context->preference('ShowReviewer') and C4::Context->preference('ShowReviewerPhoto')) {
+    $libravatar_enabled = 1;
+}
+
 my $reviews = getreviews( $biblionumber, 1 );
 my $loggedincommenter;
 foreach ( @$reviews ) {
@@ -303,6 +312,9 @@ foreach ( @$reviews ) {
     $_->{title}     = $borrowerData->{'title'};
     $_->{surname}   = $borrowerData->{'surname'};
     $_->{firstname} = $borrowerData->{'firstname'};
+    if ($libravatar_enabled and $borrowerData->{'email'}) {
+        $_->{avatarurl} = libravatar_url(email => $borrowerData->{'email'}, https => $ENV{HTTPS});
+    }
     $_->{userid}    = $borrowerData->{'userid'};
     $_->{cardnumber}    = $borrowerData->{'cardnumber'};
     $_->{datereviewed} = format_date($_->{datereviewed});

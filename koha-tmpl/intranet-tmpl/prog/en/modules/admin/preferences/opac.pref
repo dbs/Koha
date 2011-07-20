@@ -138,7 +138,7 @@ OPAC:
               type: textarea
               class: code
         -
-            - "Show the following HTML on the left hand column of all pages on the OPAC (generally navigation links):"
+            - "Show the following HTML on the left hand column of the main page and patron account on the OPAC (generally navigation links):"
             - pref: OpacNav
               type: textarea
               class: code
@@ -252,6 +252,12 @@ OPAC:
                   no: Hide
             - reviewer's name above comments in OPAC.
         -
+            - pref: ShowReviewerPhoto
+              choices:
+                  yes: Show
+                  no: Hide
+            - reviewer's photo beside comments in OPAC.
+        -
             - pref: RequestOnOpac
               choices:
                   yes: Allow
@@ -300,6 +306,16 @@ OPAC:
                   yes: Allow
                   no: "Don't allow"
             - patrons to renew their own books on the OPAC.
+        -
+            - Use 
+            - pref: OpacRenewalBranch
+              choices:
+                  itemhomebranch: "The Items' home branch"
+                  patronhomebranch: "The Patrons' home branch"
+                  checkoutbranch: "The branch the item was checked out from"
+                  null: "NULL"
+                  opacrenew: "OPACRenew"
+            - as branchcode to store in the statistics table
         -
             - Only allow patrons to renew their own books on the OPAC if they have less than
             - pref: OPACFineNoRenewals

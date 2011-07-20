@@ -21,6 +21,7 @@ package C4::Biblio;
 
 use strict;
 use warnings;
+use Carp;
 
 # use utf8;
 use MARC::Record;
@@ -294,9 +295,21 @@ and biblionumber data for indexing.
 
 sub ModBiblio {
     my ( $record, $biblionumber, $frameworkcode ) = @_;
+    croak "No record" unless $record;
+
     if ( C4::Context->preference("CataloguingLog") ) {
         my $newrecord = GetMarcBiblio($biblionumber);
         logaction( "CATALOGUING", "MODIFY", $biblionumber, "BEFORE=>" . $newrecord->as_formatted );
+    }
+
+    # Cleaning up invalid fields must be done early or SetUTF8Flag is liable to
+    # throw an exception which probably won't be handled.
+    foreach my $field ($record->fields()) {
+        if (! $field->is_control_field()) {
+            if (scalar($field->subfields()) == 0 || (scalar($field->subfields()) == 1 && $field->subfield('9'))) {
+                $record->delete_field($field);
+            }
+        }
     }
 
     SetUTF8Flag($record);
@@ -305,14 +318,6 @@ sub ModBiblio {
     $frameworkcode = "" unless $frameworkcode;
 
     _strip_item_fields($record, $frameworkcode);
-
-    foreach my $field ($record->fields()) {
-        if (! $field->is_control_field()) {
-            if (scalar($field->subfields()) == 0) {
-                $record->delete_fields($field);
-            }
-        }
-    }
 
     # update biblionumber and biblioitemnumber in MARC
     # FIXME - this is assuming a 1 to 1 relationship between
@@ -1175,8 +1180,8 @@ sub GetCOinSBiblio {
     if ( C4::Context->preference("marcflavour") eq "UNIMARC" ) {
 
         # Setting datas
-        $aulast  = $record->subfield( '700', 'a' );
-        $aufirst = $record->subfield( '700', 'b' );
+        $aulast  = $record->subfield( '700', 'a' ) || '';
+        $aufirst = $record->subfield( '700', 'b' ) || '';
         $oauthors = "&amp;rft.au=$aufirst $aulast";
 
         # others authors
@@ -1189,10 +1194,10 @@ sub GetCOinSBiblio {
           ( $mtx eq 'dc' )
           ? "&amp;rft.title=" . $record->subfield( '200', 'a' )
           : "&amp;rft.title=" . $record->subfield( '200', 'a' ) . "&amp;rft.btitle=" . $record->subfield( '200', 'a' );
-        $pubyear   = $record->subfield( '210', 'd' );
-        $publisher = $record->subfield( '210', 'c' );
-        $isbn      = $record->subfield( '010', 'a' );
-        $issn      = $record->subfield( '011', 'a' );
+        $pubyear   = $record->subfield( '210', 'd' ) || '';
+        $publisher = $record->subfield( '210', 'c' ) || '';
+        $isbn      = $record->subfield( '010', 'a' ) || '';
+        $issn      = $record->subfield( '011', 'a' ) || '';
     } else {
 
         # MARC21 need some improve
@@ -1508,7 +1513,10 @@ sub GetMarcSubjects {
             my $value     = $subject_subfield->[1];
             my $linkvalue = $value;
             $linkvalue =~ s/(\(|\))//g;
-            my $operator = " and " unless $counter == 0;
+            my $operator;
+            if ( $counter != 0 ) {
+                $operator = ' and ';
+            }
             if ( $code eq 9 ) {
                 $found9 = 1;
                 @link_loop = ( { 'limit' => 'an', link => "$linkvalue" } );
@@ -1516,7 +1524,10 @@ sub GetMarcSubjects {
             if ( not $found9 ) {
                 push @link_loop, { 'limit' => $subject_limit, link => $linkvalue, operator => $operator };
             }
-            my $separator = C4::Context->preference("authoritysep") unless $counter == 0;
+            my $separator;
+            if ( $counter != 0 ) {
+                $separator = C4::Context->preference('authoritysep');
+            }
 
             # ignore $9
             my @this_link_loop = @link_loop;
@@ -1574,7 +1585,10 @@ sub GetMarcAuthors {
             my $value        = $authors_subfield->[1];
             my $linkvalue    = $value;
             $linkvalue =~ s/(\(|\))//g;
-            my $operator = " and " unless $count_auth == 0;
+            my $operator;
+            if ( $count_auth != 0 ) {
+                $operator = ' and ';
+            }
 
             # if we have an authority link, use that as the link, otherwise use standard searching
             if ($subfield9) {
@@ -1590,8 +1604,17 @@ sub GetMarcAuthors {
             $value = GetAuthorisedValueDesc( $field->tag(), $authors_subfield->[0], $authors_subfield->[1], '', $tagslib )
               if ( $marcflavour eq 'UNIMARC' and ( $authors_subfield->[0] =~ /4/ ) );
             my @this_link_loop = @link_loop;
-            my $separator = C4::Context->preference("authoritysep") unless $count_auth == 0;
-            push @subfields_loop, { code => $subfieldcode, value => $value, link_loop => \@this_link_loop, separator => $separator } unless ( $authors_subfield->[0] eq '9' );
+            my $separator;
+            if ( $count_auth != 0 ) {
+                $separator = C4::Context->preference('authoritysep');
+            }
+            push @subfields_loop,
+              { code      => $subfieldcode,
+                value     => $value,
+                link_loop => \@this_link_loop,
+                separator => $separator
+              }
+              unless ( $authors_subfield->[0] eq '9' );
             $count_auth++;
         }
         push @marcauthors, { MARCAUTHOR_SUBFIELDS_LOOP => \@subfields_loop };
@@ -1702,13 +1725,27 @@ sub GetMarcSeries {
             my $value     = $series_subfield->[1];
             my $linkvalue = $value;
             $linkvalue =~ s/(\(|\))//g;
-            my $operator = " and " unless $counter == 0;
-            push @link_loop, { link => $linkvalue, operator => $operator };
-            my $separator = C4::Context->preference("authoritysep") unless $counter == 0;
+            if ( $counter != 0 ) {
+                push @link_loop, { link => $linkvalue, operator => ' and ', };
+            } else {
+                push @link_loop, { link => $linkvalue, operator => undef, };
+            }
+            my $separator;
+            if ( $counter != 0 ) {
+                $separator = C4::Context->preference('authoritysep');
+            }
             if ($volume_number) {
                 push @subfields_loop, { volumenum => $value };
             } else {
-                push @subfields_loop, { code => $code, value => $value, link_loop => \@link_loop, separator => $separator, volumenum => $volume_number } unless ( $series_subfield->[0] eq '9' );
+                if ( $series_subfield->[0] ne '9' ) {
+                    push @subfields_loop, {
+                        code      => $code,
+                        value     => $value,
+                        link_loop => \@link_loop,
+                        separator => $separator,
+                        volumenum => $volume_number,
+                    };
+                }
             }
             $counter++;
         }
@@ -2324,8 +2361,11 @@ sub PrepareItemrecordDisplay {
     my $tagslib = &GetMarcStructure( 1, $frameworkcode );
 
     # return nothing if we don't have found an existing framework.
-    return "" unless $tagslib;
-    my $itemrecord = C4::Items::GetMarcItem( $bibnum, $itemnum ) if ($itemnum);
+    return q{} unless $tagslib;
+    my $itemrecord;
+    if ($itemnum) {
+        $itemrecord = C4::Items::GetMarcItem( $bibnum, $itemnum );
+    }
     my @loop_data;
     my $authorised_values_sth = $dbh->prepare( "SELECT authorised_value,lib FROM authorised_values WHERE category=? ORDER BY lib" );
     foreach my $tag ( sort keys %{$tagslib} ) {
@@ -2364,15 +2404,20 @@ sub PrepareItemrecordDisplay {
                     && C4::Context->preference('itemcallnumber') ) {
                     my $CNtag      = substr( C4::Context->preference('itemcallnumber'), 0, 3 );
                     my $CNsubfield = substr( C4::Context->preference('itemcallnumber'), 3, 1 );
-                    my $temp = $itemrecord->field($CNtag) if ($itemrecord);
-                    if ($temp) {
-                        $defaultvalue = $temp->subfield($CNsubfield);
+                    if ($itemrecord) {
+                        my $temp = $itemrecord->field($CNtag);
+                        if ($temp) {
+                            $defaultvalue = $temp->subfield($CNsubfield);
+                        }
                     }
                 }
                 if (   $tagslib->{$tag}->{$subfield}->{kohafield} eq 'items.itemcallnumber'
                     && $defaultvalues
                     && $defaultvalues->{'callnumber'} ) {
-                    my $temp = $itemrecord->field($subfield) if ($itemrecord);
+                    my $temp;
+                    if ($itemrecord) {
+                        $temp = $itemrecord->field($subfield);
+                    }
                     unless ($temp) {
                         $defaultvalue = $defaultvalues->{'callnumber'} if $defaultvalues;
                     }
@@ -2380,7 +2425,10 @@ sub PrepareItemrecordDisplay {
                 if (   ( $tagslib->{$tag}->{$subfield}->{kohafield} eq 'items.holdingbranch' || $tagslib->{$tag}->{$subfield}->{kohafield} eq 'items.homebranch' )
                     && $defaultvalues
                     && $defaultvalues->{'branchcode'} ) {
-                    my $temp = $itemrecord->field($subfield) if ($itemrecord);
+                    my $temp;
+                    if ($itemrecord) {
+                        $temp = $itemrecord->field($subfield);
+                    }
                     unless ($temp) {
                         $defaultvalue = $defaultvalues->{branchcode} if $defaultvalues;
                     }
@@ -2505,8 +2553,10 @@ sub PrepareItemrecordDisplay {
             }
         }
     }
-    my $itemnumber = $itemrecord->subfield( $itemtagfield, $itemtagsubfield )
-      if ( $itemrecord && $itemrecord->field($itemtagfield) );
+    my $itemnumber;
+    if ( $itemrecord && $itemrecord->field($itemtagfield) ) {
+        $itemnumber = $itemrecord->subfield( $itemtagfield, $itemtagsubfield );
+    }
     return {
         'itemtagfield'    => $itemtagfield,
         'itemtagsubfield' => $itemtagsubfield,
@@ -2665,6 +2715,7 @@ per the bib's MARC framework.
 
 sub EmbedItemsInMarcBiblio {
     my ($marc, $biblionumber) = @_;
+    croak "No MARC record" unless $marc;
 
     my $frameworkcode = GetFrameworkCode($biblionumber);
     _strip_item_fields($marc, $frameworkcode);

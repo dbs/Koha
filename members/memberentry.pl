@@ -105,14 +105,17 @@ $template->param( "duplicate" => 1 ) if ( $op eq 'duplicate' );
 $template->param( "checked" => 1 ) if ( defined($nodouble) && $nodouble eq 1 );
 ( $borrower_data = GetMember( 'borrowernumber' => $borrowernumber ) ) if ( $op eq 'modify' or $op eq 'save' or $op eq 'duplicate' );
 my $categorycode  = $input->param('categorycode') || $borrower_data->{'categorycode'};
-my $category_type = $input->param('category_type');
+my $category_type = $input->param('category_type') || '';
+if ($category_type){
+    $template->{VARS}->{'type_only'} = 1;
+}
 my $new_c_type = $category_type; #if we have input param, then we've already chosen the cat_type.
 unless ($category_type or !($categorycode)){
     my $borrowercategory = GetBorrowercategory($categorycode);
     $category_type    = $borrowercategory->{'category_type'};
     my $category_name = $borrowercategory->{'description'}; 
     $template->param("categoryname"=>$category_name);
-}
+ }
 $category_type="A" unless $category_type; # FIXME we should display a error message instead of a 500 error !
 
 # if a add or modify is requested => check validity of data.
@@ -180,24 +183,28 @@ if ( $op eq 'insert' || $op eq 'modify' || $op eq 'save' || $op eq 'duplicate' )
 }
 
 #############test for member being unique #############
-if (($op eq 'insert') and !$nodouble){
-        my $category_type_send=$category_type if ($category_type eq 'I'); 
-        my $check_category; # recover the category code of the doublon suspect borrowers
-			#   ($result,$categorycode) = checkuniquemember($collectivity,$surname,$firstname,$dateofbirth)
-        ($check_member,$check_category) = checkuniquemember(
-			$category_type_send, 
-			($newdata{surname}     ? $newdata{surname}     : $data{surname}    ),
-			($newdata{firstname}   ? $newdata{firstname}   : $data{firstname}  ),
-			($newdata{dateofbirth} ? $newdata{dateofbirth} : $data{dateofbirth})
-		);
-        if(!$check_member){
-            $nodouble = 1;
-        }
-  #   recover the category type if the borrowers is a doublon
+if ( ( $op eq 'insert' ) and !$nodouble ) {
+    my $category_type_send;
+    if ( $category_type eq 'I' ) {
+        $category_type_send = $category_type;
+    }
+    my $check_category;    # recover the category code of the doublon suspect borrowers
+     #   ($result,$categorycode) = checkuniquemember($collectivity,$surname,$firstname,$dateofbirth)
+    ( $check_member, $check_category ) = checkuniquemember(
+        $category_type_send,
+        ( $newdata{surname}     ? $newdata{surname}     : $data{surname} ),
+        ( $newdata{firstname}   ? $newdata{firstname}   : $data{firstname} ),
+        ( $newdata{dateofbirth} ? $newdata{dateofbirth} : $data{dateofbirth} )
+    );
+    if ( !$check_member ) {
+        $nodouble = 1;
+    }
+
+    #   recover the category type if the borrowers is a doublon
     if ($check_category) {
-      my $tmpborrowercategory=GetBorrowercategory($check_category);
-      $check_categorytype=$tmpborrowercategory->{'category_type'};
-    }   
+        my $tmpborrowercategory = GetBorrowercategory($check_category);
+        $check_categorytype = $tmpborrowercategory->{'category_type'};
+    }
 }
 
   #recover all data from guarantor address phone ,fax... 
@@ -233,19 +240,22 @@ if ( (defined $newdata{'userid'}) && ($newdata{'userid'} eq '')){
 $debug and warn join "\t", map {"$_: $newdata{$_}"} qw(dateofbirth dateenrolled dateexpiry);
 my $extended_patron_attributes = ();
 if ($op eq 'save' || $op eq 'insert'){
-  if (checkcardnumber($newdata{cardnumber},$newdata{borrowernumber})){ 
-    push @errors, 'ERROR_cardnumber';
-  } 
-  my $dateofbirthmandatory = (scalar grep {$_ eq "dateofbirth"} @field_check) ? 1 : 0;
-  if ($newdata{dateofbirth} && $dateofbirthmandatory) {
-    my $age = GetAge($newdata{dateofbirth});
-    my $borrowercategory=GetBorrowercategory($newdata{'categorycode'});   
-	my ($low,$high) = ($borrowercategory->{'dateofbirthrequired'}, $borrowercategory->{'upperagelimit'});
-    if (($high && ($age > $high)) or ($age < $low)) {
-      push @errors, 'ERROR_age_limitations';
-	  $template->param('ERROR_age_limitations' => "$low to $high");
+    # If the cardnumber is blank, treat it as null.
+    $newdata{'cardnumber'} = undef if $newdata{'cardnumber'} =~ /^\s*$/;
+
+    if (checkcardnumber($newdata{cardnumber},$newdata{borrowernumber})){ 
+        push @errors, 'ERROR_cardnumber';
+    } 
+    my $dateofbirthmandatory = (scalar grep {$_ eq "dateofbirth"} @field_check) ? 1 : 0;
+    if ($newdata{dateofbirth} && $dateofbirthmandatory) {
+        my $age = GetAge($newdata{dateofbirth});
+        my $borrowercategory=GetBorrowercategory($newdata{'categorycode'});   
+        my ($low,$high) = ($borrowercategory->{'dateofbirthrequired'}, $borrowercategory->{'upperagelimit'});
+        if (($high && ($age > $high)) or ($age < $low)) {
+            push @errors, 'ERROR_age_limitations';
+            $template->param('ERROR_age_limitations' => "$low to $high");
+        }
     }
-  }
   
     if($newdata{surname} && C4::Context->preference('uppercasesurnames')) {
         $newdata{'surname'} = uc($newdata{'surname'});
@@ -334,7 +344,7 @@ if ((!$nok) and $nodouble and ($op eq 'insert' or $op eq 'save')){
             C4::Members::Attributes::SetBorrowerAttributes($borrowernumber, $extended_patron_attributes);
         }
         if (C4::Context->preference('EnhancedMessagingPreferences') and $input->param('setting_messaging_prefs')) {
-            C4::Form::MessagingPreferences::handle_form_action($input, { borrowernumber => $borrowernumber }, $template);
+            C4::Form::MessagingPreferences::handle_form_action($input, { borrowernumber => $borrowernumber }, $template, 1, $newdata{'categorycode'});
         }
 	} elsif ($op eq 'save'){ 
 		if ($NoUpdateLogin) {
@@ -393,7 +403,6 @@ if ( $op eq "duplicate" ) {
     $template->param( step_1 => 1, step_2 => 1, step_3 => 1, step_4 => 1, step_5 => 1, step_6 => 1 ) unless $step;
 }
 
-# my $cardnumber=$data{'cardnumber'};
 $data{'cardnumber'}=fixup_cardnumber($data{'cardnumber'}) if $op eq 'add';
 if(!defined($data{'sex'})){
     $template->param( none => 1);

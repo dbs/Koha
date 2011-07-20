@@ -913,11 +913,17 @@ if ($biblionumber) {
 #-------------------------------------------------------------------------------------
 if ( $op eq "addbiblio" ) {
 #-------------------------------------------------------------------------------------
+    $template->param(
+        biblionumberdata => $biblionumber,
+    );
     # getting html input
     my @params = $input->param();
     $record = TransformHtmlToMarc( \@params , $input );
     # check for a duplicate
-    my ($duplicatebiblionumber,$duplicatetitle) = FindDuplicate($record) if (!$is_a_modif);
+    my ( $duplicatebiblionumber, $duplicatetitle );
+    if ( !$is_a_modif ) {
+        ( $duplicatebiblionumber, $duplicatetitle ) = FindDuplicate($record);
+    }
     my $confirm_not_duplicate = $input->param('confirm_not_duplicate');
     # it is not a duplicate (determined either by Koha itself or by user checking it's not a duplicate)
     if ( !$duplicatebiblionumber or $confirm_not_duplicate ) {
@@ -996,6 +1002,10 @@ elsif ( $op eq "delete" ) {
    #----------------------------------------------------------------------------
    # If we're in a duplication case, we have to set to "" the biblionumber
    # as we'll save the biblio as a new one.
+    $template->param(
+        biblionumberdata => $biblionumber,
+        op               => $op,
+    );
     if ( $op eq "duplicate" ) {
         $biblionumber = "";
     }

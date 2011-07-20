@@ -72,7 +72,7 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
     [% ELSE %]<span class="no-image">No cover image available</span>[% END %][% END %][% END %]
 
     [% IF ( GoogleJackets ) %]<div style="block" title="[% biblionumber |url %]" class="[% normalized_isbn %]" id="gbs-thumbnail-preview"></div>[% END %]
-    [% IF ( BakerTaylorEnabled ) %][% IF ( normalized_isbn ) %][% IF ( OPACurlOpenInNewWindow ) %]<a href="https://[% BakerTaylorBookstoreurl |html %][% normalized_isbn %]" target="_blank"><img alt="See Baker &amp; Taylor" src="[% BakerTaylorImageurl |html %][% normalized_isbn %]" /></a>[% ELSE %]<a href="https://[% BakerTaylorBookstoreurl |html %][% normalized_isbn %]"><img alt="See Baker &amp; Taylor" src="[% BakerTaylorImageurl |html %][% normalized_isbn %]" /></a>[% END %][% END %][% END %]
+    [% IF ( BakerTaylorEnabled ) %][% IF ( normalized_isbn ) %][% IF ( OPACurlOpenInNewWindow ) %]<a href="https://[% BakerTaylorBookstoreURL |html %][% normalized_isbn %]" target="_blank"><img alt="See Baker &amp; Taylor" src="[% BakerTaylorImageURL |html %][% normalized_isbn %]" /></a>[% ELSE %]<a href="https://[% BakerTaylorBookstoreURL |html %][% normalized_isbn %]"><img alt="See Baker &amp; Taylor" src="[% BakerTaylorImageURL |html %][% normalized_isbn %]" /></a>[% END %][% END %][% END %]
     </div>
 
     <abbr class="unapi-id" title="koha:biblionumber:[% biblionumber %]"><!-- unAPI --></abbr>
@@ -182,14 +182,14 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
         [% END %]
     </span>[% END %]
 
-    [% IF ( MARCurlS ) %]
+    [% IF ( MARCURLS ) %]
     <div class="results_summary"><span class="label">Online Resources:</span>
-    <ul>    [% FOREACH MARCurl IN MARCurlS %]
+    <ul>    [% FOREACH MARCurl IN MARCURLS %]
         <li>[% IF ( MARCurl.part ) %][% MARCurl.part %]
             <br />[% END %] 
         <!-- here you might do a tmpl_if name="toc" and use greybox or equivalent for table of contents -->
         
-        [% IF ( MARCurl.OPACurlOpenInNewWindow ) %]<a href="[% MARCurl.MARCurl %]" title="[% MARCurl.MARCurl %]" target="_blank">[% ELSE %]<a href="[% MARCurl.MARCurl %]" title="[% MARCurl.MARCurl %]">[% END %]
+        [% IF ( MARCurl.OPACurlOpenInNewWindow ) %]<a href="[% MARCurl.MARCURL %]" title="[% MARCurl.MARCURL %]" target="_blank">[% ELSE %]<a href="[% MARCurl.MARCURL %]" title="[% MARCurl.MARCURL %]">[% END %]
         
         [% MARCurl.linktext %]</a>
             [% IF ( MARCurl.notes ) %]<ul>[% FOREACH note IN MARCurl.notes %]<li>[% note.note %]</li>[% END %]</ul>[% END %]</li>
@@ -410,7 +410,7 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
 		[% IF ( itemdata_enumchron ) %]<td>[% ITEM_RESULT.enumchron %]</td>[% END %]
 		[% IF ( itemdata_uri ) %]<td><a href="[% ITEM_RESULT.uri %]">[% ITEM_RESULT.uri %]</a></td>[% END %]
 		[% IF ( itemdata_copynumber ) %]<td>[% ITEM_RESULT.copynumber %]</td>[% END %]
-		<td>[% INCLUDE 'item-status.inc' %]</td>
+		<td>[% INCLUDE 'item-status.inc' item = ITEM_RESULT %]</td>
 		[% IF ( itemdata_itemnotes ) %]<td>[% ITEM_RESULT.itemnotes %]</td>[% END %]
 		<td>[% ITEM_RESULT.datedue %]</td>
 		[% IF ( ITEM_RESULT.type ) %]
@@ -667,6 +667,9 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
         [% FOREACH review IN reviews %]
             [% IF ( review.your_comment ) %]
             <div class="commentline yours" id="c[% review.reviewid %]">
+                [% IF ( review.avatarurl ) %]
+            <img class="avatar" src="[% review.avatarurl %]" height="80" width="80"/>
+                [% END %]
             <h5>
                 Your Comment
             </h5>
@@ -678,6 +681,9 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
             [% ELSE %]
             <div class="commentline">
             [% IF ( ShowReviewer ) %]
+                [% IF ( review.avatarurl ) %]
+            <img class="avatar" src="[% review.avatarurl %]" height="80" width="80"/>
+                [% END %]
             <h5>
                 Comment by
                 [% review.title %]
@@ -808,7 +814,7 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
         	[% END %]
 	[% END %]
 [% END %]
-        <li><a class="print" href="javascript:window.print();">Print</a></li>
+        <li><a class="print" href="#" onclick="window.print();">Print</a></li>
 [% IF ( virtualshelves ) %]
     [% IF ( opacuserlogin ) %][% IF ( loggedinusername ) %]
         <li><a class="addtoshelf" href="/cgi-bin/koha/opac-addbybiblionumber.pl?biblionumber=[% biblionumber %]" onclick="Dopop('opac-addbybiblionumber.pl?biblionumber=[% biblionumber %]'); return false;">

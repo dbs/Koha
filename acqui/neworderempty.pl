@@ -132,6 +132,11 @@ if ( $ordernumber eq '' and defined $params->{'breedingid'}){
     my ($marcrecord, $encoding) = MARCfindbreeding($params->{'breedingid'});
     die("Could not find the selected record in the reservoir, bailing") unless $marcrecord;
 
+    # Remove all the items (952) from the imported record
+    foreach my $item ($marcrecord->field('952')) {
+        $marcrecord->delete_field($item);
+    }
+
     my $duplicatetitle;
 #look for duplicates
     ($biblionumber,$duplicatetitle) = FindDuplicate($marcrecord);
@@ -324,6 +329,8 @@ if (C4::Context->preference('AcqCreateItem') eq 'ordering' && !$ordernumber) {
     
     $template->param(items => \@itemloop);
 }
+# Get the item types list, but only if item_level_itype is YES. Otherwise, it will be in the item, no need to display it in the biblio
+my @itemtypes = C4::ItemType->all unless C4::Context->preference('item-level_itypes');
 
 # fill template
 $template->param(
@@ -368,6 +375,7 @@ $template->param(
     budget_loop      => $budget_loop,
     isbn             => $data->{'isbn'},
     seriestitle      => $data->{'seriestitle'},
+    itemtypeloop     => \@itemtypes,
     quantity         => $data->{'quantity'},
     quantityrec      => $data->{'quantity'},
     rrp              => $data->{'rrp'},

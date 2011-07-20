@@ -46,7 +46,11 @@ $(document).ready(function(){
     [% END %]
     [% IF ( review.copyrightdate ) %]<span class="results_summary"><span class="label">Date:</span>[% review.copyrightdate %]</span>[% END %]</p>
 
-            <p class="commentline[% IF ( review.your_comment ) %] yours[% END %]">[% review.review |html %]
+            <p class="commentline[% IF ( review.your_comment ) %] yours[% END %]">
+            [% IF ( review.avatarurl ) %]
+                <img class="avatar" src="[% review.avatarurl %]" height="40" width="40"/>
+            [% END %]
+            [% review.review |html %]
             <span style="font-size:87%;font-color:#CCC;">Added [% review.datereviewed %] [% IF ( review.your_comment ) %] by <strong>you</strong>[% ELSE %]
             [% IF ( ShowReviewer ) %] by
             [% review.firstname %] [% review.surname %][% END %][% END %]</span></p>
@@ -71,7 +75,7 @@ $(document).ready(function(){
 
         [% IF ( GoogleJackets ) %][% IF ( review.normalized_isbn ) %]<div style="block" title="[% review.biblionumber |url %]" class="[% review.normalized_isbn %]" id="gbs-thumbnail[% loop.count %]"></div>[% ELSE %]<span class="no-image">No cover image available</span>[% END %][% END %]
         </a>
-        [% IF ( BakerTaylorEnabled ) %][% IF ( review.normalized_isbn ) %]<a href="https://[% review.BakerTaylorBookstoreurl |html %][% review.normalized_isbn %]"><img alt="See Baker &amp; Taylor" src="[% review.BakerTaylorImageurl |html %][% review.normalized_isbn %]" /></a>[% ELSE %]<span class="no-image">No cover image available</span>[% END %][% END %]
+        [% IF ( BakerTaylorEnabled ) %][% IF ( review.normalized_isbn ) %]<a href="https://[% review.BakerTaylorBookstoreURL |html %][% review.normalized_isbn %]"><img alt="See Baker &amp; Taylor" src="[% review.BakerTaylorImageURL |html %][% review.normalized_isbn %]" /></a>[% ELSE %]<span class="no-image">No cover image available</span>[% END %][% END %]
         </td>
     </tr>
     [% END %]

@@ -85,7 +85,10 @@ my $upc = GetNormalizedUPC($record,$marcflavour);
 my $ean = GetNormalizedEAN($record,$marcflavour);
 my $oclc = GetNormalizedOCLCNumber($record,$marcflavour);
 my $isbn = GetNormalizedISBN(undef,$record,$marcflavour);
-my $content_identifier_exists = 1 if ($isbn or $ean or $oclc or $upc);
+my $content_identifier_exists;
+if ( $isbn or $ean or $oclc or $upc ) {
+    $content_identifier_exists = 1;
+}
 $template->param(
     normalized_upc => $upc,
     normalized_ean => $ean,
@@ -124,7 +127,7 @@ $template->param(
 
 my $norequests = 1;
 my $res = GetISBDView($biblionumber, "opac");
-my @items = &GetItemsInfo($biblionumber, 'opac');
+my @items = GetItemsInfo( $biblionumber );
 
 my $itemtypes = GetItemTypes();
 for my $itm (@items) {
