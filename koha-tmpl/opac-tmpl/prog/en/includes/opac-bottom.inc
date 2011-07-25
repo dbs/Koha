@@ -1,10 +1,10 @@
-
 [% IF ( opaccredits ) %]
 	<div class="ft">
         [% opaccredits %]
     </div>
 [% END %]
 </div>
+
 [% IF ( opaclanguagesdisplay ) %]
 [% IF ( languages_loop ) %]
     [% UNLESS ( one_language_enabled ) %]
@@ -22,14 +22,13 @@
                 [% ELSE %]
                 <li><a href="/cgi-bin/koha/opac-changelanguage.pl?language=[% sublanguages_loo.rfc4646_subtag %]"> [% sublanguages_loo.native_description %] [% sublanguages_loo.script_description %] [% sublanguages_loo.region_description %] [% sublanguages_loo.variant_description %] ([% sublanguages_loo.rfc4646_subtag %])</a></li>
                 [% END %]
-		[% END %]
+               [% END %]
             [% END %]
             </ul>
 			</div>
 			</div>
-
             [% ELSE %]
-	    	[% IF ( languages_loo.group_enabled ) %]
+		      [% IF ( languages_loo.group_enabled ) %]
                 [% IF ( languages_loo.current ) %]
                     [% IF ( languages_loo.native_description ) %][% languages_loo.native_description %][% ELSE %][% languages_loo.rfc4646_subtag %][% END %]
                 [% ELSE %]
@@ -39,10 +38,25 @@
             [% END %]
             [% END %][% UNLESS ( loop.last ) %] | [% END %]
         [% END %]
+[% IF ( OpacKohaUrl ) %]
+<span id="kohaurl" style="position: absolute; right: 0;">
+<a STYLE="text-decoration:none; color: #666666;" href="http://www.koha-community.org">Powered by <strong>Koha</strong></a>&nbsp;&nbsp;</span>
+        [% END %]
         </div>
+[% END %]
     [% END %]
+    [% END %]
+
+[% IF ( OpacKohaUrl ) %]
+[% UNLESS  ( opaclanguagesdisplay ) %]
+bbb
+        <div id="changelanguage" class="ft" style="border-top: none !important">
+<span id="kohaurl" style="position: absolute; right: 0;">
+<a STYLE="text-decoration:none; color: #666666;" href="http://www.koha-community.org">Powered by <strong>Koha</strong></a>&nbsp;&nbsp;</span>
+        </div>
 [% END %]
 [% END %]
+
 
 [% IF ( Babeltheque ) %]
 <script type="text/javascript" src="http://www.babeltheque.com/bw_30.js"></script>
