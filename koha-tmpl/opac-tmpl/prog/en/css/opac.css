@@ -2018,3 +2018,15 @@ div.ft {
 #opac-isbddetail #isbdcontents { margin-top: 2em; }
 
 div.bibmessage { background-color : #ffffb0; border-radius : 5px; padding : 3px; margin : 2px; }
+
+div.kohaurl {
+    border-top: none !important;
+}
+span.kohaurl {
+    position: absolute;
+    right: 0;
+}
+a.kohaurl {
+    text-decoration:none;
+    color: #666666;
+}
