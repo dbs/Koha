@@ -59,15 +59,15 @@ sub ajax_auth_cgi ($) {     # returns CGI object
 	my $input = CGI->new;
 	my $sessid = $cookies{'CGISESSID'}->value || $input->param('CGISESSID');
 	my ($auth_status, $auth_sessid) = check_cookie_auth($sessid, $needed_flags);
-	$debug and
-	print STDERR "($auth_status, $auth_sessid) = check_cookie_auth($sessid," . Dumper($needed_flags) . ")\n";
+#	$debug and
+#	print STDERR "($auth_status, $auth_sessid) = check_cookie_auth($sessid," . Dumper($needed_flags) . ")\n";
 	if ($auth_status ne "ok") {
 		output_with_http_headers $input, undef,
 		"window.alert('Your CGI session cookie ($sessid) is not current.  " .
 		"Please refresh the page and try again.');\n", 'js';
 		exit 0;
 	}
-	$debug and print STDERR "AJAX request: " . Dumper($input),
+#	$debug and print STDERR "AJAX request: " . Dumper($input),
 		"\n(\$auth_status,\$auth_sessid) = ($auth_status,$auth_sessid)\n";
 	return $input;
 }

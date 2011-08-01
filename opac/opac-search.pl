@@ -36,6 +36,10 @@ use C4::Biblio;  # GetBiblioData
 use C4::Koha;
 use C4::Tags qw(get_tags);
 use C4::Branch; # GetBranches
+
+
+use C4::Ratings;
+
 use POSIX qw(ceil floor strftime);
 use URI::Escape;
 use Storable qw(thaw freeze);
@@ -482,11 +486,26 @@ for (my $i=0;$i<@servers;$i++) {
 										limit=>$tag_quantity });
 			}
 		}
-                if (C4::Context->preference('COinSinOPACResults')) {
+        if (C4::Context->preference('COinSinOPACResults')) {
 		    foreach (@newresults) {
 		      $_->{coins} = GetCOinSBiblio($_->{'biblionumber'});
 		    }
-                }
+        }
+  if ( C4::Context->preference('OpacStarRatings')  eq 1 ) {
+        foreach (@newresults) {
+            my $rating = get_rating( $_->{'biblionumber'}, '' );
+            ####       $rating
+
+            my $bib = $_->{'biblionumber'};
+            $_->{'rating_user'}                         = $rating->{'user'};
+            $_->{'rating_total'}                        = $rating->{'total'};
+            $_->{'rating_avg'}                          = $rating->{'avg'};
+            $_->{'rating_avgint'}                       = $rating->{'avgint'};
+            $_->{'rating_readonly'}                     = ( $borrowernumber ? 0 : 1 );
+            $_->{ 'rating_val_' . $rating->{'avgint'} } = $rating->{'avgint'};
+        }
+}
+
       
 	if ($results_hashref->{$server}->{"hits"}){
 	    $total = $total + $results_hashref->{$server}->{"hits"};
