@@ -501,6 +501,7 @@ for (my $i=0;$i<@servers;$i++) {
             $_->{'rating_total'}                        = $rating->{'total'};
             $_->{'rating_avg'}                          = $rating->{'avg'};
             $_->{'rating_avgint'}                       = $rating->{'avgint'};
+            $_->{'rating_readonly'}                     = ( $borrowernumber ? 0 : 1 );
             $_->{ 'rating_val_' . $rating->{'avgint'} } = $rating->{'avgint'};
         }
 

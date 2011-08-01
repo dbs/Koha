@@ -106,7 +106,10 @@ if ($is_ajax) {
 	my $sum = 0;
 
 #	my $js_reply = "($total), your rating $value added";
-	my $js_reply = "{total: $rating->{'total'}, value: $rating->{'value'}}";
+	my $js_reply = "{
+            total: $rating->{'total'}, 
+            value: $rating->{'value'},
+    }";
 
 
 #my %json = ( "total" , 25,
