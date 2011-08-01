@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Lots</h1>
+
+<p>Un lot est un ensemble d'adhérents pour lesquels vous souhaitez générer les cartes</p>
+
+<h2>Add a Batch</h2>
+
+<p>To add a new batch, you want to click on the 'Batches' button at the top of your page and choose 'New Batch'</p>
+
+[% INCLUDE 'help-bottom.inc' %]

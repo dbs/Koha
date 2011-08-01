@@ -1,0 +1,23 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Définir site:</h1>
+
+<p>Il y a trois façons de paramétrer votre site de rattachement.</p>
+ <p style="color: #ff0000">ATTENTION&nbsp;: Vous ne pourrez pas utiliser la circulation sans avoir d'abord paramétré un site.</p>
+ <ul>
+ <li>Le plus souvent le site de rattachement est choisi à la création de l'adhérent bibliothécaire (voir cette partie du manuel). Quand il se connecte, le bibliothécaire est automatiquement rattaché à son site. Le site est visible en haut à droite de l'interface professionnelle.</li>
+ <li>Si aucun site n'est paramétré, vous en êtes averti.</li>
+ <li>Pour paramétrer le site, cliquez sur 'paramétrer' à côté de 'NO_LIBRARY_SET'</li>
+ <li>Une autre façon de définir un site est de cliquer sur 'Définir' sur l'écran principal de circulation</li>
+ <li>Sélectionnez votre site dans le menu</li>
+ <li>Cliquez 'Valider'</li>
+ </ul>
+ 
+ <h2>Un Site de Localisation c'est quoi ?</h2>
+<p>Le site d'appartenance est le site auquel seront rattaché les opérations de circulation correspondant à votre login.</p>
+<p>Par exemple, si votre site est paramétré à 'Bibliothèque Centrale', tout exemplaire prêté depuis votre terminal sera considéré par Koha comme étant prêté depuis la "Bibliothèque Centrale". Un exemplaire transféré depuis ce poste sera considéré comme transféré depuis la "Bibliothèque Centrale".</p>
+ 
+ <h2>Pourquoi voudrais-je fixer un site de rattachement ?</h2>
+<p>Le choix de votre site de localisation est primordial.Cela permet à Koha d'enregistrer avec exactitude les statistiques, la circulation ( un document a été prêté par quel site ou à quel site doit-il être retourné), et les transferts.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

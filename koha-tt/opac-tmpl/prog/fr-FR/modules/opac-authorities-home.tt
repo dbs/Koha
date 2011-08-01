@@ -1,0 +1,38 @@
+[% INCLUDE 'doc-head-open.inc' %][% IF ( LibraryNameTitle ) %][% LibraryNameTitle %][% ELSE %]Koha en-ligne[% END %] Catalogue &rsaquo; Feuilleter par auteur ou sujet [% INCLUDE 'doc-head-close.inc' %] </head>
+<body id="opac-authorities">[% IF ( OpacNav ) %]<div id="doc3" class="yui-t1">[% ELSE %]<div id="doc3" class="yui-t7">[% END %] <div id="bd">[% INCLUDE 'masthead.inc' %] <div id="yui-main">
+ <div class="yui-b"><div class="yui-g">
+<div id="userauthhome" class="container">
+<form name="f" action="/cgi-bin/koha/opac-authorities-home.pl" method="get">
+ <input type="hidden" name="op" value="do_search" />
+ <input type="hidden" name="type" value="opac" />
+<fieldset class="rows">
+ <legend>Feuilleter par auteur ou sujet</legend>
+<ol>
+ <li><label for="authtypecode">Search: : </label> <select name="authtypecode" id="authtypecode">[% FOREACH authtypesloo IN authtypesloop %] [% IF ( authtypesloo.selected ) %]<option value="[% authtypesloo.value %]" selected="selected">[% authtypesloo.authtypetext %]</option>[% ELSE %]<option value="[% authtypesloo.value %]">[% authtypesloo.authtypetext %]</option>[% END %] [% END %]</select>
+ <select name="operatorc" id="anywhere">
+ <option value="contains">contient</option>
+ <option value="start">commence par</option>
+ <option value="is">est exactement</option>
+ </select>
+ <input type="text" name="valuec" id="anywhere_value" value="[% value %]" />
+ <input type="hidden" name="marclistc" value="" />
+ <input type="hidden" name="and_ora" value="and" />
+ <input type="hidden" name="excludingc" value="" />
+ </li>
+ <li><label for="orderby">Order by: </label><select name="orderby" id="orderby">
+ <option value="">Aucun</option>
+ <option value="HeadingAsc" selected="selected">Autorité croissante</option>
+ <option value="HeadingDsc">Autorité décroissante</option>
+ </select>
+ </li></ol>
+ </fieldset>
+ <fieldset class="action">
+ <input value="Valider" type="submit" class="submit" />
+ </fieldset>
+ </form>
+</div>
+</div>
+</div>
+</div>[% IF ( OpacNav ) %] <div class="yui-b">
+<div id="leftmenus" class="container">[% INCLUDE 'navigation.inc' %] </div>
+</div>[% END %] </div>[% INCLUDE 'opac-bottom.inc' %] 

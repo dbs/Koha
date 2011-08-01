@@ -1,0 +1,12 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Durée moyenne du prêt</h1>
+
+<p>Ce rapport donnera le nombre d'exemplaires prpetés, par catégorie d'adhérent.</p>
+
+ <ul>
+ <li>Aller dans le module 'Bilans et Statistiques' (sous 'Plus' dans la navigation globale)</li>
+ <li>Sélectionnez 'Durée de prêt moyen' sous 'Autres'</li>
+ <li>Sélectionnez un champs pour les lignes et un autre pour les colonnes. Si vous sélectionnez les champs de date, précisez s'il faut afficher les données par 'Jour', 'Mois' ou 'Année'</li>
+ </ul>
+ </div> [% INCLUDE 'help-bottom.inc' %]

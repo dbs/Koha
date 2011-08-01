@@ -1,0 +1,68 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha &rsaquo; Patrons &rsaquo; [% IF ( unknowuser ) %]Patron does not exist[% ELSE %]Patron Details for [% firstname %] [% surname %] ([% cardnumber %])[% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %]
+</head>
+<body>
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'patron-search.inc' %]
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/members/members-home.pl">Adhérents</a> &rsaquo; [% IF ( unknowuser ) %]Patron does not exist[% ELSE %]Patron Details for [% firstname %] [% surname %] ([% cardnumber %])[% END %] </div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+[% INCLUDE 'members-toolbar.inc' %]
+[% IF ( error ) %]
+<div class="dialog alert">
+[% IF ( AUTH_UPDATE_FAILED ) %]
+<h3>Mise à jour du mot de passe ECHOUE</h3>
+<strong>Permissions insuffisantes.</strong>
+<p>Autres champs mis à jour.</p>
+[% END %]
+[% IF ( CANT_DELETE_STAFF ) %]
+<h3>Impossible de supprimer l'adhérent</h3>
+<p>Permissions insuffisantes.</p>
+[% END %]
+[% IF ( CANT_DELETE_OTHERLIBRARY ) %]
+<h3>Imposible de supprimer des adhérents d'autres sites avec les réglages actuels</h3>
+<p>Permissions insuffisantes.</p>
+[% END %]
+[% IF ( CANT_DELETE ) %]
+<h3>Impossible de supprimer l'adhérent&nbsp;:</h3>
+<p>Permissions insuffisantes.</p>
+[% END %]
+</div>
+[% END %]
+<div class="yui-g">
+[% IF ( unknowuser ) %]
+ <div class="dialog message">
+ This patron does not exist.
+ </div>
+[% ELSE %]
+
+<table>
+ <caption>File des messages</caption>
+ <tr><th>Type</th><th>Sujet</th><th>Statut</th><th>Préparé le</th></tr>
+[% IF ( message_queue ) %]
+ [% FOREACH message_queu IN message_queue %]
+ <tr><td>[% message_queu.message_transport_type %]</td><td>[% message_queu.subject %]</td><td>[% message_queu.status %]</td><td>[% message_queu.time_queued %]</td></tr>
+ [% END %]
+[% ELSE %]
+ <tr><td colspan="4">Il n'y a trace d'aucun message envoyé à cet adhérent.</td></tr>
+[% END %]
+</table>
+
+</div>
+
+[% END %] <!-- unknowuser -->
+
+
+</div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'circ-menu.inc' %]
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]

@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Adhérents qui n'ont jamais emprunté</h1>
+
+<p>Ce rapport guidé vous donnera une liste des exemplaires ( et combien) n'ont jamais été prêté. Vous pouvez limiter le rapport par site</p>
+ <ul>
+ <li>Aller dans le module 'Bilans et Statistiques' (sous 'Plus' dans la navigation globale)</li>
+ <li>Sléectionnez 'adhérents qui n'ont jamais emprunté' sous 'Inactif'</li>
+ <li>Si vous ne sélectionnez aucun filtre, vous verrez tous les adhérents qui n'ont jamais emprunté</li>
+ </ul>
+ </div> [% INCLUDE 'help-bottom.inc' %]

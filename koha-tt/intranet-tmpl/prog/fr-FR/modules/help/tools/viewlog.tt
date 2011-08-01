@@ -1,0 +1,17 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Voir les logs</h1>
+ <ul>
+ <li>Le visualisateur de logs montre les actions qui ont eu lieu sur le SIGB dans une période donnée</li>
+ <li>Sélectionnez les dates de début et de fin de la période à couverir et cliquez sur 'Go' pour afficher le résultat à l'écran</li>
+ <li>You also have the option of exporting this data to use in a different format just by choosing to export to an application.
+ <ul>
+ <li>Vous obtiendrez un fichier csv.</li>
+ </ul></li>
+ <li>Vous pouvez filtrer par n'importe quel des champs visibles.</li>
+ </ul>
+<p><strong>Pourquoi mon catalogage n'est-il pas enregistré?</strong>Peut-être la préférence système 'Logs' est-elle inactive?</p>
+ <ul>
+ <li><em>Aller à&nbsp;:</em> More &gt; Administration &gt; Global System Preferences &gt; Logs</li>
+ </ul>
+ </div> [% INCLUDE 'help-bottom.inc' %]

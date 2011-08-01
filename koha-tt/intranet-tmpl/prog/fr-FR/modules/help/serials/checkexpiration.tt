@@ -1,0 +1,18 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Vérifier dates d'expiration</h1>
+
+<p>Ce outil vous permet de rechercher les périodiques dont l'abonnement expire avant une certain date. Un outil utile en particulier quand il s'agit de budgéter de nouveaux abonnements.</p>
+ 
+<h3>Recherche</h3>
+
+ <ul>
+ <li>Enter in your search criteria
+ <ul>
+ <li>
+ <span style="background-color: #ffe599">ASTUCE&nbsp;: seule la date d'expiration est obligatoire</span></li>
+ </ul></li>
+ <li>Les résultats apparaîtront sous la boîte de recherche</li>
+ <li>Vous pouvez cliquez sur le titre de périodique et modifier la notice en entrant les informations d'abonnement</li>
+ </ul>
+ </div> [% INCLUDE 'help-bottom.inc' %]

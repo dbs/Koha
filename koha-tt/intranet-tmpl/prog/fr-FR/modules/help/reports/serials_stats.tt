@@ -1,0 +1,19 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Statistiques sur les périodiques</h1>
+
+<p style="color: #990000">IMPORTANT: The Serials 'Wizard' is designed to be a simple
+statistical snapshot. 
+</p>
+<ul>
+ <li>
+ Go to the 'Reports' module (usually under 'More' in your Global Nav)
+ </li>
+ <li>Choisissez Périodiques dans l'assistant de création de statisiques</li>
+ <li>Sélectionnez votre fournisseur et votre site (ou laisser à 'tous' pour avoir les informations de tous les abonnements); doit-on inclure les abonnements expirés?</li>
+ <li>Your results will appear as a list of subscriptions
+ </li>
+</ul>
+
+
+[% INCLUDE 'help-bottom.inc' %]

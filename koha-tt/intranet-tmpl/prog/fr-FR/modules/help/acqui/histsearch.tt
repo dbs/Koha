@@ -1,0 +1,10 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Recherche sur les commandes</h1>
+
+<p>En utilisant la recherche des commandes, vous retrouvez les exemplaires qui ont été commandés avec ou sans le fournisseur.</p>
+
+<p>Vous pouvez entrer des informations dans l'un ou l'autre champ.</p>
+ 
+[% INCLUDE 'help-bottom.inc' %]
+

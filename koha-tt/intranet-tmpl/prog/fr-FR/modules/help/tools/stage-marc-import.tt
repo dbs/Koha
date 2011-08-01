@@ -1,0 +1,20 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Importation MARC</h1>
+
+<p>L'importation de notices dans Koha se fait en deux étapes. D'abord les notices sont préparées pour l'import.</p>
+
+<ul><li>Premièrement, cherchez le fichier MARC sur votre ordinateur</li>
+<li>A l'étape suivante, vous aurez la possibilité de mettre en correspondance les notices avec celles de votre catalogue et d'importer des exemplaires</li>
+<ul><li>Saisissez un commentaire sur ce fichier afin de l'identifier aisément quand vous utiliserez l'outil de gestion des notices MARC chargée</li>
+<li>Choisissez l'encodage des caractères&nbsp;:</li>
+<li>Choissiez ne rechercher ou non les notices correspondantes</li>
+<ul><li>Vous configurez les règles de concordance en Administration</li></ul>
+<li>Choisissez ensuite ce qu'il faut faire des notices correspondantes s'il y en a</li>
+<li>Finalement, choisissez ce qu'il faut faire des notices qui sont uniques</li>
+<li>A l'étape suivante, vous choisirez ou non d'importer les données d'exemplaire trouvées dans la notice MARC</li></ul>
+<li>Cliquez sur Prépart pour l'import</li>
+<li>Vous serez emmené à un écran de confirmation.</li>
+<li>Pour terminer le traitement, allez l'outil Gérer les notices MARC préparées</li></ul>
+
+[% INCLUDE 'help-bottom.inc' %]

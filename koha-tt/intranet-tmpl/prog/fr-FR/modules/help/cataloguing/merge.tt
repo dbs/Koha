@@ -1,0 +1,23 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Fusion des exemplaires</h1>
+
+<p style="color: rgb(153, 0, 0);">Important: La fusion ne fonctionnera qu'avec deux notices bibliographiques utilisant la même grille de saisie.</p>
+
+<p>La façon la plus simple de fusionner des notices consiste à les ajouter à une liste puis, à partir de la liste, utilisez l'outil de fusion.</p>
+
+<p>Cochez dans la liste des deux notices bibliographiques que vous voulez fusionner. Si vous sélectionnez une seule notice ou plus de deux, vous obtiendrez un message d'erreur.</p>
+
+<p>Une fois que vous avez sélectionné les notices que vous voulez fusionner, cliquez sur Fusionner. Vous devrez choisir laquelle des deux notices vous voudrez garder en tant que notice primaire at laquelle sera supprimée après la fusion.</p>
+
+<p>On vous présentera les deux notices dans des onglets distincts étiquetés avec le numéro de la notice. Par défaut, tous les champs de la première notice sont sélectionnés. Désélectionnez les champs que vous ne voulez pas conserver. Allez ensuite dans le second onglet et choisissez les champs que vous voulez y prendre.</p>
+
+<p>Si vous essayez d'ajouter deux fois un champs qui n'est pas répétable (comme le champ 200 à la fois de la notice 1 et de la 2), vous obtiendrez un message d'erreur</p>
+
+<p>Plus important, vous voulez être certain que tous les exemplaires des deux notices sont bien rattachés à la nouvelle notice. Aussi assurez-vous que tous les champs 995 sont bien sélectionnés avec de lancer la fusion.</p>
+
+<p>Une fois achevée votre sélection, cliquez sur le bouton Fusionner. La notice principale montrera maintenant ce que vous avez choisi pour elle, la notice secondaire sera supprimée.</p>
+
+<p style="color: rgb(153, 0, 0);">Il est imortant de reconstruire vos index Zebra immédiatement après la fusion de notices.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

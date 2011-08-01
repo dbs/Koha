@@ -1,0 +1,106 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha &rsaquo; Administration</title>
+[% INCLUDE 'doc-head-close.inc' %]
+</head>
+<body>
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'cat-search.inc' %]
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; Administration</div>
+
+<div id="doc" class="yui-t7">
+ 
+ <div id="bd">
+ <div id="yui-main" class="sysprefs">
+ <div class="yui-g"><h1>Administration Koha</h1></div>
+ <div class="yui-g">
+
+<div class="yui-u first">
+<form action="/cgi-bin/koha/admin/preferences.pl" method="post">
+<fieldset>
+<h4><a href="/cgi-bin/koha/admin/preferences.pl">Préférences système</a></h4>
+ <p>Change les préférences systèmes principales comme le format MARC, le format de la date, le gestionnaire de mails, et les templates.</p>
+ <input type="hidden" name="op" value="search" />
+ <input type="text" name="searchfield" value="[% searchfield %]" />
+ <input value="Rechercher" name="ok" type="submit" class="submit" />
+</fieldset>
+</form>
+
+
+<div class="hint"><h4>Conseil&nbsp;:</h4><p>Configurer ces paramètres dans leur ordre d'apparition</p></div>
+<h3>Paramètres de base</h3>
+<dl>
+ <dt><a href="/cgi-bin/koha/admin/branches.pl">Sites et groupes</a></dt>
+ <dd>Définir les sites, et groupes</dd>
+ <dt><a href="/cgi-bin/koha/admin/itemtypes.pl">Types de document</a></dt>
+ <dd>Définir les types de document utilisés pour les règles de circulation.</dd>
+ <dt><a href="/cgi-bin/koha/admin/authorised_values.pl">Valeurs autorisées</a></dt>
+ <dd>Définit des catégories et les valeurs autorisées liées.</dd>
+</dl>
+
+<h3>Adhérents et circulation</h3>
+<dl>
+ <dt><a href="/cgi-bin/koha/admin/categorie.pl">Catégories adhérent</a></dt>
+ <dd>Définir des catégories d'adhérent</dd>
+ <dt><a href="/cgi-bin/koha/admin/cities.pl">Villes et communes</a></dt>
+ <dd>Définit les communes dans lesquelles vos adhérents habitent .</dd>
+ <dt><a href="/cgi-bin/koha/admin/roadtype.pl" >Types de voie</a>
+ </dt>
+ <dd>Définir des types de voies&nbsp;: remplir cette table pour avoir une liste de types de voie (cela vous aidera pour les statistiques géographiques)</dd>
+ <dt><a href="/cgi-bin/koha/admin/patron-attr-types.pl">Attributs adhérent</a></dt>
+ <dd>Définir les attributs étendus (identifiants et statistiques) pour les adhérents</dd>
+ <dt><a href="/cgi-bin/koha/admin/smart-rules.pl">Règles de circulation</a></dt>
+ <dd>Permet de définir les règles de circulation pour chaque site, catégorie d'adhérent et type de document</dd>
+ <dt><a href="/cgi-bin/koha/admin/branch_transfer_limits.pl">Limites de transfert réseau</a></dt>
+ <dd>Limite les transferts selon les critères: site de départ, site d'arrivée, type de document. Ces règles ne s'appliquent que si la préférence système UseBranchTransferLimits est activée.</dd>
+ <dt><a href="/cgi-bin/koha/admin/item_circulation_alerts.pl">Alertes de circulation</a></dt>
+ <dd>Permet de définir les règles de notification lors des prêts et des retours pour chaque site, catégorie d'adhérent et type de document</dd>
+</dl>
+</div>
+<div class="yui-u">
+<h3>Catalogue</h3>
+<dl>
+ <dt><a href="/cgi-bin/koha/admin/biblio_framework.pl">Grilles de catalogage MARC</a></dt>
+ <dd>Créer et gérer les grilles de catalogage bibliographique  qui définissent les caractéristiques de vos notices MARC (champs et sous champs), ainsi que l'organisation de la grille.</dd>
+ <dt><a href="/cgi-bin/koha/admin/koha2marclinks.pl">Liens Koha => MARC</a></dt>
+ <dd>Définir les liens entre la base de données Koha et la base MARC.Notez que ces liens peuvent être définis dans la structure MARC.Cet outil est juste un raccourci pour activer les liens plus rapidement.</dd>
+ <dt><a href="/cgi-bin/koha/admin/fieldmapping.pl">Liens Mots-clés => MARC</a></dt>
+ <dd>Définit une correspondance entre certains champs MARC et certains mots-clés utilisés pour trouver des données indépendamment de la grille de catalogage utilisée.</dd>
+ <dt><a href="/cgi-bin/koha/admin/checkmarc.pl">Validation grilles de catalogage</a></dt>
+ <dd>Vérifie la structure MARC. Si vous avez modifié les grille de catalogage MARC, il est recommandé de lancer ce script pour vérifier qu'il n'y a pas d'erreurs dans vos grilles</dd>
+ <dt><a href="/cgi-bin/koha/admin/authtypes.pl">Grilles d'autorités</a></dt>
+ <dd>Créer et gérer les grilles autorités (champs et sous champs) qui définissent les caractéristiques de vos notices MARC (définitions de champ et sous-champ).</dd>
+ <dt><a href="/cgi-bin/koha/admin/classsources.pl">Sources de classification</a></dt>
+ <dd>Définit des sources de classification (par exemple systèmes de cotation) utilisés dans votre fonds. Définit aussi des règles de classement pour trier les cotes.</dd>
+ <dt><a href="/cgi-bin/koha/admin/matching-rules.pl">Règles de concordance</a></dt>
+ <dd>Gérer les règles pour la concordance automatique durant l'import des notices dans le réservoir.</dd>
+</dl>
+
+<h3>Paramètres acquisitions</h3>
+<dl>
+ <dt><a href="/cgi-bin/koha/admin/currency.pl">Devises et taux de change</a></dt>
+ <dd>Définit des devises et taux de change utilisés dans les acquisitions.</dd>
+
+ <dt><a href="/cgi-bin/koha/admin/aqbudgetperiods.pl">Budgets</a></dt>
+ <dd>Définit vos budgets</dd>
+ 
+ <dt><a href="/cgi-bin/koha/admin/aqbudgets.pl">Postes budgétaires</a></dt>
+ <dd>Définit les postes bugdétaires de vos budgets</dd>
+
+</dl>
+
+<h3>Paramètres divers</h3>
+<dl>
+ [% IF ( NoZebra ) %]<dt><a href="/cgi-bin/koha/admin/stopwords.pl">Mots vides</a></dt>
+ <dd>Mots ignorés dans la recherche.</dd>[% END %]
+ <!-- <dt><a href="/cgi-bin/koha/admin/printers.pl">Network Printers</a></dt>
+ <dd>Printers (UNIX paths).</dd> -->
+ <dt><a href="/cgi-bin/koha/admin/z3950servers.pl">Serveurs Z39.50</a></dt>
+ <dd>Définir les serveurs z3950 à interroger pour les données MARC dans le client intégré z3950 .</dd>
+</dl>
+</div>
+
+</div>
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]

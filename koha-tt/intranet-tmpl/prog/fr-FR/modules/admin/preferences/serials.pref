@@ -1,0 +1,52 @@
+--- 
+"P\xC3\xA9riodiques": 
+  - 
+    - A l'OPAC, montrer l'onglet
+    - 
+      choices: 
+        holdings: Exemplaires
+        serialcollection: Etat de collection
+        subscriptions: Abonnement
+      pref: opacSerialDefaultTab
+    - "par d\xC3\xA9faut pour les p\xC3\xA9riodiques."
+  - 
+    - 
+      choices: 
+        "": Ne pas ajouter
+        1: Ajouter
+      pref: RenewSerialAddsSuggestion
+    - "une suggestion pour une notice biblio quand son p\xC3\xA9riodique attach\xC3\xA9 est renouvel\xC3\xA9."
+  - 
+    - 
+      choices: 
+        "": Ne pas ajouter
+        1: Ajouter
+      pref: RoutingSerials
+    - "les p\xC3\xA9riodiques re\xC3\xA7us \xC3\xA0 leur liste de circulation."
+  - 
+    - 
+      choices: 
+        "": Ne placer
+        1: Placer
+      pref: RoutingListAddReserves
+    - "en r\xC3\xA9servation les p\xC3\xA9riodiques qui se trouvent sur une liste de circulation."
+  - 
+    - "Montrer \xC3\xA0 l'interface pro les"
+    - 
+      class: integer
+      pref: StaffSerialIssueDisplayCount
+    - "derniers fascicules d'un p\xC3\xA9riodique."
+  - 
+    - "Montrer \xC3\xA0 l'OPAC les"
+    - 
+      class: integer
+      pref: OPACSerialIssueDisplayCount
+    - "derniers fascicules d'un p\xC3\xA9riodique."
+  - 
+    - "A l'affichage des informations relatives \xC3\xA0 l'abonnement d'une notice de p\xC3\xA9riodique, montrer"
+    - 
+      choices: 
+        full: "la liste compl\xC3\xA8te"
+        simplified: "une synth\xC3\xA8se"
+      pref: SubscriptionHistory
+    - "des fascicules du p\xC3\xA9riodique."

@@ -1,0 +1,29 @@
+<select class="advsearch" name="idx">
+ <option value="kw">Tous les mots</option>
+ <option value="au">Auteur</option>
+ <option value="aucommaphr">&nbsp;&nbsp;&nbsp;&nbsp; Auteur (expression)</option>
+ <option value="cpn">&nbsp;&nbsp;&nbsp;&nbsp; Auteur collectivité</option>
+ <option value="cfn">&nbsp;&nbsp;&nbsp;&nbsp; Nom de congrès</option>
+ <option value="cpncommaphr">&nbsp;&nbsp;&nbsp;&nbsp; Collectivité auteur (expression)</option>
+ <option value="cfncommaphr">&nbsp;&nbsp;&nbsp;&nbsp; Nom de congrès (expression)</option>
+ <option value="pn"> &nbsp;&nbsp;&nbsp;&nbsp; Nom de personne</option>
+ <option value="pncommaphr">&nbsp;&nbsp;&nbsp;&nbsp; Nom de personne (expression)</option>
+ <option value="ti">Titre</option>
+ <option value="ticommaphr">&nbsp;&nbsp;&nbsp;&nbsp;Titre (expression)</option>
+ <option value="se">&nbsp;&nbsp;&nbsp;&nbsp; Titre de collection</option>
+ <option value="su">Sujet</option>
+ <option value="sucommaphr">&nbsp;&nbsp;&nbsp;&nbsp; Sujet (expression)</option>
+ <option value="bc">code-barres</option>
+ <option value="location">Etagère</option>
+ <option value="sn">Numéro normalisé</option>
+ <option value="nb">&nbsp;&nbsp;&nbsp;&nbsp; ISBN</option>
+ <option value="ns">&nbsp;&nbsp;&nbsp;&nbsp; ISSN</option>
+ <option value="callnum">&nbsp;&nbsp;&nbsp;&nbsp; Cote</option>
+ <option value="lncommartrn">Langue</option>
+ <option value="nt">Notes</option>
+ <option value="curriculum">Curriculum</option>
+ <option value="pb">Editeur</option>
+ <option value="pl">Lieu de publication</option>
+ <option value="yr">Date de publication (aaaa)</option>
+ <option value="acqdate">Date d'acquisition (aaaa-mm-jj)</option>
+</select>

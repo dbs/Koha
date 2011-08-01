@@ -1,0 +1,15 @@
+[% INCLUDE 'help-top.inc' %]
+ 
+<h3>Amendes de retard</h3>
+
+<p>This report shows items that:
+<ul>
+ <li>sont encore en prêt,</li>
+ <li>n'ont pas reçu de notice, et</li>
+ <li>qui ont déjà une amende associée (type &quot;FU&quot;).</li>
+</ul>
+
+<p>Ce rapport ne prendra pas en compte les exemplaires qui sont si en retard qu'ils sont considérés comme 'Perdu'</p>
+
+<p>Une fois ouvert, le rapport peut être filtré par localisation.</p>
+

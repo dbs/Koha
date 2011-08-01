@@ -1,0 +1,29 @@
+--- 
+Acquisitions: 
+  Impression: 
+    - 
+      - Utiliser
+      - 
+        pref: OrderPdfFormat
+      - pour l'impression des groupes de panier
+  Politique: 
+    - 
+      - "Cr\xC3\xA9er un exemplaire au moment de"
+      - 
+        choices: 
+          cataloguing: cataloguer la notice
+          ordering: placer une commande
+          receiving: recevoir une commande
+        pref: AcqCreateItem
+    - 
+      - Affiche les monnaies dans le format suivant
+      - 
+        choices: 
+          FR: 360 000,00 (FR)
+          US: 360,000.00 (US)
+        pref: CurrencyFormat
+    - 
+      - "Le taux de TVA par d\xC3\xA9faut est de"
+      - 
+        pref: gist
+      - "(saisissez sous forme num\xC3\xA9roque, 0.12 pour 12%)"

@@ -1,0 +1,7 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Détails des exemplaires</h1>
+
+<p>Vous trouverez dans cette page des informations concernant tous les exemplaires attachés à cette notice. Vous pouvez facilement signaler qu'un exemplaire est perdu, endommagé ou retiré, voir l'historique de circulation ou modifier les exemplaires.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

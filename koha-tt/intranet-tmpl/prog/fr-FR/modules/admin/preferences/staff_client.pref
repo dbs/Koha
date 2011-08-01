@@ -1,0 +1,137 @@
+--- 
+"Interface biblioth\xC3\xA9caire": 
+  Apparence: 
+    - 
+      - "Utiliser le th\xC3\xA8me"
+      - 
+        choices: staff-templates
+        pref: template
+      - "\xC3\xA0 l'interface pro."
+    - 
+      - "L'URL de l'interface pro est localis\xC3\xA9 \xC3\xA0 :"
+      - 
+        class: url
+        pref: staffClientBaseURL
+      - .
+    - 
+      - Inclure la feuille de style de
+      - 
+        class: url
+        pref: intranetstylesheet
+      - "sur toutes les pages de l'interface pro. Cela doit \xC3\xAAtre une URL compl\xC3\xA8te commen\xC3\xA7ant par http."
+    - 
+      - "Inclure le CSS suivant sur toutes les pages de l'interface pro :"
+      - 
+        class: code
+        pref: IntranetUserCSS
+        type: textarea
+    - 
+      - Inclure la feuille de style <code><!-- TMPL_VAR NAME="themelang" -->/css/</code>
+      - 
+        class: file
+        pref: intranetcolorstylesheet
+      - "sur toutes les pages de l'interface pro. Laisser vide pour d\xC3\xA9sactiver."
+    - 
+      - "Inclure les fichiers du r\xC3\xA9pertoire"
+      - 
+        class: file
+        pref: intranet_includes
+      - "du r\xC3\xA9pertoire des template, \xC3\xA0 la place de includes/. Laisser \xC3\xA0 vide pour d\xC3\xA9sactiver."
+    - 
+      - "Afficher le code HTML suivant sur la page principale de l'interface pro :"
+      - 
+        class: code
+        pref: IntranetmainUserblock
+        type: textarea
+    - 
+      - "Show the following HTML to the left of the More menu at the top of each page on the staff client (should be a list of links or blank):"
+      - 
+        class: code
+        pref: IntranetNav
+        type: textarea
+    - 
+      - "Inclure la code JavaScript suivant sur toutes les pages de l'interface pro :"
+      - 
+        class: code
+        pref: intranetuserjs
+        type: textarea
+    - 
+      - "Utiliser l'image se trouvant \xC3\xA0 l'emplacement"
+      - 
+        class: url
+        pref: IntranetFavicon
+      - "pour le favicon de l'interface pro. Ce doit \xC3\xAAtre une URL compl\xC3\xA8te commen\xC3\xA7ant par http:."
+    - 
+      - "A l'interface pro, sur la page de r\xC3\xA9sultat, construire la vue de la notice bibliographique"
+      - 
+        choices: 
+          "": sans feuille de style XSL
+          1: avec la feuille de style XSL
+        pref: XSLTResultsDisplay
+    - 
+      - "A l'interface pro, sur la page de d\xC3\xA9tail, construire la vue de la notice bibliographique"
+      - 
+        choices: 
+          "": sans feuille de style XSL
+          1: avec la feuille de style XSL
+        pref: XSLTDetailsDisplay
+    - 
+      - "Utiliser les biblioth\xC3\xA8ques Yahoo UI localis\xC3\xA9es sur le serveur de"
+      - 
+        choices: 
+          http://yui.yahooapis.com/2.5.1/build: "Yahoo (moins de requ\xC3\xAAtes sur votre serveur)."
+          local: Koha (plus rapide, fonctionne si Internet n'est plus accessible)
+        pref: yuipath
+    - 
+      - 
+        choices: 
+          "": Ne pas montrer
+          1: Montrer
+        pref: StaffAuthorisedValueImages
+      - "les images pour les  <a href=\"/cgi-bin/koha/admin/authorised_values.pl\">valeurs autoris\xC3\xA9es</a> sur les pages de r\xC3\xA9sulats (statuts Etat ou Localisation)."
+    - 
+      - "Afficher l'URI du champ 856$u comme une image sur les pages :"
+      - 
+        choices: 
+          "": "ni de r\xC3\xA9sultat ni de d\xC3\xA9tail"
+          Both: "de r\xC3\xA9sultat et de d\xC3\xA9tail"
+          Details: "de d\xC3\xA9tail uniquement"
+          Results: "de r\xC3\xA9sultat"
+        pref: Display856uAsImage
+      - "Note : Les options XSLT correspondantes doivent \xC3\xAAtre activ\xC3\xA9es."
+  Options: 
+    - 
+      - 
+        choices: 
+          "": "Ne pas donner acc\xC3\xA8s"
+          1: "Donner acc\xC3\xA8s"
+        pref: viewMARC
+      - "\xC3\xA0 la vue MARC brute des notices bibliographiques."
+    - 
+      - 
+        choices: 
+          "": Ne pas autoriser
+          1: Autoriser
+        pref: viewLabeledMARC
+      - "\xC3\xA0 voir les notices bibliographiques en vue MARC avec \xC3\xA9tiquettes."
+    - 
+      - 
+        choices: 
+          "": Masquer
+          1: Autoriser
+        pref: viewISBD
+      - la vue ISBD pour formater les notices bibliographiques.
+    - 
+      - 
+        choices: 
+          "": Afficher
+          1: Cacher
+        pref: HidePatronName
+      - the names of patrons that have items checked out or on hold on detail pages or the "Place Hold" screen.
+    - 
+      - 
+        choices: 
+          "": Cacher
+          1: Afficher
+        pref: intranetbookbag
+      - l'option Panier dans l'interface pro.

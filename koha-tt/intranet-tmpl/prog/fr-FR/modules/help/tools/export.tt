@@ -1,0 +1,23 @@
+[% INCLUDE 'help-top.inc' %] 
+
+<h1>Exportation MARC</h1>
+
+<p>Koha dispose d'un outil d'exportation par lot de vos notices bibliographiques et de vos exemplaires. Vous pouvez l'utiliser pour envoyer votre catalogue à d'autres établissements ou simplement pour faire des sauvegardes.</p>
+
+<ul><li>Remplissez le formulaire afin de limiter votre export à un certain interval (tous les champs sont optionnels)</li>
+<ul><li>Choisissez de limiter l'export par une ou plusieurs des options suivantes</li>
+<ul><li>Limiter à un intervalle de numéros de notice</li>
+<li>Limiter à un type d'exemplaire spécifique</li>
+<li>Limiter à une bibliothèque spécifique</li>
+<li>Limiter à un intervalle de cotes</li>
+<li>Limiter à un interavalle de dates d'acquisition</li></ul>
+<li>Choisissez ensuite ce qu'il faut passer à l'export</li>
+<ul><li>Par défaut tous les exemplaires sont exporté, à moins de sélectionner l'option 'Ne pas exporter les exemplaires'.</li>
+<li>Pour limiter l'export aux exemplaires de votre bibliothèques, utilisez l'option Supprimer les exemplaires non-locaux</li>
+<li>Vous pouvez choisir les champs à exporter. Ainsi vous pouvez par exemple supprimer les champs locaux que vous ne voulez pas communiquer à un établissement partenaire.</li></ul>
+<li>Finalement, choisissez le type de fichier et son nom</li>
+<ul><li>Choisissez d'exporter vos données au format ISO2709 ou MARCXML</li>
+<li>Donnez un nom au fichier dans lequel enregistrer l'export</li></ul>
+<li>Cliquez sur 'Export'</li></ul></ul>
+
+[% INCLUDE 'help-bottom.inc' %]

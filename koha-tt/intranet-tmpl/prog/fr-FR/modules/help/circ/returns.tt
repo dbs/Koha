@@ -1,0 +1,56 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Checking in (Returning)</h1>
+
+<p>Checking in items can be performed from various different locations</p>
+
+<ul>
+ <li>The check in link on main staff client&nbsp;</li>
+ <li>The check in option on the quick search bar on the Circulation page&nbsp;</li>
+ <li>The check in link on the patron's checkout summary (and on the checkout summary page)</li>
+</ul>
+
+<h2>Checking Items In</h2>
+
+<p>Pour rendre un document, scannez son code à barres dans la boîte prévu à cet effet. Un résumé de tous les exemplaires rendus apparaît en dessous de cette boîte.</p>
+
+<p>Si vous rendez les exemplaires qui ont été placés dans la boîte de retour alors que la bibliothèque été fermée, avant de scanner les codes à barres, cochez l'option Mode boîte de retour. Ainsi la date de retour effective sera celle du dernier jour d'ouverture de la bibliothèque.</p>
+
+<ul>
+ <li>This requires that you have your closings added to the Holidays &amp; Calendar Tool</li>
+</ul>
+
+<p>Vous pouvez également choisir ici de ne pas appliquer les amenders aux documents dont vous effectuez le retour en cliquant sur l'option Effacer les amendes.</p>
+
+<h2>Check In Messages</h2>
+
+<p>Plusieurs alertes peuvent s'afficher quand vous rendez des documents :</p>
+
+<ul>
+ <li>If you are checking an item in at a library other than the home branch, a message will appear asking you to transfer the book to the home library
+<ul>
+ <li>After this item is checked in the status of the item will be changed in the catalog to 'in transit'&nbsp;</li>
+ <li>To mark an item as back at the home branch, check the item in at the home branch
+<ul>
+ <li>A message will appear tell you that the item is not checked out, but the status will now say available in the catalog. This step is necessary to mark items as received by the home branch.</li>
+</ul>
+</li>
+</ul>
+</li>
+ <li>If you're checking an item in that has a hold on it, you will be prompted to confirm the hold
+<ul>
+ <li>Clicking the Confirm hold button will mark the item as waiting for pickup from the library&nbsp;</li>
+ <li>En cliquant sur le bouton d'impression de ticket et de confirmation, vous placerez l'exemplaire dans la liste des réservations en attente de retrait à la bibliothèque et vous imprimerez un ticket que vous pourrez placer dans le livre</li>
+ <li>Si vous ignorez la réservation, le document restera réservé mais son statut passera à Disponible. La réservation ne sera pas annulé</li>
+</ul>
+</li>
+ <li>If you're checking in an item that has a hold on it at another branch you will be prompted to confirm and transfer the item
+<ul>
+ <li>Clicking the Confirm hold and Transfer button will mark the item as in transit to the library where the hold was placed&nbsp;</li>
+ <li>En cliquant sur le bouton de confirmation, de transfert et d'impression, vous marquerez l'exemplaire comme étant en transit vers la bibliothèque où la réservation a été faite et vous imprimerez un ticket contenant des informations sur l'adhérent qui a fait la demande</li>
+ <li>Si vous ignorez la réservation, le document restera réservé mais son statut passera à Disponible. La réservation ne sera pas annulé</li>
+</ul>
+</li>
+</ul>
+
+[% INCLUDE 'help-bottom.inc' %]

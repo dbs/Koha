@@ -1,0 +1,24 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Profils CSV</h1>
+
+<p>Les Profils CSV sont créés pour définir la façon dont vous souhaitez exporter un panier ou une liste.</p>
+
+<p>Pour ajouter un profil CSV, saisissez les informations suivantes : </p>
+<ul>
+<li>Le 'Nom du profil' sera visible sur le menu déroulant d'export lorsque vous choisirez 'Télécharger' à partir de votre panier ou d'une liste</li>
+<li>La 'Description du profil' est pour votre usage propre</li>
+<li>Finally format your CSV file using the 'Profile marcfields' fields
+<ul><li>Définissez les champs et les sous-champs que vous voulez exporter, en les séparant par des |. Par exemple : 200|210a|300</li></ul>
+</li>
+</ul>
+
+<p>Once you have created at least one CSV Profile an option to 'Modify CSV Profiles' will appear below the Add form
+<ul><li>Sélectionnez le profil que vous souhaitez éditer et modifier les champs nécessaires.</li>
+<li>Pour supprimer un profil, cochez l'option 'Supprimer le profil sélectionné' avant de cliquer 'Valider'</li></ul>
+
+<h2>Utiliser les Profils CSV</h2>
+<p>Vos Profils CSV seront visibles au niveau du menu d'export d'une liste ou d'un panier sous le bouton 'Télécharger'</p>
+
+
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,87 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Listes</h1>
+ 
+<p>Les listes sont des listes permanentes d'exemplaires, similaires aux 'favoris' de votre navigateur web préféré. On utilise les listes pour garder la traces de favoris ou pour créer des listes de lecture à destination du public de la bibliothèque. Les éléments d'une liste pointe directement vers la notice bibliographique de votre catalogue.</p>
+
+<p>Il y a trois types de listes</p>
+
+<ul><li>'privée':  les listes privées sont visibles et modifiables par leur créateur seulement.</li>
+ <ul><li style="background-color: #ffe599">ASTUCE : Tout adhérent connecté peut créer une liste privée</li></ul>
+<li>Liste publique : tout le monde peut voir le contenu d'une liste publique, mais seule la personne l'ayant créée peut la modifier.</li>
+ <ul><li style="background-color: #ffe599">ASTUCE: Tout adhérent connecté peut créer une liste publique</li></ul>
+<li>'ouverte' : les listes ouvertes sont visibles et modifiables par tous les usagers</li>
+ <ul><li style="background-color: #ffe599">ASTUCE : Seul un bibliothécaire peut créer une liste ouverte, mais tous les adhérents peuvent la modifier à l'OPAC une fois qu'elle est créée.</li>
+ <li style="color: #990000">IMPORTANT : N'oubliez pas que tout visiteur de votre OPAC peut modifier une telle liste.</li></ul>
+</ul>
+
+<p style="color: #990000">IMPORTANT : Pour utiliser les listes, cette fonctionnalité doit être définie dans vos Préférences système</p>
+<ul>
+<li><em>Aller à&nbsp;:</em> Administration > System Preferences > OPAC > virtualshelves</li></ul>
+
+<h2>Pour créer une nouvelle liste&nbsp;:</h2>
+<ul>
+<li>Cliquez sur Nouvelle liste</li>
+<li>Attribuez un nom à votre liste</li>
+<li>La 'Propriété' de la liste est assignée automatiquement à la personne connectée à Koha dans l'interface pro</li>
+<li>Choisissez une 'Catégorie' pour votre nouvelle liste (les choix sont 'privée', 'publique' ou 'libre' comme expliqué ci-dessus)</li>
+<li>Cliquez sur 'Sauvegarder'</li>
+</ul>
+
+<h2>Modifier la liste</h2>
+<ul>
+<li>Cliquez sur 'Modifier' au niveau de la liste que vous souhaitez modifier ou cliquez sur le nom de la liste et ensuite choisissez 'Modifier la liste'</li>
+<li>Modifier les détails</li>
+<li>Cliquez sur 'Sauvegarder'</li>
+</ul>
+
+<p style="background-color: #ffe599">ASTUCE : Par exemple, si vous préparez une liste de lecture. Vous pouvez rendre cette liste privée jusqu'à ce que tous les livres y soient ajoutés. Alors vous modifiez le statut de la liste, vous la passez en public pour que tout le monde y ait accès.</p>
+
+<h2>Réservation depuis les listes</h2>
+
+<p>Vous pouvez facilement réserver plusieurs exemplaire à partir d'une liste en cochant des cases devant les titres puis en cliquant sur le bouton Réserver</p>
+
+<h2>Supprimer la liste</h2>
+<ul>
+<li>Cliquez 'Supprimer' au niveau de la liste que vous souhaitez supprimer ou cliquez sur le nom de la liste et ensuite choisissez 'Supprimer la liste'</li>
+<li>Vous devrez confirmer la suppression de cette liste</li>
+<li>Si oui, cliquez sur Oui, sinon cliquez sur Annuler</li>
+<li>Si votre liste contient des titres, on vous demandera de confirmer votre demande de suppression.</li>
+<li>Cliquez 'OK' dans le message de confirmation pour supprimer la liste définitivement</li>
+</ul>
+<h2>Questions</h2>
+
+<p><strong>Puis-je ajouter des exemplaires à une liste professionnelle à partir du module 'Listes' ?</strong></p>
+
+<p>Oui ! Pour ajouter un exemplaire à une liste, dans l'outil de gestion des listes :</p>
+
+<ul>
+<li>Cliquez sur le nom de la liste à laquelle vous voulez ajouter les exemplaires</li>
+<li>Scannez ou saisissez le le code à barres du document que vous voulez ajouter</li>
+<li>Cliquez sur 'Ajouter'</li>
+</ul>
+
+<p><strong>Puis-je ajouter des documents à la liste à partir de l'affichage détaillé ?</strong></p>
+
+<ul>
+<li>Cliquez sur Recherche catalogue dans votre barre de recherche</li>
+<li>Lancer une recherche</li>
+<li>Cliquez sur le titre de l'exemplaire que vous voulez ajouter à la liste</li>
+<li>A partir de l'affichage détaillé, cliquez 'Ajouter' et choisir Liste</li>
+</ul>
+
+<p><strong>Pourquoi, quand je suis connecté à l'interface pro, puis-je ajouter des exemplaire aux listes privés des autres utilisateurs ?</strong></p>
+
+<p>Non, une liste privée reste privée. Vous pouvez voir vos propres listes privées à partir de l'interface professionnelle en cliquant l'onglet 'Vos listes'.</p>
+
+<p><strong>Puis-je voir dans quelles listes un document est-il ?</strong></p>
+
+<p>Oui. Sur la page de détail d'une notice bibliographique, vous avez la liste des listes contenant la notice.</p>
+
+<p><strong>En tant que professionnel, que puis-je faire avec les listes publiques créées par les adhérents ?</strong></p>
+
+<p>Toute personne avec la permission superbibliothécaire peut modifier/supprimer les listes publiques des adhérents.La modification est limitée à la modification du titre ou l'ordre de tri. J'ai le paramètre 'virtualshelves' désactivé, pourquoi puis-je quand-même voir le menu 'Listes' en interface professionnelle</p>
+
+<p>Même si les listes sont désactivées à l'OPAC, les bibliothécaires y ont encore accès dans l'interface pro. La préférence système 'virtualshelves' n'affecte que l'OPAC.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

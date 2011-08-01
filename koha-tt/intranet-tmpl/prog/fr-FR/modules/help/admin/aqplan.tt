@@ -1,0 +1,15 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Planification du budget</h1>
+
+<p>Sur la liste des périodes budgétaires, cliquez sur le bouton Planification et choisissez comment vous prévoyez de dépenser votre budget.</p>
+
+<p>If you choose 'Plan by MONTHS' you will see the budgeted amount broken down by months.</p>
+
+<p>To hide some of the columns you can click the minus sign (-) to the right (or below as in the screenshot above) the dates. To add more columns you can click the plus sign (+) found above the 'Auto-fill row' buttons.</p>
+
+<p>Vous pouvez ici planifier les dépenses de votre budget en entrant manuellement des valeurs ou en cliquant sur le bouton Remplir auto col. Si vous choisissez de remplir automatiquement le formulaire, le système essaiera de découper le montant en conséquence. Il se peut que vous ayez à faire des ajustements.</p>
+
+<p>Quand vous avez fini vos modifications, cliquez sur le bouton Enregistrer. Si vous voulez exporter vos données dans un fichier CSV, entrez un nom de fichier dans la zone Export dans un fichier nommé et cliquez sur le bouton Exporter.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

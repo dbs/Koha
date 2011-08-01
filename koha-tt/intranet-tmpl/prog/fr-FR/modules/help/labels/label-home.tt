@@ -1,0 +1,44 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Label Creator</h1>
+
+<p>Le Créateur d'étiquettes vous permet d'utiliser les formats et modèles que vous avez définis pour imprimer une grande variété d'étiquettes incluant les codes barre. Voici certaines fonctionnalités du module Créateur d'étiquettes : </p>
+
+<ul>
+ <li>Personnaliser les formats d'étiquette</li>
+ <li>Concevoir des modèles d'étiquettes personnalisés pour étiquettes imprimées</li>
+ <li>Créer et gérer des lots d'étiquettes</li>
+ <li>Exporte un ou plusieurs lots</li>
+ <li>Exporte une ou plusieurs étiquettes dans un lot</li>
+ <li>Export label data in one of three formats:
+<ul>
+ <li>PDF - Readable by any standard PDF reader, making labels printable directly on a printer&nbsp;</li>
+ <li>CSV - Exporte les données d'étiquettes au format que vous avez choisi, permettant aux étiquettes d'être importées dans diverses applications</li>
+ <li>XML - inclus comme format d'export alternatif</li>
+</ul>
+</li>
+</ul>
+
+<p>En haut de chaque écran du Créateur d'étiquettes, vous voyez une barre d'outils permettant un accès rapide aux fonctionnalités. Le menu sur la gauche de chaque écran permet également un accès facile aux différentes sections du Créateur d'étiquettes. Le fil d'ariane vers le haut de chaque écran donne des indications précises sur là où vous êtes dans le module Créateur d'étiquettes et permet une navigation rapide vers les sections consultées précédemment. Enfin, vous pouvez trouver plus d'informations détaillées sur chaque section du Créateur d'étiquettes en cliquant l'aide en ligne dans le coin en haut à droite de chaque page.</p>
+
+<p>The developers of the Label Creator module hope you will find this an extremely useful tool in the course of your cataloging work. You are encouraged to submit any enhancement requests as well as any bugs via Koha Project Bugzilla.</p>
+
+<h2>Modèles</h2>
+
+<p>A template is based on the label/card stock you are using. This might be Avery 5160 for address labels, Gaylord 47-284 for spine labels or Avery 28371 for your patron cards, just to give a couple of examples. These labels will include all of the information you will need for setting up a Koha, this information may be on the packaging, and if not it can usually be found on the vendor's website.</p>
+
+<h2>Profils</h2>
+
+<p>A profile is a set of "adjustments" applied to a given template just prior to printing which compensates for anomalies unique and peculiar to a given printer (to which the profile is assigned). This means if you set a template up and then print a sample set of data and find that the items are not all aligned the same on each label, you need to set up a profile for each printer to make up for the differences in printing styles, such as the shifting of text to the left, right, top or bottom.</p>
+
+<p>If your labels are printing just the way you want, you will not need a profile.</p>
+
+<h2>Format</h2>
+
+<p>A layout is used to define the fields you want to appear on your labels.</p>
+
+<h2>Lots</h2>
+
+<p>Batches are made up of the barcodes you would like to print. Once in this tool you can search for the item records you would like to print out labels for.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,102 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha &rsaquo;  Adhérents &rsaquo; Encaisser les paiements de [% firstname %], [% surname %]</title>
+[% INCLUDE 'doc-head-close.inc' %]
+</head>
+<body>
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'patron-search.inc' %]
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/members/members-home.pl">Adhérents</a> &rsaquo; Pay Fines for [% firstname %] [% surname %]</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+[% INCLUDE 'members-toolbar.inc' %]
+
+<!-- The manual invoice and credit buttons -->
+<div class="toptabs">
+<ul class="ui-tabs-nav">
+ <li><a href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% borrowernumber %]">Compte</a></li>
+ <li class="ui-tabs-selected"><a href="/cgi-bin/koha/members/pay.pl?borrowernumber=[% borrowernumber %]" >Payer amendes</a></li>
+ <li><a href="/cgi-bin/koha/members/maninvoice.pl?borrowernumber=[% borrowernumber %]" >Créer facture manuelle</a></li>
+ <li><a href="/cgi-bin/koha/members/mancredit.pl?borrowernumber=[% borrowernumber %]" >Créer crédit manuel</a></li>
+</ul>
+<div class="tabs-container">
+
+[% IF ( allfile ) %]<form action="/cgi-bin/koha/members/pay.pl" method="post">
+ <input type="hidden" name="borrowernumber" id="borrowernumber" value="[% borrowernumber %]" />
+
+<table>
+<tr>
+ <th>Amendes & Frais</th>
+ <th>Description</th>
+ <th>Note</th>
+ <th>Type de compte</th>
+ <th>Identifiant notificateur</th>
+ <th>Niveau</th>
+ <th>Montant</th>
+ <th>Montant à recouvrer</th>
+</tr>
+ 
+[% FOREACH allfil IN allfile %]
+ [% FOREACH loop_pa IN allfil.loop_pay %]
+<tr>
+ <td>
+ [% IF ( loop_pa.net_balance ) %]
+ <select name="payfine[% loop_pa.i %]">
+ <option value="no">Impayé</option>
+ <option value="yes">Payé</option>
+ <option value="wo">Pertes et profits</option>
+ </select>
+ [% END %]
+ <input type="hidden" name="itemnumber[% loop_pa.i %]" value="[% loop_pa.itemnumber %]" />
+ <input type="hidden" name="accounttype[% loop_pa.i %]" value="[% loop_pa.accounttype %]" />
+ <input type="hidden" name="amount[% loop_pa.i %]" value="[% loop_pa.amount %]" />
+ <input type="hidden" name="out[% loop_pa.i %]" value="[% loop_pa.amountoutstanding %]" />
+ <input type="hidden" name="borrowernumber[% loop_pa.i %]" value="[% loop_pa.borrowernumber %]" />
+ <input type="hidden" name="accountno[% loop_pa.i %]" value="[% loop_pa.accountno %]" />
+ <input type="hidden" name="notify_id[% loop_pa.i %]" value="[% loop_pa.notify_id %]" />
+ <input type="hidden" name="notify_level[% loop_pa.i %]" value="[% loop_pa.notify_level %]" />
+ <input type="hidden" name="totals[% loop_pa.i %]" value="[% loop_pa.totals %]" />
+ </td>
+ <td>[% loop_pa.description %] [% loop_pa.title |html %]</td>
+ <td>
+ [% IF ( loop_pa.net_balance ) %]
+ <input type="text" name="note[% loop_pa.i %]" value="
+        [% END %]
+        [% loop_pa.note %]
+        [% IF ( loop_pa.net_balance ) %]" />[% END %]
+ </td>
+ <td>[% loop_pa.accounttype %]</td>
+ <td>[% loop_pa.notify_id %]</td>
+ <td>[% loop_pa.notify_level %]</td>
+ <td class="debit">[% loop_pa.amount %]</td>
+ <td class="debit">[% loop_pa.amountoutstanding %]</td>
+</tr>
+[% END %]
+[% IF ( allfil.total ) %]
+<tr>
+
+ <td colspan="7">Sous-total</td>
+ <td>[% allfil.total %]</td>
+</tr>
+[% END %]
+[% END %]
+<tr>
+ <td colspan="7">Total dû</td>
+ <td>[% total %]</td>
+</tr>
+</table>
+<fieldset class="action"><input value="Paiement" name="submit" type="submit" class="submit" /> <a class="cancel" href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% borrowernumber %]">Annuler</a></fieldset></form>[% ELSE %]<p>[% firstname %] [% surname %] n'a pas de charges à recouvrer</p>[% END %]
+</div></div>
+
+</div>
+</div>
+
+<div class="yui-b">
+[% INCLUDE 'circ-menu.inc' %]
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]

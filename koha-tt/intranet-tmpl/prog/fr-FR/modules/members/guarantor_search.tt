@@ -1,0 +1,93 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha &rsaquo; Recherche garant</title>
+[% INCLUDE 'doc-head-close.inc' %]
+ <style type="text/css">
+    #custom-doc { width:44.46em;*width:43.39em;min-width:578px; margin:auto; text-align:left; }
+    </style>
+ <script type="text/javascript">
+        <!--
+        function fillguarantor(id, surname, firstname, streetnumber, address, address2, city, state, zipcode, country) {
+            var $ = window.opener.$;
+            var form = $('#entryform').get(0);
+
+            if (form.guarantorid.value) {
+                $("#contact-details").find('a').remove();
+                $("#contactname, #contactfirstname").parent().find('span').remove();
+            }
+
+            form.guarantorid.value = id;
+            $('#contact-details')
+                .show()
+                .find('span')
+                .after('<a target="blank" href="/cgi-bin/koha/members/moremember.pl?borrowernumber=' + id + '">' + id + '</a>');
+
+            $(form.contactname)
+                .val(surname)
+                .before('<span>' + surname + '</span>').get(0).type = 'hidden';
+            $(form.contactfirstname)
+                .val(firstname)
+                .before('<span>' + firstname + '</span>').get(0).type = 'hidden';
+
+            form.streetnumber.value = streetnumber;
+            form.address.value = address;
+            form.address2.value = address2;
+            form.city.value = city;
+            form.state.value = state;
+            form.zipcode.value = zipcode;
+            form.country.value = country;
+
+            form.guarantorsearch.value = 'Change';
+            self.close();
+        }
+        // -->
+    </script>
+</head>
+
+<div id="custom-doc" class="yui-t7">
+ <div id="bd">
+ <div class="yui-g">
+ 
+
+<h3>Recherche d'un garant</h3>
+ <form action="/cgi-bin/koha/members/guarantor_search.pl" method="post">
+ <fieldset>
+ <input type="hidden" name="category_type" id="category_type" value="[% category_type %]" />
+ <input type="text" name="member" id="member" value="[% member %]" class="focus" /> Ordered by
+ <select name="orderby">
+ <option value="surname,firstname">Nom de famille</option>
+ <option value="cardnumber">Numéro de carte</option>
+ </select> <input value="Rechercher" type="submit" class="button" /></fieldset>
+ </form>
+
+[% IF ( results ) %]
+ <p>Searched for <span class="ex">[% member %]</span>,[% numresults %] adhérent(s) trouvé(s)&nbsp;:</p>
+ <table>
+ <tr>
+ <th>Numéro de carte</th>
+ <th>Nom</th>
+ <th>Date de naissance</th>
+ <th>Adresse</th>
+ <th>Sélectionner?</th>
+ </tr>
+ [% FOREACH resultsloo IN resultsloop %]
+ <tr>
+ <td>[% resultsloo.cardnumber %]</td>
+ <td>
+ [% resultsloo.surname %], [% resultsloo.firstname %]
+ </td> 
+ <td>[% resultsloo.dateofbirth %]</td>
+ <td><p>[% resultsloo.address %] [% resultsloo.address2 %] [% resultsloo.city %] [% resultsloo.state %] [% resultsloo.zipcode %] [% resultsloo.country %]</p></td>
+ <td>
+ <form action="">
+ <input '\"')="'\"')" "\'")=""\'")" false;"="false;"" |replace('"',="|replace('"'," |replace("'",="|replace("'"," resultsloo.state="resultsloo.state" '[%="'[%" |replace('\n',="|replace('\n'," |replace('\r',="|replace('\r'," '\\r')="'\\r')" resultsloo.zipcode="resultsloo.zipcode" resultsloo.address2="resultsloo.address2" resultsloo.city="resultsloo.city" '\\n')="'\\n')" '",="'"," resultsloo.firstname="resultsloo.firstname" resultsloo.streetnumber="resultsloo.streetnumber" value="Sélectionner" resultsloo.address="resultsloo.address" %]',="%]'," return="return" %]','[%="%]','[%" type="button" onclick="fillguarantor('[% resultsloo.borrowernumber %]', '[% resultsloo.surname |replace(" %]');="%]');" resultsloo.country="resultsloo.country" />
+ </form>
+ </td>
+ </tr>
+ [% END %]
+ </table>
+[% END %]
+
+<div id="closewindow"><a href="#" class="close">Annuler</a></div>
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]

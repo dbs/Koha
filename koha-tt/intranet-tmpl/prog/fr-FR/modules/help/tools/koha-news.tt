@@ -1,0 +1,16 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Nouvelles</h1>
+
+<p>Koha's news module allows librarians to post news to the OPAC and the staff interface.
+
+<p>Pour ajouter des nouvelles à l'OPAC ou à l'interface pro:</li>
+<ul><li>Cliquez sur Ajouter une nouvelle</li>
+<ul><li>Dans Affichée sur, choisissez si vous voulez placer l'annonce sur l'OPAC ou sur l'interface pro.</li>
+<li>Donnez un titre à votre nouvelle</li>
+<li>Utilisez les champs dates de publication et d'expiration afin de contrôler quand et combien de temps votre annonce apparaîtra.</li>
+<li>'S'affiche en position' vous permet de décider dans quelle ordre vos nouvelles apparaissent</li>
+<li>The 'News' box allows for the use of html for formatting of your news item</li></ul>
+<i>Après avoir rempli tous les champs, cliquer 'Valider'</li>
+<li>Les nouvelles OPAC apparaîtron avec le OpacMainUserBlock</li>
+<li>Les noubelles à l'interface pro appraîtront dans la partie gauche de la page de démarrage</li></ul>

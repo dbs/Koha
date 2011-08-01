@@ -1,0 +1,14 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Création d'étiquettes - rapide</h1>
+
+<p style="background-color: #ffe599">Tip: This tool does not use the label layouts or templates, it simply prints a spine label in the first spot on the label sheet.</p>
+
+<ul>
+ <li>choisissez les champs que vous voulez imprimer sur l'imprimante à rouleau dans la préférence système SpineLabelFormat</li>
+ <li>Formatez l'impression de vos étiquettes en modifiant le fichier spinelabel.css qui se trouve dans koha-tmpl/intranet-tmpl/prog/en/css/</li>
+</ul>
+
+<p>Pour utiliser cette outil, vous avez seulement besoin du code à barre du livre pour lequel vous voulez imprimer une étiquette</p>
+
+[% INCLUDE 'help-bottom.inc' %]

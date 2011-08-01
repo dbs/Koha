@@ -1,0 +1,129 @@
+--- 
+"Adh\xC3\xA9rents": 
+  - 
+    - Lister les
+    - 
+      choices: 
+        category_type: "types g\xC3\xA9n\xC3\xA9riques"
+        categorycode: "cat\xC3\xA9gories sp\xC3\xA9cifiques"
+      pref: AddPatronLists
+    - "d'ah\xC3\xA9rent dans le menu Nouvel adh\xC3\xA9rent."
+  - 
+    - 
+      choices: 
+        "": Ne pas envoyer
+        1: Envoyer
+      pref: AutoEmailOpacUser
+    - "un courriel aux adh\xC3\xA9rents nouvellement cr\xC3\xA9\xC3\xA9s avec les informations relatives \xC3\xA0 leur compte \xC3\xA0 l'adresse suivante :"
+    - 
+      choices: 
+        B_email: alternative
+        "OFF": "la premi\xC3\xA8re valide"
+        email: maison
+        emailpro: travail
+      default: 'OFF'
+      pref: AutoEmailPrimaryAddress
+    - .
+  - 
+    - 
+      choices: 
+        "": Ne pas attribuer
+        1: Attribuer
+      pref: autoMemberNum
+    - "automatiquement au champ num\xC3\xA9ro de carte le prochain plus grand num\xC3\xA9ro disponible. Par exemple, si le num\xC3\xA9ro le plus grand est actuellement le 26345000012941, le prochain adh\xC3\xA9rent cr\xC3\xA9\xC3\xA9 se verra attibuer le num\xC3\xA9ro 26345000012942."
+  - 
+    - "Les champs suivants de la table des adh\xC3\xA9rents sont obligatoires :"
+    - 
+      class: multi
+      pref: BorrowerMandatoryField
+    - "(liste de champs s\xC3\xA9par\xC3\xA9s par |)."
+  - 
+    - "Les garants peuvent choisis en tant que :"
+    - 
+      class: multi
+      pref: borrowerRelationship
+    - "(saisir plusieurs valeurs en les s\xC3\xA9parant par |)"
+  - 
+    - "Les adh\xC3\xA9rents peuvent avoir les titres suivants :"
+    - 
+      class: multi
+      pref: BorrowersTitles
+    - "(liste de valeurs s\xC3\xA9par\xC3\xA9es par |)"
+  - 
+    - 
+      choices: 
+        katipo: Valider et construire
+        none: Ne pas valider et constuire
+      pref: checkdigit
+    - "les num\xC3\xA9ros de carte d'adh\xC3\xA9rent dans le style Katipo. Si activ\xC3\xA9, remplace autoMemberNum."
+  - 
+    - 
+      choices: 
+        "": Ne pas autoriser
+        1: Autoriser
+      pref: EnhancedMessagingPreferences
+    - "les adh\xC3\xA9rents \xC3\xA0 choisir quelles notifications ils re\xC3\xA7oivent et quand ils les recoivent. Notez que cela ne s'applique qu'\xC3\xA0 certains types de notifications."
+  - 
+    - 
+      choices: 
+        "": "D\xC3\xA9sactiver"
+        1: Activer
+      pref: ExtendedPatronAttributes
+    - "les attributs \xC3\xA9tendus des adh\xC3\xA9rents."
+  - 
+    - 
+      choices: 
+        "": Ne pas autoriser
+        1: Autoriser
+      pref: intranetreadinghistory
+    - "le personnel \xC3\xA0 avoir acc\xC3\xA8s \xC3\xA0 l'historique des pr\xC3\xAAts des adh\xC3\xA9rents (qui est quoiqu'il en soit enregistr\xC3\xA9 dans la base de donn\xC3\xA9es)."
+  - 
+    - "Plafonner les amendes pour un pr\xC3\xAAt donn\xC3\xA9 \xC3\xA0 un montant de"
+    - 
+      class: currency
+      pref: MaxFine
+    - "[% local_currency %]."
+  - 
+    - 
+      choices: 
+        "": Ne pas permettre
+        1: Permettre
+      pref: memberofinstitution
+    - "de lier les adh\xC3\xA9rents \xC3\xA0 des \xC3\xA9tablissements (qui doivent \xC3\xAAtre configur\xC3\xA9s comme des adh\xC3\xA9rents de la cat\xC3\xA9gorie Etablissement)."
+  - 
+    - "Les mots de passe des adh\xC3\xA9rents, emprunteurs et utilisateurs de Koha, doivent avoir au minimum"
+    - 
+      class: integer
+      pref: minPasswordLength
+    - "caract\xC3\xA8res de long."
+  - 
+    - Afficher un avis d'expiration d'inscription
+    - 
+      class: integer
+      pref: NotifyBorrowerDeparture
+    - jours avant l'expiration effective.
+  - 
+    - 
+      choices: 
+        "": Interdire
+        1: Autoriser
+      pref: patronimages
+    - "le chargement d'images pouvant \xC3\xAAtre li\xC3\xA9es \xC3\xA0 la fiche des adh\xC3\xA9rents."
+  - 
+    - "Afficher par d\xC3\xA9faut"
+    - 
+      class: integer
+      pref: PatronsPerPage
+    - "adh\xC3\xA9rents par page en r\xC3\xA9sultat d'une recherche."
+  - 
+    - "Pour envoyer des SMS, utiliser le pilote SMS::Send::"
+    - 
+      pref: SMSSendDriver
+    - .
+  - 
+    - 
+      choices: 
+        "": Ne pas stocker et afficher
+        1: Stocker et afficher
+      pref: uppercasesurnames
+    - "les noms des adh\xC3\xA9rents en majuscules."

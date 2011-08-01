@@ -1,0 +1,19 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Tags</h1>
+
+<p>En fonction de la configuration de votre système de tag, il se peut qu'il soit nécessaire que les tags aient à être approuvés par des bibliothécaires avant d'être publiés à l'OPAC. A cet effet, il faut utiliser l'outil de modération des tags</p>
+
+<p>En allant pour la première fois dans cet outil, vous verrez une liste des tags qui sont en attente d'approbation ou de rejet par un bibliothécaire</p>
+
+<ul><li>Pour valider un tag, cliquez sur Accepter après avoir sélectionner le terme</li>
+<li>Pour rejeter un tag, cliquez sur "rejeter" sur la ligne, ou bien cocher la case et cliquez sur "rejeter" en haut de l'écran</li>
+</ul>
+
+<p>Après qu'un tag a été approuvé ou rejeté, il est déplacé dans la liste de tags qui convient. Un résumé de tous les tags est affiché sur la droite de la fenêtre.</p>
+
+<p>Même si un tag a été approuvé ou rejeté, il peut toujours être déplacé vers une autre liste. En visualisant les tags approuvés, chaque tag a la possibilité d'être rejeté.</p>
+
+<p>Pour connaître le statut d'un tag (éventuellement même par rapport au dictionnaire que vous avez assigné à la modération des tags), saisissez le terme dans la boîte de recherche en bas de la fenêtre.</p>
+ 
+[% INCLUDE 'help-bottom.inc' %]

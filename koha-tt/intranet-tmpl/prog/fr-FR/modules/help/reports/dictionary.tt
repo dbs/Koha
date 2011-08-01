@@ -1,0 +1,64 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Dictionnaire des rapports - Aide</h1>
+
+The dictionary provides a way that you can define custom criteria for reporting by combining existing criteria.
+
+<h2>Ajouter une nouvelle définition</h2>
+
+<p><strong>Etape 1&nbsp;: Nom</strong></p>
+
+<p>Dans cette étape vous devez préciser les élements suivants&nbsp;:</p>
+
+<ul>
+<li>Nom de la définition&nbsp;: libellé qui est utilisé pour l'affichage et la sélection</li>
+<li>Description Définition: utilisé dans le dictionnaire uniquement pour fournir plus d'informations sur la définition</li>
+</ul>
+
+<p><strong>Etape 2&nbsp;: Table</strong></p>
+
+<p>Now you will need to select the area that you are binding the definition to. </p>
+
+<p style="color: #990000">IMPORTANT : les définitions ne peuvent être liées qu'à un domaine.</p>
+
+<p style="background-color: #ffe599">Maitnenant, vous devez définir la table sur laquelle la définition va s'appliquer. Les définitions ne peuvent s'appliquer qu'à une table. Si vous voulez créer des défnitions semblable, par exemple pour les adhérents et la circulation, vous devez créer 2 définitions, une dans chaque table.</p>
+
+<p><strong>Etape 3&nbsp;: Colonnes</strong></p>
+
+<p>Now select the criteria that you wish to use to build your definition. </p>
+
+<ul>
+<li>Cliquez sur le nom de la colonne de la base de données puis appuyer sur le bouton Ajouter</li>
+<li>Une fois sélectionné toutes les colonnes voulues, cliquez sur Suivant.</li>
+</ul>
+
+<p style="background-color: #ffe599">Note&nbsp;: les définitions peuvent être supprimées aisément, et si vous êtes en cours d'apprentissage de la structure de Koha, cela va vous prendre du temps pour découvrir quel champ vous intéresse. Des essais et des erreurs sont probablement à prévoir !</p>
+
+<p><strong>Etape 4&nbsp;: Valeurs</strong></p>
+
+<p>Maintenant, vous devez définir les critères pour chaque colonne. Il y a différentes manières de définir les valeurs, en fonction de la colonne que vous avez sélectionné</p>
+
+<ul>
+<li>Pour les champs de texte dans la base, saisissez une chaine de caractère sur laquelle faire le critère</li>
+<li>Pour les champs de date, vous pourrez choisir&nbsp;:</li>
+<ol><li>Limites de date&nbsp;: entrer des valeurs dans les deux champs</li>
+ <li>Toutes les lignes avant une certaine date : entrez une valeur dans le champ XXX seulement</li>
+ <li>Toutes les données après une date donnée&nbsp;: entrer une valeur</li>
+</ol>
+<li>Pour les valeurs qui correspondent à des valeurs autorisées dans la base de données, vous aurez une liste déroulante pour choisir une valeur.</li>
+</ul>
+
+<p><strong>Etape 5&nbsp;: Confirmation</strong></p>
+
+<p>Vous serez emmené à un écran de confirmation.</p>
+
+<p>Cliquez sur 'Sauvegarder'</p>
+
+<h2>Utiliser une définition</h2>
+
+<p>Lorsque vous avez créé votre nouvelle définition et qu'elle apparait dans le dictionnaire, vous pouvez l'utiliser pour les rapports. Lorsque vous créez un nouveau rapport, les critères pour la table sur laquelle vous faites le rapport sont automatiquement affichés dans l'assistant.</p>
+
+<ul>
+<li>Quand vous créez un nouveau rapport, les critères pour le domaine que vous requêtez serviront automatiquement de limites à l'assistant de création de rapport</li>
+</ul>
+[% INCLUDE 'help-bottom.inc' %]

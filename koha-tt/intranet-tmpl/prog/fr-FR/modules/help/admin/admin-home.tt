@@ -1,0 +1,33 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Aidee pour l'administration</h1>
+
+<p>Le module d'Administration regroupe toutes les informations relatives à la configuration fine de votre système.</p>
+
+<h3>Préférences système</h3>
+
+<p>Koha a un large choix de préférences système.Les préférences système contrôlent toutes les différentes fonctionnalités de Koha et si elles sont actives dans votre installation ou pas.Les préférences système sont généralement réglées une seule fois à l'installation et ne sont plus changées.</p>
+
+<p>If you are not sure what combination of system preferences to use, try using one of the sample profiles at install. </p>
+
+<p style="color: #990000">Si vous n'êtes pas sûr de la combinaison de préférences système à utiliser, essayez d'utiliser un des modèle fourni à l'installation. Note&nbsp;: beaucoup de préférences interagissent les unes avec les autres. Activer une préférence système demande parfois que d'autres le soient aussi.</p>
+
+<h3>Paramètres de base</h3>
+
+<p>Les paramètres système sont l'endroit où les politiques de la bibliothèque sont fixées et administrées. Le mieux c'est de choisir vos préférences système, et puis de parcourir les Paramètres dans l'ordre dans lequel ils apparaissent sur cette page.</p>
+
+<p>Remarquez que tous les paramètres systèmes n'ont pas besoin d'être saisi.Par exemple si vous n'avez pas prévu d'utiliser les acquisitions basées sur un budget, alors les comptes et budgets, devises et taux de change peuvent être ignorés.</p>
+
+<h3>Adhérents et circulation</h3>
+
+<p>Ces paramètres vous permettent de dire à Koha comment mettre en oeuvre votre politique de circulation de documents auprès de vos adhérents.</p>
+
+<h3>Catalogue</h3>
+
+<p>Catalog parameters assist in configuring the cataloging functionality within Koha. 
+
+<h3>Paramètres divers</h3>
+
+<p>Cette liste de paramètres contient des fonctionnalités qui n'entrent dans aucun autre catégorie. Ce sont des paramètres optionnels.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

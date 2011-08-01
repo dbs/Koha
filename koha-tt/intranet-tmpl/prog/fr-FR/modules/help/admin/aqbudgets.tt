@@ -1,0 +1,34 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Postes budgétaires</h1>
+
+<p>Budgets are broken in to funds.</p>
+
+<h2>Add a Fund</h2>
+
+<p>Un fond est ajouté au budget</p>
+
+<p style="color: #990000;">Important: A budget must be defined before a fund can be created.</p>
+
+<p>Pour ajouter un nouveau poste budgétaire, cliquez que le bouton Nouveau puis choissiez le budget auquel ajouter le poste.</p>
+
+<p>Dans le formulaire qui s'affiche, entrez les informations de base de votre poste budgétaire.</p>
+
+<p>Les trois premiers champs sont obligatoires. Les suivants sont optionnels.</p>
+
+<ul>
+ <li>Fund Code is a unique identifier for your fund</li>
+ <li>Le nom du Poste budgétaire doit avec du sens pour les bibliothécaires qui l'utiliseront</li>
+ <li>Le montant doit être saisi uniquement avec des nombres avec décimal, sans aucun autre caractère</li>
+ <li>Vous pouvez assigner un poste budgétaire à un bibliothécaire qui sera seul abilité à le modifier.</li>
+ <li>Choisissez quelle bilbiothèque utilisera ce poste budgétaire</li>
+ <li>Vous pouvez limiter l'utilisation de ce poste budgétaire à son propriétaire ou à la bibliothèque en utilisant le menu Limiter l'accès à</li>
+ <li>Les notes sont une information qui s'affichera pour les bibliothécaires et leur donnera des indications d'utilisation ce ce poste budgétaire</li>
+ <li>Les catégories de planification sont utilisées à des fins statistiques. Pour en apprendre plus sur ce sujet, consultez la FAQ.</li>
+</ul>
+
+<p>Quand vous avez fini, cliquez sur Enregister. Une liste de tous les postes budgétaires du budget sera affichée.</p>
+
+<p>A droite de chaque poste budgétaire, vous trouvez des liens Modifier, Supprimer et Ajouter un sous-poste</p>
+
+[% INCLUDE 'help-bottom.inc' %]

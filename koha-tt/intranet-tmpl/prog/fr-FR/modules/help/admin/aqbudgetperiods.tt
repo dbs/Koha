@@ -1,0 +1,23 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Budgets</h1>
+
+<p>Budgets are the top level used for tracking accounting values related to acquisitions.</p>
+
+<p>An example would be to create a budget for the current year and then breaking that into Funds for different areas of the library.</p>
+
+<h2>Ajouter un budget</h2>
+
+<p>Cliquez sur le bouton Ajouter un budget pour ajouter un nouveau budget.</p>
+
+<ul>
+ <li>Choisissez la période pour laquelle ce budget est prévu, que ce soit une année universitaire, fiscale ou calendaire.</li>
+ <li>La Description doit être choisie afin d'aider les acquéreurs au moment où ils passent des commandes</li>
+ <li>Ne saisissez pas symbole dans la rubrique Montant. Entrez juste des chiffres et le séparateur décimal.</li>
+ <li>Rendre un budget actif le rend utilisable dans les commandes du module Acquisition, même si la commande est placée après la date de fin du budget, ceci afin de vous permettre d'enregistrer des commandes qui ont été faites sur une période antérieure.</li>
+ <li>Verrouiller un budget signifie que ses postes budgétaires ne pourront plus être modifiés par les bibliothécaires</li>
+</ul>
+
+<p>Une fois effectué vos modifications, cliquez sur le bouton Enregistrer. Vous serez ramené à la liste de vos budgets existants.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

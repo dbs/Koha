@@ -1,0 +1,35 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Réservations</h1>
+ <ul>
+ <li>Saisissez le code-barres ou le nom de l'adhérent pour lequel vous réservez le document.</li>
+ <li>You will be brought to a page where you can alter (if necessary) and/or confirm the hold
+ <ul>
+ <li>
+ <span style="background-color: #ffe599">ASTUCE&nbsp;: Dans ce cas un message d'erreur apparaît qui prévient le bibliothécaire qu'un document attend l'adhérent dans son site.</span></li>
+ <li>From here you can pick to either hold the next available item or a particular item
+ <ul>
+ <li>On peut faire des réservations au niveau de l'exemplaire en cochant la case à côté d'un exemplaire spécifique</li>
+ <li>Un document peut être réservé au niveau de l'exemplaire si<br/>
+ <ul>
+ <li>est perdu ET,</li>
+ <li>n'est pas marqué comme pas prêtable ET,</li>
+ <li>n'est pas retiré ET,</li>
+ <li>n'est pas endommagé (à moins que la préférence système AllowHoldsOnDamagedItems soit activée), ET</li>
+ <li>n'est pas en prêt (à moins que la préférence système AllowOnShelfHolds soit activée)</li>
+ </ul></li>
+ <li>
+ <span style="background-color: #ffe599">ASTUCE&nbsp;: Si le fonctionnement en sites indépendants est activé, et si la préférence canreservefromotherbranches est à OFF, un bibliothécaire n'aura pas le droit de poser une réservation sur un exemplaire d'un autre site</span></li>
+ </ul></li>
+ <li>Pour confirmer la réservation, cliquez 'Réserver'</li>
+ </ul></li>
+ </ul>
+
+
+<h3>Réordonner les réservation(s)</h3>
+
+ <ul>
+ <li>On peut modifier l'ordre de priorité des réservations dans l'affichage des réservations pour un titre</li>
+ <li>Pour voir les réservations sur un titre, cliquez sur l'onglet 'Réservations'</li>
+ <li>On peut faire avancer ou reculer un adhérent dans la liste des réservations en modifiant le numéro de priorité</li>
+ </ul>[% INCLUDE 'help-bottom.inc' %]

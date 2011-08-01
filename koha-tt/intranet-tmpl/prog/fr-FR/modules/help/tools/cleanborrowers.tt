@@ -1,0 +1,21 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Adhérent (anonymiser et supprimer)</h1>
+
+<p>Cet outil vous permet, par lots, d'anonymiser l'historique de circulation ou de supprimer des comptes adhérents. Cela signifie que le système conserve un lien entre prêts et exemplaires, mais supprime le lien avec l'adhérent.</p>
+
+ <ul>
+ <li>Dans l'outil, vous avez deux options</li>
+ <li>Check the box next to the action(s) you'd like to perform
+ <ul>
+ <li>Pour supprimer des emprunteurs, entrer la date à laquelle ils ont emprunté pour la dernière fois</li>
+ <li>Pour anonymiser l'historique de circulation, entrez une date: toutes les données antérieures seront anonymisées.</li>
+ </ul></li>
+ </ul>
+ 
+<h2>Peut-on faire fonctionner cet outil automatiquement?</h2>
+<p>Pas actuellement.</p>
+<h2>Est-ce qu'exécuter cette option va effacer la connexion entre les adhérents et les documents actuellement en prêt ?</h2>
+<p>Non, cet écran va seulement supprimer les connexions entre les adhérents et les documents qu'ils ont empruntés dans le passé, et qui ont été rendus à la bibliothèque.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

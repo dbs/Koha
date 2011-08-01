@@ -1,0 +1,94 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Règles de circulation</h1>
+
+<p>These rules define how your items are circulated, how/when fines are calculated and how holds are handled.</p>
+
+<p>Les règles sont appliquées de la plus spécifique à la plus générale. Dans l'ordre suivant&nbsp;:</p>
+
+<ul>
+ <li>same library, same patron type, all item types</li>
+ <li>same library, same patron type, alll item types</li>
+ <li>same library, all patron types, same item type</li>
+ <li>same library, all patron types, all item types</li>
+ <li>all libraries, same patron type, same item type</li>
+ <li>all libraries, same patron type, all item types</li>
+ <li>all libraries, all patron types, same item type</li>
+ <li>all libraries, all patron types, all item types</li>
+</ul>
+
+<p style="background-color: #ffe599;">Tip: If you are a single library system choose your branch name before creating rules (sometimes having only rules for the 'all libraries' option can cause issues with holds)</p>
+
+<p style="color: #990000;">Important: At the very least you will need to set an default circulation rule. This rule should be set for all item types, all libraries and all patron types. That will catch all instances that do not match a specific rule. When checking out if you do not have a rule for all libraries, all item types and all patron types then you may see patrons getting blocked from placing holds. You will also want a rule for your specific library set for all item types and all patron types to avoid this holds issue. Koha needs to know what rule to fall back on.</p>
+
+<h2>Default Circulation Rules</h2>
+
+<p>Using the issuing rules matrix you can define rules that depend on patron/item type combos. To set your rules, choose a library from the pull down (or 'all libraries' if you want to apply these rules to all branches):</p>
+
+<p>From the matrix you can choose any combination of patron categories and item types to apply the rules to</p>
+
+<ul>
+ <li>First choose which patron category you'd like the rule to be applied to. If you leave this to 'All' it will apply to all patron categories</li>
+ <li>Choose the 'Item Type' you would like this rule to apply to. If you leave this to 'All' it will apply to all item types</li>
+ <li>Limitez le nombre d'exemplaires qu'un adhérent peut emprunter en une fois en entrant un nombre dans le champ Prêts autorisés (Nbre).</li>
+ <li>Définissez la durée du prêt que peut faire un adhérent en saisissant le nombre de jours dans la case 'Durée prêt'</li>
+ <li>'Fine Amount' should have the amount you would like to charge for overdue items
+<ul>
+ <li>Enter only numbers and decimal points (no currency symbols).</li>
+</ul>
+</li>
+ <li>La zone 'Grâce (j)' contient la période de grâce en nombre de jours pendant laquelle un exemplaire peut être en retard sans que ne soient appliquées des amendes.</li>
+ <li>Entrez la périodicité des amendes en jours : par exemple, facturez les amendes tous les jours, tous les deux jours, etc.</li>
+ <li>Si votre bibliothèque "met à l'amende" ses lecteurs en suspendant leur compte, vous pouvez indiquer le nombre de jours de suspensions dans le champ Suspension (j.)</li>
+ <li>Décidez ensuite si l'adhérent peut renouveler ce type d'exemplaire, et ce un nombre de fois déterminé que vous entrez dans la zone 'Polongation (Nbre)'</li>
+ <li>Si l'adhérent peut placer une réservation sur ce type d'exemplaire, entrez le nombre total d'exemplaire de ce type qu'il est autorisé à réserver dans le champ </li>
+ <li>Finally, if you charge a rental fee for the item type and want to give a specific patron type a discount on that fee, enter the percentage discount (without the % symbol) in the 'Rental Discount' field</li>
+</ul>
+
+<p>Quand vous avez terminé, cliquez sur Ajouter pour enregistrer vos modifications. Pour modifier une règle, créez-en une nouvelle ayant la même catégorie d'adhérent et le type d'exemplaire. Si vous voulez supprimer une règle, cliquez sur le lien Supprimer à la droite de la règle.</p>
+
+<p>Vous gagnerez du temps en clonant les règles du bibliothèque pour une autre en choisissant l'option de clonage au-dessus de la matrice.</p>
+
+<p>Après avoir choisi de cloner, un écran de confirmation s'affiche.</p>
+
+<h2>Règles de prêt et de réservation par défaut</h2>
+
+<p>Vous pouvez définir par défaut un nombre maximum de prêts et une politique de réservation qui seront utilisés si rien n'est défini en-dessous pour un type de document ou une catégorie d'adhérent particuliers.</p>
+
+<p>Vous sélectionnez dans ce menu une règle par défaut qui s'appliquera à tous les types d'exemplaire et toutes les catégories d'adhérent de la bibliothèque.</p>
+
+<ul>
+ <li>Vous saisissez dans 'Nombre de prêts autorisés' le maximum de documents qu'un qu'un adhérent peut détenir à la fois.</li>
+ <li>Control where patrons can place holds from using the 'Hold Policy' menu
+<ul>
+ <li>Tout site: Les adhérents de toute bibliothèque peuvent réserver cet exemplaire. (par défaut si aucun n'est sélectionné)</li>
+ <li>Seuls les adhérents du site de l'exemplaire peuvent réserver ce document.</li>
+ <li>Réservation non autorisée : aucun adhérent ne pourra réserver ce livre.</li>
+</ul>
+</li>
+ <li>Une fois votre politique de circulation configurée, vous pouvez la retirer en cliquant sur le lien Retirer sur la droite de la règle</li>
+</ul>
+
+<h2>Prêts par Adhérent</h2>
+
+<p>Pour ce site, vous pouvez définir le nombre maximum de prêts qu'un adhérent peut faire en fonction de sa catégorie, quel que soit le type de document.</p>
+
+<p>Si la quantité totale de documents empruntables pour une catégorie d'adhérent est laissé blanc, il n'y aura pas de limites, sauf si vous en définissez une pour les types de document.</p>
+
+<h2>Politiques de réservations des exemplaires</h2>
+
+<p>Pour cette bibliothèque, vous pouvez modifier les règles pour un type d'exeplaire donné, indépendemment de la catégorie de l'adhérent. Actuellement, cela signifie des règles de réservation.</p>
+
+<p>A l'heure actuelle, cela concerne les politiques de réservations. Les différentes politiques fonctionnenet comme suit:</p>
+
+<ul>
+ <li>Tout site: Les adhérents de toute bibliothèque peuvent réserver cet exemplaire. (par défaut si aucun n'est sélectionné)</li>
+ <li>Seuls les adhérents du site de l'exemplaire peuvent réserver ce document.</li>
+ <li>Réservation non autorisée : aucun adhérent ne pourra réserver ce livre.</li>
+</ul>
+
+<p style="color: #990000;">Important: Note that if the system preference AllowHoldPolicyOverride set to 'allow', these policies can be overridden by your circulation staff.</p>
+
+<p style="color: #990000;">Important: These policies are based on the patron's home branch, not the branch that the reserving staff member is from.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

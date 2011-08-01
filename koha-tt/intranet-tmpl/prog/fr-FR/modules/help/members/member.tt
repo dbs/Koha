@@ -1,0 +1,11 @@
+[% INCLUDE 'help-top.inc' %] 
+
+<h1>Recherche Adhérents</h1>
+
+<p>En cliquant sur le lien vers le module Adhérents, vous arriverez à une page de recherche des adhérents. De là, vous retrouvez les adhérents par leur nom ou une partie de leur nom, ou encore leur numéro de carte de bibliothèque.</p>
+
+<p>Si vous voulez rechercher ailleurs que dans le nom ou le numéro de l'adhérent, cliquez sur le signe plus (+) sur la droite de la boîte de recherche.</p>
+
+<p>Vous pouvez aussi feuiller la liste des adhérents en cliquant sur une lettre de la barre de navigation qui se trouve en haut de la page.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

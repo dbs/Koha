@@ -1,0 +1,25 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Statistiques de circulation&nbsp;: </h1>
+
+<p style="color: #990000">ATTENTION&nbsp;: l'assistant Catalogue est conçu pour donner un point statistique ponctuel. Dans chaque assistant vous choisirez une catégorie pour les 'lignes' et une autre pour les 'colonnes'.</p>
+ <ul>
+ <li>Aller dans le module 'Bilans et Statistiques' (sous 'Plus' dans la navigation globale)</li>
+ <li>Sélectionnez 'Circulation' sous 'Assistant de bilan'</li>
+ <li>Sélectionnez l'information que vous voulez afficher en rangées en activant le bouton radio Rangée à côté de la catégorie</li>
+ <li>Sélectionnez l'information que vous voulez afficher en colonnes en activant le bouton radio à côté de la catégorie.</li>
+ <li>Vous limitez ou vous filtrez le résultat en sélectionnant une valeur dans la liste. </li>
+ </ul>
+<strong>Astuces:</strong>
+ <ul>
+ <li>Pour obtenir une image complète de votre circulation mensuelle ou quotidiennement, vous pouvez lancer l'état deux fois, une fois par type de transaction.</li>
+ <li>Cet état utilise les champs Période ou Date. C'est un filtre qui permet de limiter le résultat à un mois donnée en sélectionnant simplement le premier jour du mois et le premier jour du mois suivant. Par ex., 1/10 à 1/11 donne les statistiques du mois d'octobre.</li>
+ <ul>
+ <li>Pour obtenir des statistiques quotidiennes, définissez votre interval de dates.</br>Exemple : Je veux des données de prêts avec des dates jusqu'au XXX, mais ne comprenant pas la date XXX.</li>
+ <li>Pour un mois entier, un exemple d'intervalle serait : 01/12/2010 à 01/01/2011</li> 
+ <li>Pour une année entière, un exemple d'intervalle serait : 01/01/2010 à 01/01/2011</li>
+ <li>Pour une seule journée, un exemple serait: 15/12/2010 à 16/12/2010 pour trouver tout ce qui a circulé le 15</li>
+ </ul>
+ </ul>
+ </div>
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,10 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Périodiques</h1>
+
+<p>Le module Périodiques vous aide à gérer vos abonnements à des publications à caractère périodiques, journaux, magazines, revues, etc.</p>
+
+<p>You can search for existing subscriptions by using the search box at the top of the page. You can search for any part of the serial title or ISSN. </p>
+
+[% INCLUDE 'help-bottom.inc' %]
+

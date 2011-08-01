@@ -1,0 +1,36 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Calendrier des fermetures</h1>
+
+<p>Les bibliothèque peuvent définir leurs jours de fermeture qui seront utilisés pour le calcul des dates de retour. Vous activez l'utilisation du Calendrier au moyen des préférences système :</p><ul class="itemizedlist" type="disc"><li class="listitem"><p><span class="emphasis"><em>Get there: </em></span>Plus &gt; Administration &gt; Préférences système &gt; Circulation &gt; useDaysMode</p><ul class="itemizedlist" type="circle"><li class="listitem"><p>Sélectionnez la méthode de calcul des dates de retour: sélectionnez Calendar pour utiliser le calendrier de fermetures, et Days pour ignorer le calendrier de fermetures</p></li></ul></li><li class="listitem"><p><span class="emphasis"><em>Aller à&nbsp;:</em></span>More &gt; Administration &gt; Préférences système &gt; Circulation &gt; finescalendar</p><ul class="itemizedlist" type="circle"><li class="listitem"><p>Le calendrier des fermetures est utilisé pour le calcul des amendes.</p></li></ul></li></ul>
+ <h3>Ajouter des jours</h3>
+ <p>Avant d'ajouter des jours, choisissez le site pour lequel vous voulez définir des jours de fermeture. Lorsque vous ajouterez des jours, vous pourrez préciser s'il se rapporte à un site ou bien à tous les sites. Pour ajouter un jour :</p><ul class="itemizedlist" type="disc"><li class="listitem"><p>Cliquez sur la date du calendrier que vous voulez marquer comme jour de fermeture</p></li><li class="listitem"><p>Dans le formulaire qui apparaît au-dessus du calendrier, saisissez les informations de fermeture</p><ul class="itemizedlist" type="circle"><li class="listitem"><p>La bibliothèque sera renseignée automatiquement à partir de la sélection que vous avez faite dans le liste déroulante en haut de la page</p></li><li class="listitem"><p>L'information sur la date sera également renseignée automatiquement en fonction de la date que vous avez choisie dans le calendrier</p></li><li class="listitem"><p>Définir les jours de fermeture de la bibliothèque</p></li><li class="listitem"><p>Ensuite, vous spécifiez si le jour de fermeture est unique ou s'il est répété.</p></li><li class="listitem"><p>Finalement, décidez d'appliquer ce jour de fermeture à toutes les bibliothèques ou bien uniquement à celle que vous avez sélectionnée initialement</p></li></ul></div></li><li class="listitem"><p>Après avoir sauvegardé vous verrez les événements affichés sous le calendrier</p></li></ul>
+ <h3>Modification des jours de fermeture</h3><p>Pour modifier un jour de fermeture :</p><ul class="itemizedlist" type="disc"><li class="listitem"><p>Cliquez dans le calendrier sur le jour que vous voulez modifier. </p></li><li class="listitem"><p>Sur ce formulaire, vous saisissez les jours de fermeture de votre bibliothèque, ajout, modification et suppression, toutes ces actions requérant que vous cliquiez sur le bouton Enregistrer pour qu'elles soient validées.</p></li><li class="listitem"><p>En cliquant sur des jours de fermeture répétables vous obtiendrez des options sensiblement différentes</p>
+ <ul class="itemizedlist" type="circle"><li class="listitem"><p>Dans le formulaire au-dessus, vous noterez la présence d'une option Générér une exception. Choisissez-la pour que la date soit ouvrée même si la bibliothèque est habituellement fermée ce jour-la.</p></li></ul></li></ul>
+ <h3 class="title">Aide supplémentaire</h3><p>Quand vous ajoutez ou que vous modifiez des jours de fermeture, vous pouvez obtenir une aide supplémentaire en cliquant sur le plus bleu qui se trouve en regard des différentes rubriques du formulaire.</p>
+ 
+<h2>Questions</h2>
+
+<p><strong>Pourquoi entrer les dates de fermeture d'un site&nbsp;?</strong></p>
+
+After holidays are entered on the calendar, circulation rules are then recalculated to taken in to account that library is closed and there will be no one present to return items.
+
+ 
+<p><strong>Comment activer le calendrier des fermetures ?</strong></p>
+
+You can make use of the Holidays Calendar by turning on the proper system preferences
+<ul>
+<li><em>Aller à&nbsp;:</em> More > Administration > Global System Preferences > Circulation > useDaysMode</li>
+ <ul> <li>Sélectionnez la méthode de calcul des dates de retour: sélectionnez Calendar pour utiliser le calendrier de fermetures, et Days pour ignorer le calendrier de fermetures</li></ul>
+<li><em>Aller à&nbsp;:</em> More > Administration > Global System Preferences > Circulation > finescalendar</li>
+ <ul> <li>Le calendrier des fermetures est utilisé pour le calcul des amendes.</li></ul>
+</ul>
+ 
+<p><strong>Comment est assignées la date de retour aux documents rendus dans la boîte de retour ?</strong></p>
+
+<p>Est-ce le dernier jour d'ouverture de la bibliothèque où a été effectué le retour ? Est-ce la veille ? Peut-on forcer la date de retour ? Si la bibliothèque est fermée depuis quatre jours par exemple, il faudrait une date de retour antérieure de quatre jours.</p>
+
+<p>Il n'y a qu'une date de retour pour les documents rendus dans la boîte de retour. Ce sera le dernier jour d'ouverture de la bibliothèque tel qu'il est défini dans le Calendrier des jours de fermeture. Il n'y a en effet aucun moyen de savoir quand le document a été effectivement placé dans la boîte de retour. </p>
+
+[% INCLUDE 'help-bottom.inc' %]
+

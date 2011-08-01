@@ -1,0 +1,27 @@
+--- 
+"Autorit\xC3\xA9s": 
+  - 
+    - Quand on saisie une notice bibliographique
+    - 
+      choices: 
+        "": "ne pas cr\xC3\xA9er"
+        1: "cr\xC3\xA9er"
+      default: ''
+      pref: BiblioAddsAuthorities
+    - "automatiquement de nouvelles autorit\xC3\xA9s quand c'est n\xC3\xA9cessaire. Si d\xC3\xA9sactiv\xC3\xA9, il faut obligatoirement faire r\xC3\xA9f\xC3\xA9rence \xC3\xA0 des autorit\xC3\xA9s existantes."
+  - 
+    - 
+      choices: 
+        "": "Mettre \xC3\xA0 jour automatiquement"
+        1: "Ne pas mettre \xC3\xA0 jour automatiquement"
+      default: 1
+      pref: dontmerge
+    - "les notices bibliographiques li\xC3\xA9es \xC3\xA0 une autorit\xC3\xA9 quand on la modifie. Si d\xC3\xA9sactiv\xC3\xA9, il faut que l'administrateur syst\xC3\xA8me de Koha planifie la t\xC3\xA2che p\xC3\xA9riodique merge_authorities.pl."
+  - 
+    - 
+      choices: 
+        "": Ne pas utiliser
+        1: Utiliser
+      default: 1
+      pref: UseAuthoritiesForTracings
+    - "les num\xC3\xA9ros des autorit\xC3\xA9s \xC3\xA0 la place du texte pour le tra\xC3\xA7age des sujets."

@@ -1,0 +1,26 @@
+[% INCLUDE 'help-top.inc' %]
+<!--<h1>Batch Modify Items</h1>-->
+
+<h1>Modification d'exemplaires par lots</h1>
+
+<p>Cet outil vous permet de modifier un lot d'exemplaires.</p>
+
+<p>Avec cet outil, vous pouvez envoyer à Koha un fichier de codes à barres ou d'identifiants d'exemplaire, ou bien scanner des exemplaire un par un dans la boîte prévue à cet effet. Une fois votre fichier envoyé ou vos codes à barres saisis, cliquez sur Continuer.</p>
+
+<p>Vous serez emmené à un écran de confirmation.</p>
+
+<p>En dessous, de la liste des exemplaires il y aura un formulaire d'exemplaire. Utilisez ce formulaire pour préciser les champs que vous voulez éditer ou vider (par exemple appliquer une note à tous, les déplacer tous,...)</P>
+
+<p>Une fois que vous avez effectué vos changements, cliquez sur le bouton Aller et vos exemplaires seront mis à jour</p>
+
+<h1>Suppression d'exemplaires par lots</h1>
+
+<p>Cet outil vous permet de supprimer de votre catalogue un lot d'exemplaires.</p>
+
+<p>Avec cet outil, vous pouvez envoyer à Koha un fichier de codes à barres ou d'identifiants d'exemplaire, ou bien scanner des exemplaire un par un dans la boîte prévue à cet effet. Une fois votre fichier envoyé ou vos codes à barres saisis, cliquez sur Continuer.</p>
+
+<p>Une fenête de confirmation s'affichera. Vous pourrez y désélectionner les exemplaires que vous ne voulez pas supprimer.</p>
+
+<p>Si les exemplaires peuvent être supprimés, ils le seront et une confirmation de la suppression sera affichée.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,29 @@
+[% INCLUDE 'help-top.inc' %]
+<h2>Je peux me connecter, et après ?</h2>
+
+<p>Si c'est votre première connexion à Koha, vous devriez maintenant aller dans la section administration et définir tous les paramètres qui vous intéressent, et plus particulièrement les catégories d'adhérents et les types de document. &nbsp;</p>
+
+<p>Lorsque vous avez défini les catégories d'adhérents, vous devez vous créer comme nouvel utilisateur, dans le module adhérents, et vous donner tous les privilèges. Ensuite, utilisez cet utilisateur pour vous connecter, et pas l'utilisateur défini lors de l'installation de Koha.</p>
+
+<p>Here are some other suggestions: </p>
+
+<ul>
+<li><a href="http://koha-community.org/documentation/">Lire la documentation de Koha</a></li>
+<li><a href="http://wiki.koha-community.org">Lire et écrire sur le wiki</a></li>
+<li><a href="http://koha-community.org/support/koha-mailing-lists/">Lire et contribuer aux discussions</a></li>
+<li><a href="http://bugs.koha-community.org">Rapporter des bugs</a></li>
+<li><a href="http://wiki.koha-community.org/wiki/Version_Control_Using_Git">Soumettre des patches en utilisant git (Système de Controle de Version)</a></li>
+<li><a href="http://koha-community.org/get-involved/irc/">Discuter (chat) avec les utilisateurs et les développeurs de Koha</a></li>
+</ul>
+
+<h2>Can I edit the online help? </h2>
+
+<p>You can edit the online help through the Koha Staff Client by clicking the &quot;Edit Help&quot; button. This feature has been designed so that library workflow and policies can be documented within&nbsp; Koha. </p>
+
+<p><strong>NOTE IMPORTANTE&nbsp;: l'aide en ligne est écrasée durant la mise à jour de Koha &nbsp;</strong></p>
+
+<p>Lors de la mise à jour, votre aide en ligne personnalisée sera supprimée, les nouveaux fichiers d'aide étant installés à la place. Si vous voulez conserver une copie de vos fichiers d'aide personnalisés, vous devez demander à votre administrateur système de conserver le répertoire d'aide en ligne personnalisé dans la hiérarchie de Koha.</p>
+
+<p>The online help directory is: <pre>&nbsp;/koha-tmpl/intranet-tmpl/prog/en/modules/help</pre></p>
+
+[% INCLUDE 'help-bottom.inc' %]

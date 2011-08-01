@@ -1,0 +1,23 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Réceptionner des bulletins</h1>
+
+<p>Les fascicules peuvent être bulletinés depuis plusieurs endroits. Pour retrouver un abonnement, utiliser la boîte de recherche en haut de la page.</p>
+
+<p>Dans la page de résultat, vous pouvez cliquer sur Bulletiner ou bien sur le titre du périodique puis sur le bouton Bulletiner dans la page suivante.</p>
+
+<p>Le dernier moyen de recevoir des périodique est dans la page Collection. Sur la gauche de la page de l'abonnement, il y a un menu à cet usage.</p>
+
+<p>Dans la page qui s'ouvre vous pouvez cliquer sur Modifier périodique avec le fascicule que vous voulez bulletiner.</p>
+
+<p>Ces trois possibilités vont ouvrir le formulaire de réception d'un fascicule :</p>
+
+<ul>
+<li>Choisissez 'Arrivé' dans le liste Statut pour marque le fascicule comme reçu</li>
+<li>Si vous demandez à créer un exemplaire pour chaque fascicule, un formulaire de saisie spécifique apparaîtra en bulletinage</li>
+<li>Si votre fascicule a un supplément, remplissez la zone Fascicule supplémentaire.</li>
+<li>Si vous demandez à créer un exemplaire pour chaque fascicule, un formulaire spécifique de saisie apparaîtra en bulletinage pour le supplément et pour le fascicule lui-même</li>
+<li>Quand vous avez saisi les données utiles, cliquez 'Sauvegarder'</li>
+</ul>
+
+[% INCLUDE 'help-bottom.inc' %]

@@ -1,0 +1,71 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Recherche</h1>
+
+<p>To see more search options click [More Options] at the bottom of the page. This will allow for more advanced boolean searching.</p>
+
+<h2>Cherchez par type de document dans l'interface professionnelle</h2>
+
+<p>Below is a summary of the various pieces of the advanced search limit: </p>
+
+<h3>Audience</h3>
+
+<p>L'index est intitulé 'aud' et est tiré du 008/22</p>
+
+<ul><li>aud:a Facile</li>
+<li>aud:c Jeunesse</li>
+<li>aud:d Jeunes adultes</li>
+<li>aud:e Adulte</li></ul>
+
+<h3>Contenu</h3>
+
+<p>La notion de Contenu regroupe 3 index: 'fic' est dérivé du 002/33; 'bio' est dérivé du 008/034 et 'mus' est dérivé du LEADER/06. les valeurs courantes des ces champs sont:</p>
+
+<ul><li>fic:1 Fiction</li>
+<li>fic:0 Documentaire</li>
+<li>bio:b Biographie</li>
+<li>mus:j Enregistrement musical</li>
+<li>mus:i Enregistrement non musical</li></ul>
+
+<h3>Format</h3>
+
+<p>L'index est intitulé 'l-format' et correspond aux positions 007/01 et 007/02. Les valeurs courantes sont&nbsp;:</p>
+
+<ul><li>l-format:ta a- Impression normale</li>
+<li>l-format:tb b- Gros caractères</li>
+<li>l-format:fk c- Braille</li>
+<li>I-format:sd CD audio</li>
+<li>l-format:ss Cassette audio</li>
+<li>l-format:vf Bande VHS / Videocassette</li>
+<li>l-format:vd DVD Video / Videodisque</li>
+<li>l-format:co Logiciel sur CD</li>
+<li>I-format:cr Site web</li></ul>
+
+<h3>Additional Content Types</h3>
+
+<p>The index name is 'ctype' is taken from the 008 and it's where we get the 'additional content types'. It's position 008/24-28 field. Common values are: </p>
+
+<ul><li>ctype:a résumé/sommaire</li>
+<li>ctype:b Bibliographies
+<li>ctype:c Catalogues</li>
+<li>ctype:d Dictionnaires</li>
+<li>ctype:e Encyclopédies</li>
+<li>ctype:f Livres de poche</li>
+<li>ctype:g Articles de loi</li>
+<li>ctype:i Indexes
+<li>ctype:j Brevet</li>
+<li>ctype:k Discographies</li>
+<li>ctype:l Lois</li>
+<li>ctype:m Thèses</li>
+<li>ctype:n Enquêtes</li>
+<li>ctype:o Reviews
+<li>ctype:p Textes de programmes</li>
+<li>ctype:q Filmographies</li>
+<li>ctype:r Répertoires</li>
+<li>ctype:s Statistiques</li>
+<li>ctype:t Rapports techniques</li>
+<li>ctype:v Legal cases and case notes
+<li>ctype:w Rapports de lois et recueils</li>
+<li>ctype:z Traités</li></ul>
+
+[% INCLUDE 'help-bottom.inc' %]

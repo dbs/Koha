@@ -1,0 +1,44 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Déclencheurs de relances/statut retard</h1>
+
+<p>Cet outil vous permet de définir des déclencheurs de notification. Vous pouvez envoyer jusqu'à trois réclamation à un adhérent.</p>
+
+<p>Il faut d'abord définir ces messages dans les déclencheurs de notification si vous voulez qu'ils soient utilisés.</p>
+
+<p>Il faut spécifier dans la catégorie de l'adhérent que des réclamations lui sont envoyées si vous voulez activer cette fonctionnalité.</p>
+
+<p>L'outil de déclenchement des noticfications vous permet d'envoyer jusqu'à trois avis de retard aux adhérentes.</p>
+
+<ul><li>Le délai est un nombre de jours avant que le prêt le plus ancien soit pris en compte et qu'une action soit lancée.</li>
+<ul><li style="color:#990000;"><strong>Important : Ces règles ne doivent pas être utilisées pour les notifications avancées. Celles-ci sont configurées au moyen des préférences de messagerie avancée du profil de l'adhérent.</strong></li>
+<li style="color:#990000;"><strong>Important: If you want Koha to trigger an action (send a letter or restrict a member), a delay value is required.</strong></li></ul>
+<li>Pour envoyer des notiifications supplémentaires, cliquez sur les onglets Deuxième et Troisième</li>
+<li>If you would like to prevent a patron from checking items out because of their overdue items, check the 'Restrict' box, this will put a notice on the patron's record at checkout informing the librarian that the patron cannot check out due to overdue items.</li></ul>
+
+<p>Si vous essayez d'entrer des chiffres incohérents dans les colonnes 'Délais', Koha émettra une alerte expliquant l'inconsistence.</p>
+
+<h3>Avis de retard d'exemple</h3>
+
+<p>Nicole Engard
+<br>410 Library Rd.
+<br>Philadelphia, PA 19107</p>
+
+<p>Chère Nicole Engard (23529000035726),</p>
+
+<p>Selon notre système informatisé, à l'instant de ce message, vous avez des documents en retard. Merci de les retourner ou les renouveler dès que possible afin d'éviter des pénalités de retard croissantes.</p>
+
+<p>Si vous avez un mot de passe, vous pourrez l'utiliser avec votre numéro de carte de bibliothèque afin d'effectuer des renouvellement en ligne.</p>
+
+<p>Si vous pensez avoir rendu les documents ci-dessous, veuillez contacter la bibliothèque. Le personnel vous aidera à résoudre ce problème.</p>
+
+<p>Les exemplaires suivants sont à présent en retard:</p>
+
+<p>07/08/2008 Creating drug-free schools and communities : 502326000054 Fox, C. Lynn.</p>
+
+<p>06/27/2008 Eating fractions / 502326000022 McMillan, Bruce.</p>
+
+<p>Cordialement, Les bibliothécaires</p>
+
+[% INCLUDE 'help-bottom.inc' %]
+

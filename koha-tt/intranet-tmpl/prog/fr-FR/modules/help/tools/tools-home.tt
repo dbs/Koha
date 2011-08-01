@@ -1,0 +1,8 @@
+[% INCLUDE 'help-top.inc' %]
+<h1>Outils</h1>
+
+ <p>Beaucoup de modules complémentaires se trouvent dans Outils</p>
+ 
+ <p>Pour avancer, sélectionnez la tâche adéquate en cliquant sur le texte surligné en bleu.</p>
+ 
+ <p>Une aide spécifique sera disponible après ce point.</p> [% INCLUDE 'help-bottom.inc' %]

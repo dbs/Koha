@@ -1,0 +1,33 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Messages</h1>
+
+<p>Les notifications sont des messages envoyés aux adhérents, aux fournisseurs et au personnel à certains moments clés.</p>
+<h2>Ajouter une notice</h2>
+ <ul>
+ <li>Cliquez sur 'Ajouter notification'</li>
+ <li>Associez votre notification à un 'Module Koha' dans le menu déroulant</li>
+ <li>Entrez un code pour votre nouvelle notification (par exemple: 'ODUE' pour Overdue - les retards)</li>
+ <li>Entrez un Nom pour votre nouvelle notification (par exemple "Relance")</li>
+ <li>Entre un Sujet de message (par exemple "Document en retard")</li>
+ <li>Corps du message </li>
+ </ul>
+ <ul>
+ <li> 
+ <ul>
+ <li>Choose a field from the scroll down menu on the left side
+ <ul>
+ <li>
+ <span style="background-color: #ffe599">ASTUCE&nbsp;: Pour une aide sur chaque champs, voir&nbsp;: Notices: champs de la base de données, dans le manuel.</span></li>
+ </ul></li>
+ <li>Cliquez sur le bouton '&gt;&gt;' pour insérer ce champs dans votre message à l'endroit choisi.</li>
+ <li>Continuez à créer des champs et cliquez sur '&gt;&gt;' pour les insérer dans votre message.</li>
+ <li>Puis cliquez 'Valider'</li>
+ </ul></li>
+ <li>
+ <span style="color: #ff0000">
+IMPORTANT: Currently, Koha can not reference multiple biblios in a single notice (in other words--in the example below-- there is not just ONE email sent that describes ALL currently overdue items, but an email sent for EACH overdue item) </span></li>
+ </ul><h3>Comment planifier les lettres de relance?</h3>Pour plannifier les notifications de retard, vous devez utiliser l'outil 'Déclencheur de notifications'<br/>
+ <ul>
+ <li><em>Aller à&nbsp;:</em> More &gt; Tools &gt; Overdue notice/status triggers</li>
+ </ul> [% INCLUDE 'help-bottom.inc' %]

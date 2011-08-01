@@ -1,0 +1,114 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha &rsaquo; Acquisitions &rsaquo; Commandes en retard</title>
+[% INCLUDE 'doc-head-close.inc' %]
+</head>
+<body>
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'acquisitions-search.inc' %]
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/acqui/acqui-home.pl">Acquisitions</a> &rsaquo; <a href="lateorders.pl">Commandes en retard</a></div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+ 
+<h1>[% IF ( Supplier ) %][% Supplier %] : [% END %]Late orders</h1>
+<div id="acqui_lateorders">
+
+[% IF ( lateorders ) %]
+<form action="lateorders.pl" name="claim" method="post">
+ <input type="hidden" name="op" value="send_alert" />
+ [% IF ( letters ) %]
+ <p><label for="letter_code">Claim using notice: </label><select name="letter_code" id="letter_code">
+ [% FOREACH letter IN letters %]
+ <option value="[% letter.code %]">[% letter.name %]</option>
+ [% END %]
+ </select>
+ </p>
+ [% END %]
+ <table>
+ <tr>
+ <th>Date de la commande</th>
+ <th>Fournisseur</th>
+ <th>Information</th>
+ <th>Coût total</th>
+ <th>Panier</th>
+ <th>&nbsp;</th>
+ </tr>
+ [% FOREACH lateorder IN lateorders %]
+ <tr[% UNLESS ( loop.odd ) %] class="highlight"[% END %]> 
+ <td>
+ [% lateorder.orderdate %]
+ ([% lateorder.latesince %] days)
+ </td>
+ <td>
+ [% lateorder.supplier %]
+ </td>
+ <td>
+ <b>[% lateorder.title |html %]</b>
+ [% IF ( lateorder.author ) %]<br/><i>Auteur&nbsp;: </i> [% lateorder.author %][% END %]
+ [% IF ( lateorder.publisher ) %]
+ <br/><i>édité par&nbsp;:</i> [% lateorder.publisher %]
+ [% IF ( lateorder.publicationyear ) %]
+ <i> in </i>[% lateorder.publicationyear %]
+ [% END %]
+ [% END %]
+ </td>
+ <td>
+ [% lateorder.unitpricesupplier %]x[% lateorder.quantity %] = 
+ [% lateorder.subtotal %]
+ <p title="budget">[% lateorder.budget %]</p>
+ </td>
+ <td>
+ <p><a href="basket.pl?basketno=[% lateorder.basketno %]" title="panier">
+ [% lateorder.basketno %]
+ </a>
+ </p>
+ <p title="Site">[% lateorder.branch %]</p>
+ </td>
+ <td>
+ <input type="checkbox" name="claim_for" value="[% lateorder.ordernumber %]" />
+ </td>
+ </tr>
+ [% END %]
+ <tr> 
+ <th>Total</th>
+ <th colspan="2">&nbsp;</th>
+ <th>[% total %]</th>
+ <th>&nbsp;</th>
+ <td>
+ <input value="Réclamation commande" type="submit" />
+ </td>
+ </tr>
+ </table>
+ </form>
+[% ELSE %]<p>Il n'y a pas de commande en retard.</p>
+[% END %]
+</div>
+</div>
+</div>
+<div class="yui-b">
+<form action="lateorders.pl" method="get">
+<fieldset class="brief">
+<h4>Résultat du filtre&nbsp;:</h4>
+[% FOREACH ERROR_LOO IN ERROR_LOOP %]
+[% IF ( ERROR_LOO.delay_digits ) %]<p class="error">Le nombre de jours ([% ERROR_LOO.bad_delay %]) doit être compris entre 0 et 999.</p>[% END %]
+[% END %]
+<ol><li><label for="delay">Date de la commande</label><input size="3" maxlength="3" id="delay" type="text" name="delay" value="[% delay %]" /> days ago</li>
+ <li><label for="supplierid">Fournisseur&nbsp;:</label>
+ <select id="supplierid" size="1" tabindex="" name="supplierid">
+ <option value=""/>
+ [% FOREACH SUPPLIER_LOO IN SUPPLIER_LOOP %]
+ <option value="[% SUPPLIER_LOO.id %]"[% IF ( SUPPLIER_LOO.selected ) %] selected="selected"[% END %]>[% SUPPLIER_LOO.name %]</option>
+ [% END %]
+ </select>
+</ol>
+ <fieldset class="action"><input value="Sélectionner" type="submit" /></fieldset>
+</fieldset>
+ </form>
+[% INCLUDE 'acquisitions-menu.inc' %]
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]

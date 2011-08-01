@@ -1,0 +1,12 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Catalogue par type de document</h1>
+
+<p>Ce rapport vous dira combien d'exemplaires de chaque type se trouvent actuellement dans votre/vos site(s).</p>
+
+ <ul>
+ <li>Aller dans le module 'Bilans et Statistiques' (sous 'Plus' dans la navigation globale)</li>
+ <li>Sélectionnez 'Catalogue par type de document' sous 'autre'</li>
+ <li>Sélectionnez un site (ou le champ vide en haut du menu déroulant pour sélectionner tous les sites)</li>
+ <li>Cliquez 'Valider'</li>
+ </ul>[% INCLUDE 'help-bottom.inc' %]

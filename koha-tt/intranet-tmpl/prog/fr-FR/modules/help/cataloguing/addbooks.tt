@@ -1,0 +1,17 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Aide sur le catalogage</h1><h2>Comment puis-je modifier une notice bibliographique ?</h2>
+
+<p>Pour modifier une notice bibliographique, utilisez la recherche catalogue pour trouver la notice. Via l'interface de catalogage ou la recherche catalogue. Une recherche à l'intérieur du module de Catalogage cherchera sur le catalogue et le réservoir (voir ci-dessous)</p>
+
+<h2>Comment puis-je ajouter une notice bibliographique ?</h2>
+
+<p>Utilisez le bouton &quot;Nouvelle Notice&quot; pour ajouter une nouvelle notice.Choisissez la grille de catalogage que vous voudrez utiliser pour construire la notice bibliographique.Les grilles de catalogage sont des modèles de catalogage qui peuvent être créés et édités (modifiés) dans &quot;Administration Système&quot;.</p>
+
+<h2>Comment puis-je ajouter un exemplaire à une notice ?</h2>
+
+<p>Une notice bibliographique doit avoir des exemplaires pour qu'elle apparaisse à l'OPAC. Il y a 2 manières d'ajouter des exemplaires à une notice bibliographique&nbsp;:</p><ol><li><strong>Au travers du catalogage</strong>. After adding the new bibliographic record, you will be given the option to add items to the record. One record can have many items. </li><li><strong>Acquisitions de A à Z</strong>.&nbsp; Items can be added to orders in acquisitions. Item details are added upon receiving the item. Using the acquisitions module for adding items allows you to track the libraries spend against funds and budgets. </li></ol><h2>Le Réservoir, c'est quoi ?</h2>
+
+<p>Le réservoir est un lieu de stockage pour les notices bibliographiques qui ne sont pas encore utilisées dans le catalogue de la bibliothèque.&nbsp;Lorsqu'un document arrivant correspond à une notice du réservoir, les deux peuvent être recoupés et la notice bibliographique transférée du réservoir vers le catalogue.</p><p>Le réservoir peut être rempli avec des notices MARC via  &quot;Préparer des Notices MARC pour l'Import&quot; dans les Outils.</p> 
+[% INCLUDE 'help-bottom.inc' %]
+

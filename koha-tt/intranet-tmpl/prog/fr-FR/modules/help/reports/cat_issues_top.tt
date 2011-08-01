@@ -1,0 +1,16 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Documents les plus empruntés</h1>
+
+<p>Ce rapport guidé vous dira quels adhérents</p>
+
+ <ul>
+ <li>Aller dans le module 'Bilans et Statistiques' (sous 'Plus' dans la navigation globale)</li>
+ <li>Sélectionnez 'Documents les plus empruntés' sous 'palmarès'</li>
+ <li>Sélectionner les filtres parmi les outils proposés<br/>
+ <ul>
+ <li>ATTENTION&nbsp;: Ne sélectionnez pas 'Aucun' dans le champs 'Par' si vous voulez voir les résultats</li>
+ </ul></li>
+ <li>Une fois les champs remplis, cliquez 'Valider'</li>
+ </ul>
+ </div> [% INCLUDE 'help-bottom.inc' %]

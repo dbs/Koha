@@ -1,0 +1,36 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Préférences système</h1>
+
+<p>Global system preferences control the way your Koha system works in general. Set these preferences before anything else in Koha.</p>
+
+<p>System preferences can be searched (using any part of the preference name or description) using the search box on the 'Administration' page or the search box at the top of each system preferences page.</p>
+
+<p>When editing preferences a '(modified)' tag will appear next to items you change until you click the 'Save All' button</p>
+
+<p>After saving your preferences you'll get a confirmation message telling you what preferences were saved</p>
+
+<p>Each section of preferences can be sorted alphabetically by clicking the small down arrow to the right of the word 'Preference' in the header column</p>
+
+<p>Chaque onglet sur la guache rassemble plusieurs préférences:</p>
+
+ <ul>
+ <li><strong>Acquisitions&nbsp;:</strong>les préférences relatives aux acquisitions, tels que les suggestions d'achat est les taux de TVA</li>
+ <li><strong>Administration:</strong>contient les préférences administratives telles que adresse email, sessions et timeout.</li>
+ <li><strong>Autorités&nbsp;:</strong>contient les préférences liées à la gestion des notices d'autorité.</li>
+ <li><strong>Catalogage&nbsp;:</strong>contient les préférences qui contrôlent les fonctions de catalogage. C'est ici que vous choisissez votre version de MARC, que vous paramétrez Z39.50 et les code-barres</li>
+ <li><strong>Circulation&nbsp;:</strong>contient les préférences qui contrôlent les fonctions de circulation telles que les réservations et les amendes.</li>
+ <li><strong>Créateurs:</strong>Cet onglet contient des préférences en relation avec les modules qui crééent des objets.</li>
+ <li><strong>Contenu enrichi&nbsp;:</strong>contient les préférences qui permettent d'enrichir votre catalogue. C'est ici que vous activez les vignettes, FRBR et les mots-clés usagers.</li>
+ <li><strong>I18N/L10N:</strong>contient les préférences liées à l'internationalisation et la localisation, telles que les formats de date ou les langues.</li>
+ <li><strong>Usage Local&nbsp;:</strong>cet onglet est en général vide, à moins que la bibliothèque ait mis une préférence juste pour votre site.</li> 
+ <li><strong>Journeaux:</strong>active ou désactive le suivi des actions pour votre système.</li>
+ <li><strong>OPAC&nbsp;:</strong>personnaliser l'OPAC et ses fonctionnalités (en plus des préférences 'Contenus enrichis').</li>
+ <li><strong>Adhérent&nbsp;: </strong>contient les préférences qui contrôlent la façon dont le système gère les fonctionnalités adhérent. Par exemple la taille minimum du mot de passe.</li>
+ <li><strong>Recherche:</strong>contient les préférences liées aux fonctions de recherche avancées telles que les mots vides ou le "stemming".</li>
+ <li><strong>Périodiques</strong>contient les préférences liées aux périodiques.</li>
+ <li><strong>Interface bibliothécaire:</strong>personnaliser l'interface en modifiant la feuille de style et le menu de navigation.</li>
+ <li><strong>web-services&nbsp;:</strong>les préférences relative aux services tel que OAI-PMH</li>
+ </ul>
+ 
+[% INCLUDE 'help-bottom.inc' %]

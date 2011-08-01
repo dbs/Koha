@@ -1,0 +1,19 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Format</h1>
+
+<p>Le format définit le texte et les images qui seront imprimés sur la carte et leur emplacement.</p>
+
+<h1>Profils</h1>
+
+<p>A profile is a set of "adjustments" applied to a given template just prior to printing which compensates for anomalies unique and peculiar to a given printer (to which the profile is assigned). This means if you set a template up and then print a sample set of data and find that the items are not all aligned the same on each card, you need to set up a profile for each printer to make up for the differences in printing styles, such as the shifting of text to the left, right, top or bottom.</p>
+
+<h1>Modèles</h1>
+
+<p>Un modèle est le type d'étiquettes/cartes que vous utilisez. Ce peut être Avery·5160 pour les étiquettes d'adresse, Gaylord·47-284 pour les étiquettes de dos ou Avery·28371 pour les cartes adhérent, par exemple. Ces étiquettes incluent toutes les informations dont vous avez besoin pour paramétrer Koha, ces informations pouvant être sur l'emballage, ou si ce n'est pas le cas pouvant généralement être trouvées sur le site web du fournisseur.</p>
+
+<h2>Lots</h2>
+
+<p>Un lot est un ensemble d'adhérents pour lesquels vous souhaitez générer les cartes</p>
+
+[% INCLUDE 'help-bottom.inc' %]

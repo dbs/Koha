@@ -1,0 +1,335 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha &rsaquo; Rapports &rsaquo; Rapports guidés &rsaquo; Dictionnaire</title>
+[% INCLUDE 'doc-head-close.inc' %]
+[% INCLUDE 'calendar.inc' %]
+</head>
+<body>
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'circ-search.inc' %]
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/reports/reports-home.pl">Bilans et statistiques</a> &rsaquo; <a href="/cgi-bin/koha/reports/guided_reports.pl">Assistant de rapports</a> &rsaquo; <strong> Dictionary </strong></div>
+
+<div id="doc3" class="yui-t2">
+
+<div id="bd">
+<div id="yui-main">
+<div class="yui-b">
+[% IF ( start_dictionary ) %]
+[% INCLUDE 'dictionary-toolbar.inc' %]
+[% END %]
+<h1>Dictionnaire</h1>
+[% IF ( start_dictionary ) %]
+ <p>Utiliser le dictionnaire pour définir des critères personnalisés pour les rapports</p>
+
+ [% IF ( definitions ) %]
+ <h2>Termes actuels</h2>
+ <form action="/cgi-bin/koha/reports/dictionary.pl" method="post">
+ <input type="hidden" name="phase" value="View Dictionary" />
+ [% IF ( areas ) %]
+ Filter by area <select name="areas">
+ <option value="">Tous</option>
+ [% FOREACH area IN areas %]
+ [% IF ( area.selected ) %]
+ <option value="[% area.id %]" selected="selected" >[% area.name %]</option>
+ [% ELSE %]
+ <option value="[% area.id %]">[% area.name %]</option>
+ [% END %]
+ [% END %]
+ </select>
+ <input value="Valider" name="submit" type="submit" />
+ </form>
+ <br />
+ [% END %]
+ <table border="1" cellspacing="0" cellpadding="5">
+ <tr>
+ <th>Nom</th>
+ <th>Description</th>
+ <th>Table</th>
+ <th>Définition</th>
+ <th>&nbsp;</th>
+ </tr>
+ [% FOREACH definition IN definitions %]
+ [% UNLESS ( loop.odd ) %]
+ <tr class="highlight" valign="top">
+ [% ELSE %]
+ <tr valign="top">
+ [% END %]
+ <td>[% definition.name %]</td>
+ <td>[% definition.description %]</td>
+ <td>[% definition.areaname %]</td>
+ <td>[% definition.saved_sql %]</td>
+ <td><form method="post" action="/cgi-bin/koha/reports/dictionary.pl">
+ <input type="hidden" name="id" value="[% definition.id %]" />
+ <input type="hidden" name="phase" value="Delete Definition" />
+ <input value="Supprimer définition" name="submit" type="submit" />
+ </form></td>
+ </tr>
+ [% END %]
+ </table>
+ [% END %]
+[% END %]
+
+[% IF ( new_dictionary ) %]
+<form action="/cgi-bin/koha/reports/dictionary.pl" method="post">
+
+<div class="toptabs">
+<ul class="ui-tabs-nav">
+ <li class="ui-tabs-selected"><span class="a">Etape 1&nbsp;: Nom</span></li>
+ <li><span class="a">Etape 2&nbsp;: Table</span></li>
+ <li><span class="a">Etape 3&nbsp;: Colonnes</span></li>
+ <li><span class="a">Etape 4&nbsp;: Valeurs</span></li>
+</ul>
+<div class="tabs-container">
+<fieldset class="rows"><legend>Ajouter une nouvelle définition</legend><ol>
+<li>
+<label for="definition_name">Nom de la définition&nbsp;:</label>
+<input type="text" id="definition_name" name="definition_name" />
+</li>
+<li>
+<label for="definition_description">Description Définition:</label>
+<textarea name="definition_description" id="definition_description" rows="3" cols="20"></textarea>
+</li>
+</ol></fieldset>
+ 
+<fieldset class="action"><input type="hidden" name="phase" value="New Term step 2" />
+<input value="Suivant" name="submit" type="submit" /></fieldset>
+</div>
+</div>
+</form>
+[% END %]
+
+[% IF ( step_2 ) %]
+<div class="toptabs">
+<ul class="ui-tabs-nav">
+ <li><span class="a">Etape 1&nbsp;: Nom</span></li>
+ <li class="ui-tabs-selected"><span class="a">Etape 2&nbsp;: Table</span></li>
+ <li><span class="a">Etape 3&nbsp;: Colonnes</span></li>
+ <li><span class="a">Etape 4&nbsp;: Valeurs</span></li>
+</ul>
+<div class="tabs-container">
+<form action="/cgi-bin/koha/reports/dictionary.pl" method="post">
+<fieldset class="rows">
+<legend>Ajouter une nouvelle définition</legend>
+<ol><li><input type="hidden" name="phase" value="New Term step 3" />
+<input type="hidden" name="definition_name" value="[% definition_name %]" />
+<input type="hidden" name="definition_description" value="[% definition_description %]" />
+<label for="areas">Select table </label><select name="areas" id="areas">
+[% FOREACH area IN areas %] 
+<option value="[% area.id %]">[% area.name %]</option> 
+[% END %] 
+</select></li>
+</ol>
+</fieldset> 
+<fieldset class="action"><input value="Suivant" name="submit" type="submit" /></fieldset>
+</form>
+</div>
+</div>
+[% END %]
+
+[% IF ( step_3 ) %]
+<h1>Ajouter une nouvelle définition</h1>
+<div class="toptabs">
+<ul class="ui-tabs-nav">
+ <li><span class="a">Etape 1&nbsp;: Nom</span></li>
+ <li><span class="a">Etape 2&nbsp;: Table</span></li>
+ <li class="ui-tabs-selected"><span class="a">Etape 3&nbsp;: Colonnes</span></li>
+ <li><span class="a">Etape 4&nbsp;: Valeurs</span></li>
+</ul>
+<div class="tabs-container">
+<form action="/cgi-bin/koha/reports/dictionary.pl" method="post"> 
+<input type="hidden" name="area" value="[% area %]" />
+<input type="hidden" name="definition_name" value="[% definition_name %]" />
+<input type="hidden" name="definition_description" value="[% definition_description %]" />
+
+<table style="border: 0;"><tr><td><select id="availableColumns" name="oldcolumns2" size="25" style="width:200px;height:300px;"> 
+[% FOREACH column IN columns %] 
+[% IF ( column.table ) %] 
+[% IF ( loop.first ) %] 
+[% ELSE %] 
+</optgroup> 
+[% END %] 
+
+<optgroup label="[% column.table %]"> 
+[% ELSE %] 
+<option value="[% column.name %]"> 
+[% IF ( column.description ) %][% column.description %] 
+[% ELSE %] 
+[% column.name %] 
+[% END %] 
+</option> 
+[% END %] 
+[% END %] 
+</optgroup>
+</select></td>
+
+<td><input value="Ajouter" name="Add" style="width : 6em; margin-bottom : .5em;" type="button" class="button" onclick="addColumn()" /><br /><input type="button" name="delete" value="&lt;&lt; Delete" class="button" style="width : 6em;"  onclick="delColumn()" /> </td>
+
+<td><select id="selectedColumns" name="columns" size="25" style="width:200px;height:300px;"></select> </td> </tr></table> 
+ 
+ 
+<input type="hidden" name="phase" value="New Term step 4" />
+<input value="Suivant" name="submit" type="submit" /> 
+</form> 
+</div>
+</div>
+[% END %]
+
+[% IF ( step_4 ) %]
+<h1>Ajouter une nouvelle définition</h1>
+<div class="toptabs">
+<ul class="ui-tabs-nav">
+ <li><span class="a">Etape 1&nbsp;: Nom</span></li>
+ <li><span class="a">Etape 2&nbsp;: Table</span></li>
+ <li><span class="a">Etape 3&nbsp;: Colonnes</span></li>
+ <li class="ui-tabs-selected"><span class="a">Etape 4&nbsp;: Valeurs</span></li>
+</ul>
+<div class="tabs-container">
+<form action="/cgi-bin/koha/reports/dictionary.pl" method="post">
+<input type="hidden" name="area" value="[% area %]" />
+<input type="hidden" name="definition_name" value="[% definition_name %]" />
+<input type="hidden" name="definition_description" value="[% definition_description %]" />
+<input type="hidden" name="columnstring" value="[% columnstring %]" />
+
+[% FOREACH column IN columns %]
+<input type="hidden" name="criteria_column" value="[% column.name %]" />
+[% column.name %]
+[% IF ( column.distinct ) %]
+<select name="[% column.name %]_value"> 
+[% FOREACH value IN column.values %] 
+<option value="[% value.availablevalues %]">[% value.availablevalues %]</option> 
+[% END %] 
+</select>
+[% END %]
+[% IF ( column.date ) %]
+<table>
+<tr valign="top">
+<td><input type="radio" name="[% column.name %]_all" value="all" />All dates</td>
+<td>OU</td>
+<td><input type="radio" name="dates" value="range" />Date range<br />
+<table>
+<tr>
+<td>Date de début</td>
+<td><input type="text" size="10" id="[% column.name %]_start_value" name="[% column.name %]_start_value" value="" /> 
+<img src="[% themelang %]/lib/calendar/cal.gif" id="buttonfrom1" style="cursor: pointer;"  /> 
+<script type="text/javascript">                            
+Calendar.setup({             
+inputField     : "[% column.name %]_start_value",    
+ifFormat       : "[% DHTMLcalendar_dateformat %]",
+button         : "buttonfrom1",                            
+align          : "Tl"                  
+});
+</script>
+<div class="hint">[% INCLUDE 'date-format.inc' %]</div>
+</td>
+</tr>
+<tr>
+<td>Limite de fin de date</td>
+<td>
+<input type="text" size="10" id="[% column.name %]_end_value" name="[% column.name %]_end_value" value="" /> 
+<img src="[% themelang %]/lib/calendar/cal.gif" id="buttonfrom2" style="cursor: pointer;"  />
+<script type="text/javascript">                            
+Calendar.setup({             
+inputField     : "[% column.name %]_end_value",    
+ifFormat       : "[% DHTMLcalendar_dateformat %]",
+button         : "buttonfrom2",
+align          : "Tl"                  
+});
+</script>
+<div class="hint">[% INCLUDE 'date-format.inc' %]</div>
+</td>
+</tr>
+</table></td>
+</tr>
+</table>
+[% END %]
+[% IF ( column.text ) %]
+<p>Search string matches <input type="text" size="13" name="[% column.name %]_value" /></p>
+[% END %]
+
+[% END %]
+<input type="hidden" name="phase" value="New Term step 5" />
+<input value="Suivant" name="submit" type="submit" /> 
+</form>
+</div>
+</div>
+[% END %]
+
+[% IF ( step_5 ) %]
+<form action="/cgi-bin/koha/reports/dictionary.pl" method="post"> 
+<input type="hidden" name="area" value="[% area %]" /> 
+<input type="hidden" name="definition_name" value="[% definition_name %]" /> 
+<input type="hidden" name="definition_description" value="[% definition_description %]" />
+<input type="hidden" name="columnstring" value="[% columnstring %]" />
+
+<h3>Confirmer la définition</h3>
+
+<fieldset class="rows"><ol><li>
+<span class="label">Nom&nbsp;: </span>
+[% definition_name %]
+</li>
+<li>
+<span class="label">Description&nbsp;:</span>
+[% definition_description %]
+</li>
+<li>
+<span class="label">Domaine&nbsp;:</span>
+[% areaname %]
+</li></ol>
+
+<ol><li>
+<table>
+<tr>
+<th>Colonnes</th>
+<th>Valeurs</th>
+</tr>
+[% FOREACH criteria_loo IN criteria_loop %]
+<tr>
+<td>[% criteria_loo.name %]</td>
+<td>[% criteria_loo.value %]</td>
+</tr>
+[% END %]
+</table></li></ol> </fieldset> 
+
+<fieldset class="action"><input type="hidden" name="sql" value="[% query %]" />
+<input type="hidden" name="phase" value="New Term step 6" />
+<input value="Enregistrer" name="submit" type="submit" /> </fieldset>
+
+</form>
+[% END %]
+</div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'guided-reports-view.inc' %]
+</div>
+</div>
+<script type="text/javascript">                            
+//<![CDATA[
+function setObjects() {                    
+    selectedColumnsObj=document.getElementById('selectedColumns');           
+	availableColumnsObj=document.getElementById('availableColumns');   
+}              
+setObjects();                          
+
+function addColumn() {                             
+  for (i=0;i<availableColumnsObj.length;i++) {   
+    if (availableColumnsObj.options[i].selected==true) {     
+	  var newColumnObj=document.createElement("OPTION");                           
+	  newColumnObj.value=availableColumnsObj.options[i].value;          
+	  newColumnObj.text=availableColumnsObj.options[i].text;              
+	  selectedColumnsObj.appendChild(newColumnObj);          
+	  newColumnObj.selected=true;    
+	}        
+  }                        
+}   
+
+function delColumn() {                   
+  for (i=0;i<=selectedColumnsObj.options.length;i++) {       
+    if (selectedColumnsObj.options.selectedIndex>=0) {    
+	  selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex)        
+    }  
+  }
+}
+//]]>
+</script>
+
+[% INCLUDE 'intranet-bottom.inc' %]

@@ -1,0 +1,32 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Postes &amp; budgets</h1>
+
+<p><span style="background-color: #ffe599">ASTUCE&nbsp;: Les Postes budgétaires peuvent être ignorés si vous avez réglé vos Préférences Systèmes sur acquisitions"simples"&nbsp;: les postes budgétaires sont utiles uniquement quand vous utilisez les acquisitions "normales".</span></p>
+
+<p>Les &quot;Budgets&quot; sont des comptes que vous établissez pour suivre vos dépenses documentaires. Ils peuvent être utilisé pour tous les types de documents, pas seulement pour les livres, et devraient recouper les lignes de votre budget d'acquisition. Par exemple, si votre bibliothèque établit une ligne de budget pour les livres, une autre pour les documents audiovisuels, une troisième pour les périodiques et une quatrième pour les bases de données électroniques, vous aurez quatre budgets.</p>
+
+ <p><span style="background-color: #ffe599">ASTUCE: La première fois que vous accéderez à cette page, on vous demandera d'ajouter votre première ligne budgétaire -- après quoi vous aurez aussi le choix d'éditer ou de supprimer les postes budgétaires.</span></p>
+
+ <h2>Ajouter un Poste budgétaire</h2>
+ <ul>
+ <li>Cliquez 'Nouveau poste'</li>
+ </ul>
+ <ul>
+ <li>Chaque poste budgétaire a un code unique, limité à 5 caractères</li>
+ <li>Entrez un intitulé de poste budgétaire, pour information des bibliothécaires</li>
+ <li>Les fonds peuvent être propres à un site, mais c'est une option</li>
+ <li>Une fois le poste budgétaire créé, on peut lui associer un budget</li>
+ <li>Cliquez 'Ajouter budget' à côté du poste à modifier</li>
+ <li>ATTENTION&nbsp;: Les dates ne s'enregistrent correctement qu'après que vous ayez défini le format de date dans les préférences système -- faites le AVANT de définir les budgets.)</li>
+ </ul>
+
+ <ul>
+ <li>Une fois les budgets définis, vous pouvez les voir/chercher en cliquant "Voir tous les budgets" sous la liste des postes budgétaires</li>
+ <li>Les informations budgétaires seront aussi accessibles dans le module 'Acquisitions'</li>
+ </ul>
+ <ul>
+ <li>Ce module vous permet de suivre les dépenses par poste budgétaire</li>
+ </ul>
+
+[% INCLUDE 'help-bottom.inc' %]

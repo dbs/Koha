@@ -1,0 +1,26 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Réservations à traiter</h1>
+
+<p>This report will show you all of the items that have holds on them that are available at the library for pulling.</p>
+
+<p>This report will be generated based on a few system preferences:</p>
+
+<ul>
+ <li>StaticHoldsQueueWeight
+<ul>
+ <li>Permet à la bibliothèque de définir une liste de codes de localisation -- qui classera la liste en sélectionnant la première localisation disponible.</li>
+</ul>
+</li>
+ <li>RandomizeHoldsQueueWeight
+<ul>
+ <li>Si 'RandomizeHoldsQueueWeight' et 'StaticHoldsQueueWeight' sont activés, la liste des codes de bibliothèques dans la préférence système 'StaticHoldsQueueWeight' est aléatoire. Si seule la préférence système 'RandomizeHoldsQueueWeight' est activée, la liste des codes des bibliothèques est utilisée pour rendre le classement aléatoire.</li>
+</ul>
+</li>
+</ul>
+
+<p>Si ni la préférence 'RandomizeHoldsQueueWeight' ni la préférence 'StaticHoldsQueueWeight' ne sont activées, la file des réservations est classée selon l'ordre de sortie de la base de données.</p>
+
+<p>You can limit the results you see by using the Refine box on the left side of the page</p>
+
+[% INCLUDE 'help-bottom.inc' %]

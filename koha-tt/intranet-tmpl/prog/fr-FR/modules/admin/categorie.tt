@@ -1,0 +1,367 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha &rsaquo; Administration &rsaquo; Patron Categories &rsaquo; [% IF ( add_form ) %][% IF ( categorycode ) %]Modify category '[% categorycode |html %]'[% ELSE %]New category[% END %][% END %]
+[% IF ( add_validate ) %]Data recorded[% END %]
+[% IF ( delete_confirm ) %][% IF ( totalgtzero ) %]Cannot Delete: Category [% categorycode |html %] in Use[% ELSE %]Confirm Deletion of Category '[% categorycode |html %]'[% END %][% END %]
+[% IF ( delete_confirmed ) %]Category Deleted[% END %]</title>
+[% INCLUDE 'doc-head-close.inc' %]
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.tablesorter.pager.js"></script>
+<script type="text/javascript" id="js">$(document).ready(function() {
+	$("#table_categorie").tablesorter({
+		sortList: [[0,0]],
+		widgets: ['zebra'],
+		headers: { 11: { sorter: false}}
+	}).tablesorterPager({container: $("#pagertable_categorie"),positionFixed: false,size: 20});
+}); </script>
+[% INCLUDE 'calendar.inc' %]
+<script type="text/javascript">
+//<![CDATA[
+	//
+	function isNotNull(f,noalert) {
+		if (f.value.length ==0) {
+   return false;
+		}
+		return true;
+	}
+	//
+	function toUC(f) {
+		var x=f.value.toUpperCase();
+		f.value=x;
+		return true;
+	}
+	//
+	function isNum(v,maybenull) {
+	var n = new Number(v.value);
+	if (isNaN(n)) {
+		return false;
+		}
+	if (maybenull==0 && v.value=='') {
+		return false;
+	}
+	return true;
+	}
+	//
+	function isDate(f) {
+		var t = Date.parse(f.value);
+		if (isNaN(t)) {
+			return false;
+		}
+	}
+	// to check if the data are correctly entered.
+	function Check(ff) {
+	    var ok=0;
+		var _alertString=_("Formulaire non soumis à cause du (des) problème(s) suivant(s)");
+		_alertString +="\n-------------------------------------------------------------------\n\n";
+		if (ff.categorycode.value.length==0) {
+		    ok=1;
+			_alertString += _("- categorycode manquant") + "\n";
+		}
+		if (!(ff.category_type.value)){
+		    ok=1;
+		    _alertString += _("- type de catégorie manquant") + "\n";
+		}
+		if (!(isNotNull(ff.description,1))) {
+		    ok=1;
+			_alertString += _("- description manquante") + "\n";
+		}
+		if (!isNum(ff.upperagelimit,0) && ff.category_type.value=='C') {
+		    ok=1;
+			_alertString += _("- la limite supérieure d'âge n'est pas un nombre") + "\n";
+				
+		}
+                if(!(ff.enrolmentperioddate.value || ff.enrolmentperiod.value)) {
+                    ok=1;
+                    _alertString += _("- either Enrollment period or Until date must be provided") + "\n";
+                }
+		if(ff.enrolmentperioddate.value && ff.enrolmentperiod.value){
+			document.getElementById('enrolmentmessage').className = "error";
+			return false;
+		}
+		
+		if (ok) { // if there is a problem
+		    alert(_alertString);
+                    return false;
+                }
+                // if all is good
+		ff.submit();
+	}
+	//]]>
+</script>
+</head>
+<body>
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'patrons-admin-search.inc' %]
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Accueil</a> &rsaquo; <a href="/cgi-bin/koha/admin/admin-home.pl">Administration</a> &rsaquo; [% IF ( add_form ) %] <a href="/cgi-bin/koha/admin/categorie.pl">Catégories adhérent</a> &rsaquo; [% IF ( categorycode ) %]Modify category '[% categorycode |html %]'[% ELSE %]New category[% END %][% END %]
+[% IF ( add_validate ) %] <a href="/cgi-bin/koha/admin/categorie.pl">Catégories adhérent</a> &rsaquo; Data recorded[% END %]
+[% IF ( delete_confirm ) %] <a href="/cgi-bin/koha/admin/categorie.pl">Catégories adhérent</a> &rsaquo; [% IF ( totalgtzero ) %]Cannot Delete: Category [% categorycode |html %] in Use[% ELSE %]Confirm Deletion of Category '[% categorycode |html %]'[% END %][% END %]
+[% IF ( delete_confirmed ) %] <a href="/cgi-bin/koha/admin/categorie.pl">Catégories adhérent</a> &rsaquo; Category Deleted[% END %]
+[% IF ( else ) %]Patron Categories[% END %]</div>
+
+<div id="doc3" class="yui-t2">
+ 
+ <div id="bd">
+ <div id="yui-main">
+ <div class="yui-b">
+
+[% IF ( add_form ) %]
+ 
+
+
+ 
+ <form name="Aform" action="[% script_name %]" method="post">
+ <input type="hidden" name="op" value="add_validate" />
+ <input type="hidden" name="checked" value="0" />
+[% IF ( categorycode ) %]
+ <h1>Modifier une catégorie [% categorycode |html %]</h1>
+ [% ELSE %]
+ <h1>Ajouter catégorie</h1>
+ [% END %]
+ <fieldset class="rows">
+ <ol>[% IF ( categorycode ) %]
+ <li><span class="label">Code catégorie</span>[% categorycode |html %]
+ <input type="hidden" name="categorycode" value="[% categorycode |html %]" /><input type="hidden" name="is_a_modif" value="1" /></li>
+ [% ELSE %]
+ <li><label for="categorycode">Category code: </label> &nbsp; <input type="text" name="categorycode" id="categorycode" size="10" maxlength="10" onblur="toUC(this)" /></li>
+ [% END %]
+ <li><label for="description">Description: </label> &nbsp; <input type="text" name="description" id="description" size="40" maxlength="80" value="[% description |html %]" /></li>
+ <li><label for="enrolmentperiod">Enrollment period: </label> &nbsp; 
+ <input type="text" name="enrolmentperiod" id="enrolmentperiod" size="3" maxlength="3" value="[% IF ( enrolmentperiod ) %][% enrolmentperiod %][% END %]" /> months <br />
+ <label for="enrolmentperioddate">Until date: </label> &nbsp;
+ <input type="text" name="enrolmentperioddate" id="enrolmentperioddate" value="[% enrolmentperioddate %]" /> <img alt="Voir calendrier" src="[% themelang %]/lib/calendar/cal.gif" id="enrolmentperioddate_button" />
+ <script type="text/javascript">
+            //<![CDATA[
+               Calendar.setup({
+                    inputField : "enrolmentperioddate",
+                    ifFormat : "[% DHTMLcalendar_dateformat %]",
+                	button : "enrolmentperioddate_button"
+            	});
+           	//]]>
+        </script>
+ <div id="enrolmentmessage" class="hint">Les choix "mois" et "jusqu'à une date" sont incompatibles</div>
+ </li>
+ <li><label for="dateofbirthrequired">Age required: </label> &nbsp; <input type="text" name="dateofbirthrequired" id="dateofbirthrequired" value="[% dateofbirthrequired %]" size="3" maxlength="3" /> years</li>
+ <li><label for="upperagelimit">Upperage limit: </label> &nbsp; <input type="text" name="upperagelimit" id="upperagelimit" size="3" maxlength="3" value="[% upperagelimit %]" /> years</li>
+ <li><label for="enrolmentfee">Enrollment fee: </label><input type="text" name="enrolmentfee" id="enrolmentfee" size="6" value="[% enrolmentfee %]" /></li>
+ <li><label for="overduenoticerequired">Overdue notice required: </label> &nbsp; <select name="overduenoticerequired" id="overduenoticerequired">
+ [% IF ( overduenoticerequired ) %]
+ <option value="0">Non</option>
+ <option value="1" selected="selected">Oui</option>
+ [% ELSE %]
+ <option value="0" selected="selected">Non</option>
+ <option value="1">Oui</option>
+ [% END %]
+ </select></li>
+ <li><label for="hidelostitems">Lost items in staff client</label> &nbsp; <select name="hidelostitems" id="hidelostitems">
+ [% IF ( hidelostitems ) %]
+ <option value="0">Shown</option>
+ <option value="1" selected="selected">Hidden by default</option>
+ [% ELSE %]
+ <option value="0" selected="selected">Shown</option>
+ <option value="1">Hidden by default</option>
+ [% END %]
+ </select></li>
+ <li><label for="reservefee">Hold fee: </label><input type="text" name="reservefee" id="reservefee" size="6" value="[% reservefee %]" /></li>
+ <li><label for="category_type">Category type: </label> &nbsp; <select name="category_type" id="category_type">
+ [% IF ( type_n ) %]<option value="" selected="selected">Sélectionnez un type de catégorie</option>[% ELSE %]<option value="">Sélectionnez un type de catégorie</option>[% END %]
+ [% IF ( type_A ) %]<option value="A" selected="selected">Adulte</option>[% ELSE %]<option value="A">Adulte</option>[% END %]
+ [% IF ( type_C ) %]<option value="C" selected="selected">Enfant</option>[% ELSE %]<option value="C">Enfant</option>[% END %]
+ [% IF ( type_S ) %]<option value="S" selected="selected">Bibliothécaire</option>[% ELSE %]<option value="S">Bibliothécaire</option>[% END %]
+ [% IF ( type_I ) %]<option value="I" selected="selected">Collectivité</option>[% ELSE %]<option value="I">Collectivité</option>[% END %]
+ [% IF ( type_P ) %]<option value="P" selected="selected">Professionnel</option>[% ELSE %]<option value="P">Professionnel</option>[% END %]
+ [% IF ( type_X ) %]<option value="X" selected="selected">Statistiques</option>[% ELSE %]<option value="X">Statistiques</option>[% END %]
+ </select>
+ </li></ol>
+</fieldset>
+
+ [% IF ( EnhancedMessagingPreferences ) %]
+ <fieldset class="rows">
+ <h4>Préférences de messages pour cette catégorie d'adhérent (défault)</h4>
+ [% INCLUDE 'messaging-preference-form.inc' %]
+ </fieldset>
+ [% END %]
+ <fieldset class="action"><input value="Enregistrer" type="button" onclick="Check(this.form);" /> </fieldset>
+ </form>
+
+[% END %]
+
+[% IF ( add_validate ) %]
+<h3>Donnée enregistrée</h3>
+ <form action="[% script_name %]" method="post">
+ <input type="submit" value="OK" />
+ </form>
+
+[% END %]
+
+[% IF ( delete_confirm ) %]
+ 
+ <form action="[% script_name %]" method="post">
+ <fieldset><legend> 
+ [% IF ( totalgtzero ) %]
+ Category [% categorycode |html %] is in use. Deletion not possible![% ELSE %]
+Confirm Deletion of Category [% categorycode |html %][% END %]</legend>
+
+[% IF ( totalgtzero ) %]<div class="dialog alert"><strong>Cette catégorie est utilisée [% total %] fois</strong>. Suppression impossible</div>[% END %]
+ <table>
+ <tr><th scope="row">Category code: </th><td>[% categorycode |html %]</td></tr>
+ <tr><th scope="row">Description: </th><td>[% description |html %]</td></tr>
+ <tr><th scope="row">Enrollment period: </th>
+ <td>
+ [% IF ( enrolmentperiod ) %]
+ [% enrolmentperiod %] months
+ [% ELSE %]
+ until [% enrolmentperioddate %]
+ [% END %]
+ </td>
+ </tr>
+ <tr><th scope="row">Age required: </th><td>[% dateofbirthrequired %] année(s)</td></tr>
+ <tr><th scope="row">Upperage limit: </th><td>[% upperagelimit %] année(s)</td></tr>
+ <tr><th scope="row">Enrollment fee: </th><td>[% enrolmentfee %]</td></tr>
+ <tr><th scope="row">Receives overdue notices: </th><td>[% IF ( overduenoticerequired ) %]Yes[% ELSE %]No[% END %]</td></tr>
+ <tr><th scope="row">Lost items in staff client</th><td>[% IF ( hidelostitems ) %]Hidden by default[% ELSE %]Shown[% END %]</td></tr>
+ <tr><th scope="row">Hold fee: </th><td>[% reservefee %]</td></tr>
+</table>
+ <fieldset class="action">[% IF ( totalgtzero ) %]
+<input type="submit" value="OK" /></form>
+ [% ELSE %]
+ <input type="hidden" name="op" value="delete_confirmed" />
+ <input type="hidden" name="categorycode" value="[% categorycode |html %]" /> <input value="Supprimer cette catégorie" type="submit" /> <a class="cancel" href="/cgi-bin/koha/admin/categorie.pl">Annuler</a> 
+ [% END %]</fieldset></fieldset></form>
+[% END %]
+
+[% IF ( delete_confirmed ) %]
+<h3>Catégorie supprimée</h3>
+
+ <form action="[% script_name %]" method="post">
+ <input type="submit" value="OK" />
+ </form>
+[% END %]
+
+[% IF ( else ) %]
+
+<div id="toolbar">
+ <script type="text/javascript">
+	//<![CDATA[
+
+	// prepare DOM for YUI Toolbar
+
+	 $(document).ready(function() {
+	    yuiToolbar();
+	 });
+
+	// YUI Toolbar Functions
+
+	function yuiToolbar() {
+	    new YAHOO.widget.Button("newcategory");
+	}
+
+	//]]>
+	</script>
+ <ul class="toolbar">
+ <li><a id="newcategory" href="/cgi-bin/koha/admin/categorie.pl?op=add_form">Ajouter catégorie</a></li>
+</ul></div>
+
+<h2>Gestion des catégories d'adhérents</h2>
+[% IF ( searchfield ) %]
+ You Searched for [% searchfield %]</span>
+ [% END %]
+<span id="pagertable_categorie" class="pager">
+ <form class="formpager">&nbsp;<strong>page(s)</strong>&nbsp;:
+ <img src="[% interface %]/prog/img/first.png" class="first"/>
+ <img src="[% interface %]/prog/img/prev.png" class="prev"/>
+ <input type="text" size="5" class="pagedisplay"/>
+ <img src="[% interface %]/prog/img/next.png" class="next"/>
+ <img src="[% interface %]/prog/img/last.png" class="last"/>
+ , entries/page : 
+ <select class="pagesize">
+ <option value="10">10</option>
+ <option selected="selected" value="20">20</option>
+ <option value="30">30</option>
+ <option value="40">40</option>
+ <option value="50">50</option>
+ <option value="100">100</option>
+ </select>
+ </form>
+</span>
+ <table id="table_categorie">
+ <thead>
+ <th scope="col">Code</th>
+ <th scope="col">Nom de la catégorie</th>
+ <th scope="col">Type</th>
+ <th scope="col">Durée d'inscription</th>
+ <th scope="col">Age requis</th>
+ <th scope="col">Limite d'âge supérieure</th>
+ <th scope="col">Frais d'inscription</th>
+ <th scope="col">Retard</th>
+ <th scope="col">Exemplaires perdus</th>
+ <th scope="col">Coût de réservation</th>
+ [% IF ( EnhancedMessagingPreferences ) %]
+ <th scope="col">Messages</th>
+ [% END %]
+ <th scope="col" colspan="2">&nbsp; </th>
+ </thead>
+ [% FOREACH loo IN loop %]
+ <tr>
+ <td>[% loo.categorycode |html %]</td>
+ <td>
+ <a href="[% loo.script_name %]?op=add_form&amp;categorycode=[% loo.categorycode |url %]">[% loo.description |html %]</a>
+ </td>
+ <td>
+ [% IF ( loo.type_A ) %]Adult[% END %]
+ [% IF ( loo.type_C ) %]Child[% END %]
+ [% IF ( loo.type_P ) %]Prof.[% END %]
+ [% IF ( loo.type_I ) %]Org.[% END %]
+ [% IF ( loo.type_S ) %]Staff[% END %]
+ [% IF ( loo.type_X ) %]Statistical[% END %]
+ </td>
+ <td>
+ [% IF ( loo.enrolmentperiod ) %]
+ [% loo.enrolmentperiod %] months
+ [% ELSE %]
+ until [% loo.enrolmentperioddate %]
+ [% END %]
+ 
+ </td>
+ <td>[% loo.dateofbirthrequired %] année(s)</td>
+ <td>[% loo.upperagelimit %] année(s)</td>
+ <td>[% loo.enrolmentfee %]</td>
+ <td>[% IF ( loo.overduenoticerequired ) %]Yes[% ELSE %]No[% END %]</td>
+ <td>[% IF ( loo.hidelostitems ) %]Hidden[% ELSE %]Shown[% END %]</td>
+ <td>[% loo.reservefee %]</td>
+ [% IF ( EnhancedMessagingPreferences ) %]
+ <td style="white-space: nowrap; font-size:80%;">
+ [% IF ( loo.messaging_prefs ) %]
+ [% FOREACH prefs IN loo.messaging_prefs %]
+ [% FOREACH transport IN prefs.transports %]
+ [% IF ( transport.transport ) %]
+ [% IF ( prefs.Item_Due ) %]Item Due
+ [% ELSIF ( prefs.Advance_Notice ) %]Advance Notice
+ [% ELSIF ( prefs.Upcoming_Events ) %]Upcoming Events
+ [% ELSIF ( prefs.Hold_Filled ) %]Hold Filled
+ [% ELSIF ( prefs.Item_Check_in ) %]Item Check-in
+ [% ELSIF ( prefs.Item_Checkout ) %]Item Checkout
+ [% ELSE %]Unknown
+ [% END %]:
+ <strong>[% transport.transport %]</strong><br />
+ [% ELSE %]None<br />[% END %]
+ [% END %]
+ [% END %]
+ [% ELSE %]
+ None
+ [% END %]
+ </td>
+ [% END %]
+ <td><a href="[% loo.script_name %]?op=add_form&amp;categorycode=[% loo.categorycode |url %]">Modifier</a></td>
+ <td><a href="[% loo.script_name %]?op=delete_confirm&amp;categorycode=[% loo.categorycode |url %]">Supprimer</a></td>
+ </tr>
+ [% END %]
+ </table>
+[% END %]
+
+</div>
+</div>
+<div class="yui-b">
+[% INCLUDE 'admin-menu.inc' %]
+</div>
+</div>
+[% INCLUDE 'intranet-bottom.inc' %]

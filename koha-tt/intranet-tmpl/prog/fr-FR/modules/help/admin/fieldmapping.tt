@@ -1,0 +1,23 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Liens Mots-clés => MARC </h1>
+
+<p>Cet outil vous permet de lier des champs MARC à un certain nombre de champs prédéfinis de la base de données.</p>
+
+<p>Actuellement, le seul mot clé utilisé est 'subtitle'</p>
+
+<p>Avec cet outil, vous définissez les champs MARC qui s'affichent sur la page de détail d'une notice bibliographique en utilisant des mots clés. L'exemple suivant utilisera le champ sous-titre.</p>
+
+<p>Using the Framework pull down menu, choose the Framework you would like to apply this rule to. For example, the subtitle for books can be found in the 245$b field.</p>
+
+<p>However the subtitle for DVDs appears in 245$p</p>
+
+<p>Avec cet outil, vous pouvez dire à Koha d'afficher le bon champ sous-tire quand vous visualisez une notice à l'OPAC.</p>
+
+<p>This tool can be used to chain together pieces of the record as well. If you want the series number to show in the title on your search results you simply have to map 490 $v to 'subtitle' along with the 245 $b.</p>
+
+<p style="background-color: #ffe599">Tip: Chain together the fields you want to show after the item title in the order in which you want them to appear.</p>
+
+<p>De futurs développements incluront des champs mots clés supplémentaires.</p>
+
+[% INCLUDE 'help-bottom.inc' %]

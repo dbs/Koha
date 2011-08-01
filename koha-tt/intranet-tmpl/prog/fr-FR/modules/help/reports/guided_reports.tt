@@ -1,0 +1,68 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Ajout d'un rapport personnalisé</h1>
+
+<p>Si le rapport dont vous avez besoin n'existe pas déjà, l'assistant de rapport vous guidera dans les étapes nécessaires à la création d'un rapport.</p>
+
+
+<ul>
+<li>Aller dans le module 'Bilans et Statistiques' (sous 'Plus' dans la navigation globale)</li>
+<li>Choisissez 'Etats guidés' sous l'assistant de création de rapport</li>
+</ul>
+
+<p>Suivez les 6 étapes présentées pour créer un rapport</p>
+
+<p><strong>Etape 1&nbsp;: Choisissez sur quel module votre rapport portera</strong></p>
+<ul>
+<li>Choisissez le module de Koha pour lequel construire un rapport : adhérents, circulatio, cataloguage, etc</li>
+<li>Cliquez sur Suivant</li>
+</ul>
+
+<p><strong>Etape 2&nbsp;: Sélectionnez un type de rapport</strong></p>
+<ul><li style="color: #990000">IMPORTANT : Seul le type tabulaire doit être choisi avec cette option</li></ul>
+<p><strong>Etape 3 sur 6&nbsp;: Sélectionnez les colonnes à afficher</strong></p>
+<p><strong>Etape 4&nbsp;: Sélectionnez un critère de limitation</strong></p>
+<ul><li>Ceci est facultatif. Si vous ne voulez pas limiter les résultats à partir d'un champ laissez cette section vide</li></ul>
+<p><strong>Etape 5&nbsp;: Sélectionnez les colonnes sur lesquelles faire un total</strong></p>
+<ul><li>Ceci est facultatif. Laissez cette section vide si vous ne voulez pas effectuer de calcul sur votre résultat.</li></ul>
+<p><strong>Etape 6&nbsp;: Choisissez l'ordre de tri de votre rapport</strong></p>
+<ul><li>Ceci est facultatif. Laissez cette section vide si vous voulez que le résultat présente les données telles qu'elles se trouvent dans les tables.</li></ul>
+
+<h1>Modifier les rapports</h1>
+
+<p>Les étapes personnalisées sont entièrement modifiable dans la page Etats sauvegardées.</p>
+
+<ul><li><em>Aller à&nbsp;:</em> More > Reports > Guided Reports > Use Saved</li></ul>
+
+<ul><li>Pour modifier un état, cliquez sur Modifier SQL</li>
+<li>Une page avec des champs éditables s'ouvre de façon à ce que vous puissez changer le titre, les notes et le SQL du rapport.</li></ul>
+
+
+<h1>Questions</h1>
+
+<p><strong>Est-ce que je peux avoir des rapports lancés à une certaine date ?</strong></p>
+
+<p>Oui, vous pouvez utiliser l'outil Planificateur de tâches.</p>
+
+<ul><li><em>Aller à&nbsp;:</em> More > Tools > Task Scheduler</li></ul>
+
+<p><strong>Y a-t-il un dépôt pour les rapports ?</strong></p>
+
+<p>There is a page on the Koha Wiki: <a href="http://wiki.koha-community.org/wiki/SQL_Reports_Library" target="_new">http://wiki.koha-community.org/wiki/SQL_Reports_Library</a> with reports written by Koha libraries around the world.</p>
+
+<p>NEKLS also has a great page (<a href="http://www.nexpresslibrary.org/training/reports-training/" target="_new">http://www.nexpresslibrary.org/training/reports-training/</a>) with a list of reports they have written.</p>
+
+<p><strong>Est-ce que je peux avoir des paramètres définis à l'exécution ?</strong></p>
+
+<p>Oui. Il y a une syntaxe spécifique qui sera comprise par Koha comme : Demander des valeurs en exécutant l'état. La syntaxe est &lt;&lt;Question à poser|valeurs autorisées&gt;&gt;.</p>
+<ul>
+<li>Les &lt;&lt; et &gt;&gt; sont seulement des délimiteurs. Vous devez placer des &lt;&lt; au début de votre paramètre et &gt;&gt; à la fin</li>
+<li>The <strong>Question à poser</strong> will be displayed on the left of the string to enter. 
+<li>The <strong>authorised_value</strong> can be omitted if not applicable. If it contains an authorised value category, or <strong>sites</strong> or <strong>type de document</strong> or <strong>categorycode</strong>, le champ de saisie sera remplacé par une liste de valeurs autorisées</li>
+</ul>
+<p>Notez que vous pouvez avoir plus d'un paramètre pour une requête SQL donnée</p>
+<p>Note that entering nothing at run time won't probably work as you expect. It will be considered as "value empty" not as "ignore this parameter". For example entering nothing for : "title=&lt;&lt;Enter title&gt;&gt;" will display results with title='' (no title). If you want to have to have something not mandatory, use "title like &lt;&lt;Enter title&gt;&gt;" and enter a % at run time instead of nothing</p>
+<p>Exemple :</p>
+<ul><li>SELECT surname,firstname FROM borrowers WHERE branchcode=&lt;&lt;Enter patrons library|branches&gt;&gt; AND surname like &lt;&lt;Enter filter for patron surname (% if none)&gt;&gt;</li></ul>
+
+[% INCLUDE 'help-bottom.inc' %]
