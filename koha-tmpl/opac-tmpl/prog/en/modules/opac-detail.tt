@@ -47,7 +47,6 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
  });
 
 
-
 $(document).ready(function() { 
 
 $(".auto-submit-star").rating({
@@ -59,7 +58,7 @@ $(".auto-submit-star").rating({
             biblionumber: "[% biblionumber %]"  
         },
         function(data){
-            $("#rating_total").text('('+data.total+')');
+            $("#rating_total").text('('+data.total+' ratings)');
             $("#rating_user").text('your rating \''+data.value+'\' added');
         }
         , "json");
@@ -345,7 +344,7 @@ $(".auto-submit-star").rating({
     <input  type="hidden" name='biblionumber'  value="[% biblionumber %]" />
 
    <span  id="rating_total"  >
-[% IF ( rating_total ) %]&nbsp;([% rating_total %])[% END %]
+[% IF ( rating_total ) %]&nbsp;([% rating_total %] ratings)[% END %]
 </span>
 
    <span id="rating_user">[% IF ( rating_value ) %]your rating '[% rating_value %]'[% END %]</span>
