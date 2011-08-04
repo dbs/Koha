@@ -261,7 +261,7 @@ $.post("/cgi-bin/koha/opac-ratings.pl",
 
 var ee = data;
 
-    $("#rating_total_"+bibnum).html("&nbsp;("+data.total+')');
+    $("#rating_total_"+bibnum).html("&nbsp;("+data.total+' ratings)'        );
 
     $("#rating_value_"+bibnum).text('your rating \''+data.value+'\' added');
 //    var uu  = data.value;
@@ -272,10 +272,6 @@ var ee = data;
   }
  });
 });
-
-
-
-
 
 
 //]]>
@@ -555,10 +551,10 @@ var ee = data;
     <input  type="hidden" name='biblionumber'  value="[% SEARCH_RESULT.biblionumber %]" />
 
 
- <span id="rating_total_[% SEARCH_RESULT.biblionumber %]">&nbsp;([% SEARCH_RESULT.rating_total %])</span>
+ <span id="rating_total_[% SEARCH_RESULT.biblionumber %]">&nbsp;([% SEARCH_RESULT.rating_total %] ratings)</span>
 
  <span id="rating_value_[% SEARCH_RESULT.biblionumber %]">
-[% IF ( SEARCH_RESULT.rating_value ) %]&nbsp;your rating '[% SEARCH_RESULT.rating_value %]'[% END %]
+[% IF ( SEARCH_RESULT.rating_value ) %]&nbsp;your rating '[% SEARCH_RESULT.rating_value %]'[% END %] 
 </span>
 
                 </form>
