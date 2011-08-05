@@ -48,6 +48,8 @@ use MARC::Record;
 use MARC::Field;
 use List::MoreUtils qw/any none/;
 
+use Smart::Comments '####';
+
 BEGIN {
 	if (C4::Context->preference('BakerTaylorEnabled')) {
 		require C4::External::BakerTaylor;
@@ -308,6 +310,10 @@ if (!$@ and C4::Context->preference('ShowReviewer') and C4::Context->preference(
 
 my $reviews = getreviews( $biblionumber, 1 );
 my $loggedincommenter;
+
+
+
+
 foreach ( @$reviews ) {
     my $borrowerData   = GetMember('borrowernumber' => $_->{borrowernumber});
     # setting some borrower info into this hash
@@ -322,8 +328,6 @@ foreach ( @$reviews ) {
     $_->{datereviewed} = format_date($_->{datereviewed});
 
 
-
-
 #    my $value =  get_rating_by_review($_->{reviewid});
     my $rating =  get_rating(  $biblionumber ,  $_->{borrowernumber});
 
@@ -332,14 +336,6 @@ foreach ( @$reviews ) {
 
     ####  $rating
 #### $_
-
-
-
-
-
-
-
-
 
 
     if ($borrowerData->{'borrowernumber'} eq $borrowernumber) {
@@ -589,7 +585,13 @@ if (C4::Context->preference("OPACURLOpenInNewWindow")) {
 }
 
 
-if (C4::Context->preference('RatingsEnabled') ) {
+my $aa =   C4::Context->preference('OpacStarRatings');
+#### $aa
+
+
+
+if (C4::Context->preference('OpacStarRatings') eq '1' or
+    C4::Context->preference('OpacStarRatings') eq 'details'  ) {
 my $rating = get_rating( $biblionumber, $borrowernumber );
 $template->param(
   RatingsShowOnDetail => 1,

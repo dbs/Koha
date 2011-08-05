@@ -492,17 +492,19 @@ for (my $i=0;$i<@servers;$i++) {
 		    }
         }
 
-        foreach (@newresults) {
-            my $rating = get_rating( $_->{'biblionumber'}, '' );
-            ####       $rating
+        if ( C4::Context->preference('OpacStarRatings') ) {
+            foreach my $r (@newresults) {
+                my $rating = get_rating( $_->{'biblionumber'}, '' );
+                ####       $rating
 
-            my $bib = $_->{'biblionumber'};
-            $_->{'rating_user'}                         = $rating->{'user'};
-            $_->{'rating_total'}                        = $rating->{'total'};
-            $_->{'rating_avg'}                          = $rating->{'avg'};
-            $_->{'rating_avgint'}                       = $rating->{'avgint'};
-            $_->{'rating_readonly'}                     = ( $borrowernumber ? 0 : 1 );
-            $_->{ 'rating_val_' . $rating->{'avgint'} } = $rating->{'avgint'};
+                my $bib = $r->{'biblionumber'};
+                $r->{'rating_user'}                         = $rating->{'user'};
+                $r->{'rating_total'}                        = $rating->{'total'};
+                $r->{'rating_avg'}                          = $rating->{'avg'};
+                $r->{'rating_avgint'}                       = $rating->{'avgint'};
+                $r->{'rating_readonly'}                     = ( $borrowernumber ? 0 : 1 );
+                $r->{ 'rating_val_' . $rating->{'avgint'} } = $rating->{'avgint'};
+            }
         }
 
       

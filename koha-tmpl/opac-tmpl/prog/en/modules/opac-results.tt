@@ -527,7 +527,7 @@ var ee = data;
 
 
 
-				[% IF ( RatingsEnabled ) %]
+				[% IF ( OpacStarRatings ) %]
 
          <div class="results_summary">
 
@@ -561,18 +561,6 @@ var ee = data;
                                        </div>
 
 				[% END %]
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
