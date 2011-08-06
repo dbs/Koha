@@ -60,6 +60,7 @@ $(".auto-submit-star").rating({
         function(data){
             $("#rating_total").text('('+data.total+' ratings)');
             $("#rating_user").text('your rating \''+data.value+'\' added');
+            $("#aaa").text('zzz');
         }
         , "json");
     }
@@ -334,6 +335,8 @@ $(".auto-submit-star").rating({
 
 
 [% IF ( RatingsEnabled ) %]
+
+
  <div class="results_summary">   
     <input class="auto-submit-star" type="radio"  name="rating[% biblionumber %]"  value="1" [% IF ( rating_val_1 ) %]checked="1"[% END %] [% IF ( rating_readonly ) %]disabled="disabled"[% END %]   />
     <input class="auto-submit-star" type="radio"  name="rating[% biblionumber %]"  value="2" [% IF ( rating_val_2 ) %]checked="1"[% END %] [% IF ( rating_readonly ) %]disabled="disabled"[% END %]   />
@@ -344,6 +347,9 @@ $(".auto-submit-star").rating({
     <input  type="hidden" name='biblionumber'  value="[% biblionumber %]" />
 
    <span  id="rating_total"  >
+
+
+
 [% IF ( rating_total ) %]&nbsp;([% rating_total %] ratings)[% END %]
 </span>
 
@@ -352,6 +358,7 @@ $(".auto-submit-star").rating({
     [% END %]
 
 
+   <span  id="aaa">aaaaaa</span>
 
 
 
