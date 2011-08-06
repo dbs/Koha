@@ -1,4 +1,5 @@
 package C4::Ratings;
+
 # This file is part of Koha.
 #
 # Koha is free software; you can redistribute it and/or modify it under the
@@ -28,8 +29,8 @@ use Smart::Comments '####';
 use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 
 BEGIN {
-	$VERSION = 3.00;
-	@ISA = qw(Exporter);
+    $VERSION = 3.00;
+    @ISA     = qw(Exporter);
 
 =c
 	@EXPORT_OK = qw(
@@ -38,20 +39,21 @@ BEGIN {
 	);
 =cut
 
-	@EXPORT = qw(
-		&get_rating &get_ratings
-		&add_rating &add_ratings
-        &get_rating_by_review
-	);
+    @EXPORT = qw(
+      &get_rating &get_ratings
+      &add_rating &add_ratings
+      &del_rating
+      &get_rating_by_review
+      &get_rating_by_review
+    );
 
-
-#	%EXPORT_TAGS = ();
+    #	%EXPORT_TAGS = ();
 }
-
 
 # ---------------------------------------------------------------------
 
 sub get_rating {
+#### @_
     my ( $biblionumber, $borrowernumber ) = @_;
 
     my $query = "
@@ -59,29 +61,36 @@ sub get_rating {
     WHERE       biblionumber = ?";
 
     my $sth = C4::Context->dbh->prepare($query);
-    $sth->execute( $biblionumber );
-    my $res  = $sth->fetchrow_hashref();
+    $sth->execute($biblionumber);
+    my $res = $sth->fetchrow_hashref();
+
+    my $avg;
+    eval { $avg = $res->{sum} / $res->{total} };
+    my $avgint = sprintf( "%.0f", $avg );
+    warn $avgint;
+
+    my %rating_hash;
+    $rating_hash{total}  = $res->{total};
+    $rating_hash{avg}    = $avg;
+    $rating_hash{avgint} = $avgint;
+    $rating_hash{stats}  = "foo";
+
+    if ($borrowernumber) {
+
 ####  $res
-    my $q2 = "
+        my $q2 = "
 	SELECT    value  from ratings
     WHERE       biblionumber = ? and borrowernumber = ?";
 
-    my $sth1 = C4::Context->dbh->prepare($q2 );
-#    $sth1->{TraceLevel} = 3;
-    $sth1->execute( $biblionumber, $borrowernumber );
-    my $res1  = $sth1->fetchrow_hashref();
+        my $sth1 = C4::Context->dbh->prepare($q2);
 
-    my $avg;
-    eval {   $avg = $res->{sum} / $res->{total}  }; 
-    my $avgint  = sprintf("%.0f", $avg ); 
-    warn  $avgint;
+        #    $sth1->{TraceLevel} = 3;
+        $sth1->execute( $biblionumber, $borrowernumber );
+        my $res1 = $sth1->fetchrow_hashref();
+        $rating_hash{'my_rating'}  = $res1->{"value"};
 
-    my %rating_hash;
-    $rating_hash{total} =  $res->{total};
-    $rating_hash{avg} =  $avg;
-    $rating_hash{avgint} = $avgint;
-    $rating_hash{stats} = "foo";
-    $rating_hash{value} = $res1->{"value"};
+    }
+
     #### %rating_hash
     return \%rating_hash;
 }
@@ -126,22 +135,34 @@ sub get_rating_by_review {
 
 
 sub add_rating  {
-	my ($biblionumber , $borrowernumber,  $value) = @_;
+    my ($biblionumber , $borrowernumber,  $value) = @_;
 
-	my $query = "delete from ratings where borrowernumber = ? and biblionumber = ? limit 1";
-	my $sth = C4::Context->dbh->prepare($query);
-	$sth->execute($borrowernumber,$biblionumber );
+    my $query = "delete from ratings where borrowernumber = ? and biblionumber = ? limit 1";
+    my $sth = C4::Context->dbh->prepare($query);
+    $sth->execute($borrowernumber,$biblionumber );
 
-	my $query = "INSERT INTO ratings (borrowernumber,biblionumber,value)
-	VALUES (?,?,?)";
-	my $sth = C4::Context->dbh->prepare($query);
-	$sth->execute($borrowernumber,$biblionumber,$value);
+    my $query = "INSERT INTO ratings (borrowernumber,biblionumber,value)
+    VALUES (?,?,?)";
+    my $sth = C4::Context->dbh->prepare($query);
+    $sth->execute($borrowernumber,$biblionumber,$value);
 
-	my $rating  =  get_rating (  $biblionumber, $borrowernumber );
+    my $rating  =  get_rating (  $biblionumber, $borrowernumber );
 #    $rating->{value} = $value;
 
     ####  $rating;
 
+    return $rating;
+}
+
+
+sub mod_rating {
+    my ( $biblionumber, $borrowernumber, $value ) = @_;
+
+    my $query = "update ratings set value = ? where borrowernumber = ? and biblionumber = ?";
+    my $sth   = C4::Context->dbh->prepare($query);
+    $sth->execute( $borrowernumber, $biblionumber );
+
+    my $rating = get_rating( $biblionumber, $borrowernumber );
     return $rating;
 }
 

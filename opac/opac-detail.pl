@@ -313,6 +313,26 @@ my $loggedincommenter;
 
 
 
+#### aaaaaaaaaaaaaaaaaaaa
+=c
+#    my $value =  get_rating_by_review($_->{reviewid});
+    my $rating =  get_rating(  $biblionumber ,  $_->{borrowernumber});
+
+    $_->{"borr_rating_val_".$rating->{value}} = 1;
+    $_->{rating} = $rating->{value} ;
+    $_->{my_rating} = $rating->{my_rating} ;
+
+    ####  $rating
+#### $_
+
+#### bbbbbbbbbbbbbbb
+=cut
+
+
+
+
+
+
 
 foreach ( @$reviews ) {
     my $borrowerData   = GetMember('borrowernumber' => $_->{borrowernumber});
@@ -328,14 +348,6 @@ foreach ( @$reviews ) {
     $_->{datereviewed} = format_date($_->{datereviewed});
 
 
-#    my $value =  get_rating_by_review($_->{reviewid});
-    my $rating =  get_rating(  $biblionumber ,  $_->{borrowernumber});
-
-    $_->{"borr_rating_val_".$rating->{value}} = 1;
-    $_->{rating} = $rating->{value} ;
-
-    ####  $rating
-#### $_
 
 
     if ($borrowerData->{'borrowernumber'} eq $borrowernumber) {
@@ -600,7 +612,9 @@ $template->param(
   rating_total        => $rating->{'total'},
   rating_avg          => $rating->{'avg'},
   rating_avgint       => $rating->{'avgint'},
+  my_rating            => $rating->{'my_rating'},
   rating_readonly     => ( $borrowernumber ? 0 : 1 ),
+    
   "rating_val_" . "$rating->{'avgint'}" => $rating->{'avgint'},
   );
 }

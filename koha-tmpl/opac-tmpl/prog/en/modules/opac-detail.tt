@@ -60,6 +60,7 @@ $(".auto-submit-star").rating({
         function(data){
             $("#rating_total").text('('+data.total+' ratings)');
             $("#rating_user").text('your rating \''+data.value+'\' added');
+            $("#aaa").text('aaa');
         }
         , "json");
     }
@@ -77,6 +78,23 @@ $(".auto-submit-star").rating({
 
 </head>
 <body id="opac-detail">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div id="doc3" class="yui-t7">
    <div id="bd">
 [% INCLUDE 'masthead.inc' %]
@@ -334,6 +352,11 @@ $(".auto-submit-star").rating({
 
 
 [% IF ( RatingsEnabled ) %]
+
+
+
+   <span id="aaa">zzzzzzzz</span>
+
  <div class="results_summary">   
     <input class="auto-submit-star" type="radio"  name="rating[% biblionumber %]"  value="1" [% IF ( rating_val_1 ) %]checked="1"[% END %] [% IF ( rating_readonly ) %]disabled="disabled"[% END %]   />
     <input class="auto-submit-star" type="radio"  name="rating[% biblionumber %]"  value="2" [% IF ( rating_val_2 ) %]checked="1"[% END %] [% IF ( rating_readonly ) %]disabled="disabled"[% END %]   />
