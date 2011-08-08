@@ -22,6 +22,7 @@ use POSIX;
 
 use C4::Debug;
 use C4::Context;
+use Math::Round qw(:all);
 
 use Smart::Comments '####';
 
@@ -68,6 +69,9 @@ sub get_rating {
     eval { $avg = $res->{sum} / $res->{total} };
     my $avgint = sprintf( "%.0f", $avg );
     warn $avgint;
+
+$avgint = nearest(.25, $avg );
+$avgint = '1.5';
 
     my %rating_hash;
     $rating_hash{total}  = $res->{total};

@@ -13,6 +13,8 @@
 <script type="text/javascript" src="/opac-tmpl/prog/en/lib/jquery/jquery.js"></script>
 <script type="text/javascript" src="/opac-tmpl/prog/en/lib/jquery/plugins/jquery.rating.js"></script>
 
+<script language="javascript" type="text/javascript" src="http://jquery-star-rating-plugin.googlecode.com/svn/trunk/jquery.MetaData.js">
+
 <link rel="stylesheet" type="text/css" href="/opac-tmpl/prog/en/css/jquery.rating.css" />
 
 
@@ -532,11 +534,10 @@ var ee = data;
 
                     <form name="moo" method="post" action="/cgi-bin/koha/opac-ratings.pl">
 
-<input class="star" type="radio"  name="star-[% SEARCH_RESULT.biblionumber %]"  value="1" [% IF ( SEARCH_RESULT.rating_avgint == 1 ) %]checked="checked"[% END %] disabled="disabled" />
-<input class="star" type="radio"  name="star-[% SEARCH_RESULT.biblionumber %]"  value="2" [% IF ( SEARCH_RESULT.rating_avgint == 2 ) %]checked="checked"[% END %] disabled="disabled" />
-<input class="star" type="radio"  name="star-[% SEARCH_RESULT.biblionumber %]"  value="3" [% IF ( SEARCH_RESULT.rating_avgint == 3 ) %]checked="checked"[% END %] disabled="disabled" />
-<input class="star" type="radio"  name="star-[% SEARCH_RESULT.biblionumber %]"  value="4" [% IF ( SEARCH_RESULT.rating_avgint == 4 ) %]checked="checked"[% END %] disabled="disabled" />
-<input class="star" type="radio"  name="star-[% SEARCH_RESULT.biblionumber %]"  value="5" [% IF ( SEARCH_RESULT.rating_avgint == 5 ) %]checked="checked"[% END %] disabled="disabled" />
+<input class="star {split:4}" type="radio"  name="star-[% SEARCH_RESULT.biblionumber %]"  value="1" [% IF ( SEARCH_RESULT.rating_avgint == '1' ) %]checked="checked"[% END %] disabled="disabled" />
+<input class="star {split:4}" type="radio"  name="star-[% SEARCH_RESULT.biblionumber %]"  value="1.25" [% IF ( SEARCH_RESULT.rating_avgint == '1.25' ) %]checked="checked"[% END %] disabled="disabled" />
+<input class="star {split:4}" type="radio"  name="star-[% SEARCH_RESULT.biblionumber %]"  value="1.5" [% IF ( SEARCH_RESULT.rating_avgint == '1.5' ) %]checked="checked"[% END %] disabled="disabled" />
+<input class="star {split:4}" type="radio"  name="star-[% SEARCH_RESULT.biblionumber %]"  value="1.75" [% IF ( SEARCH_RESULT.rating_avgint == '1.75' ) %]checked="checked"[% END %] disabled="disabled" />
 
 
 
@@ -564,7 +565,7 @@ var ee = data;
 
 [% IF ( SEARCH_RESULT.my_rating ) %]
  <span> &nbsp;your rating '[% SEARCH_RESULT.my_rating %]' </span>
-
+ <span> &nbsp; avg is '[% SEARCH_RESULT.rating_avgint %]' </span>
 [% END %] 
 
                 </form>
