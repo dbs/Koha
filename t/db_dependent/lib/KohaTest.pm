@@ -230,6 +230,7 @@ sub startup_15_truncate_tables : Test( startup => 1 ) {
                               subscriptionroutinglist
                               suggestions
                               tags
+                              ratings
                               virtualshelfcontents
                         );
 

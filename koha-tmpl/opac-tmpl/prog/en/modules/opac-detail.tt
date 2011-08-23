@@ -1,6 +1,9 @@
 [% INCLUDE 'doc-head-open.inc' %][% IF ( LibraryNameTitle ) %][% LibraryNameTitle %][% ELSE %]Koha Online[% END %] Catalog &rsaquo; Details for: [% title |html %][% FOREACH subtitl IN subtitle %], [% subtitl.subfield %][% END %]
 [% INCLUDE 'doc-head-close.inc' %]
 <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="/opac-tmpl/prog/en/lib/jquery/plugins/jquery.rating.js"></script>
+<link rel="stylesheet" type="text/css" href="/opac-tmpl/prog/en/css/jquery.rating.css" />
+
 <script type="text/JavaScript" language="JavaScript">
 //<![CDATA[
      $(document).ready(function() { 
@@ -25,6 +28,38 @@
         KOHA.Google.GetCoverFromIsbn([% covernewwindow %]);[% END %][% IF ( opacuserlogin ) %][% IF ( loggedinusername ) %][% IF ( TagsEnabled ) %]
         $(".tagbutton").click(KOHA.Tags.add_tag_button);[% END %][% END %][% END %]
 
+    // ratings code
+    // hide 'rate' button
+    $('input[name="rate_button"]').remove();
+
+    $(".auto-submit-star").rating({
+        callback: function(value, link){
+            $.post("/cgi-bin/koha/opac-ratings-ajax.pl",
+            {
+                my_new_rating: value,
+                my_current_rating: $("#my_current_rating").attr("value"),
+                borrowernumber: "[% borrowernumber %]",
+                biblionumber: "[% biblionumber %]"  ,
+             },
+             function(data){
+
+                $("#rating_avg_text").text('average '+data.avg_int);
+
+                if (data.my_new_rating == null ) {
+                    $("#my_rating_text").text('(your rating deleted)');
+                    $("#my_current_rating").text('');
+                    $("#my_new_rating").text('');
+
+                } else {
+                    $("#my_rating_text").text('(your rating '+data.my_new_rating+' added)');
+                    $("#my_current_rating").text(data.my_new_rating);
+
+                }
+
+            }
+            , "json");
+        }
+    });
 });
 
 YAHOO.util.Event.onContentReady("furtherm", function () {
@@ -41,7 +76,6 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
 		YAHOO.util.Event.addListener("furthersearches", "click", furthersearchesMenu.show, null, furthersearchesMenu);
 		YAHOO.widget.Overlay.windowResizeEvent.subscribe(positionfurthersearchesMenu);
  });
-	
 //]]>
 </script>
 [% IF ( opacuserlogin ) %][% IF ( loggedinusername ) %][% IF ( TagsEnabled ) %]<style type="text/css">
@@ -303,6 +337,28 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
         [% END %]
         </span>
         [% END %][% END %][% END %]
+
+    [% IF ( OpacStarRatings ) %]
+        <form method="post" action="/cgi-bin/koha/opac-ratings.pl">
+        <div class="results_summary">   
+<input class="auto-submit-star" type="radio" name="rating" value="1"[% IF rating_avg == 1 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
+<input class="auto-submit-star" type="radio" name="rating" value="2"[% IF rating_avg == 2 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
+<input class="auto-submit-star" type="radio" name="rating" value="3"[% IF rating_avg == 3 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
+<input class="auto-submit-star" type="radio" name="rating" value="4"[% IF rating_avg == 4 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
+<input class="auto-submit-star" type="radio" name="rating" value="5"[% IF rating_avg == 5 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
+        <input  type="hidden" name='biblionumber'  value="[% biblionumber %]" />
+        <input  type="hidden" name='borrowernumber'  value="[% borrowernumber %]" />
+        <input  type="hidden" name='my_current_rating' id='my_current_rating' value="[% my_current_rating %]" />
+        <input  type="hidden" name='my_new_rating' id='my_new_rating' value="[% my_new_rating %]" />
+
+        [% UNLESS ( rating_readonly ) %]&nbsp;  <INPUT name="rate_button" type="submit" value="Rate me">[% END %]&nbsp;
+
+        <span id="rating_avg_text">[% IF rating_avg %]average [% rating_avg_int %][% END %]</span>
+        <span id="my_rating_text">[% IF my_current_rating %](your rating [% my_current_rating %])[% END %]</span>
+
+        </div>
+        </FORM>
+    [% END %]
 
     [% IF ( BakerTaylorContenturl ) %]
         <span class="results_summary">

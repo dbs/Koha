@@ -2610,6 +2610,21 @@ CREATE TABLE `fieldmapping` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Table structure for table `ratings`
+--
+
+DROP TABLE IF EXISTS `ratings`;
+CREATE TABLE `ratings` (
+  `rating_id` int(11) NOT NULL auto_increment,
+  `borrowernumber` int(11) NOT NULL,
+  `biblionumber` int(11) NOT NULL,
+  `value` tinyint(1) NOT NULL,
+  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
+  PRIMARY KEY  (`rating_id`),
+  KEY `ratings_borrowers_fk_1` (`borrowernumber`),
+  KEY `ratings_biblionumber_fk_1` (`biblionumber`)
+) ENGINE=InnoDB CHARSET=utf8;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

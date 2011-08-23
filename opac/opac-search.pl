@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 
-# Copyright 2008 Garry Collum and the Koha Koha Development team
+# Copyright 2008 Garry Collum and the Koha Development team
 # Copyright 2010 BibLibre
+# Copyright 2011 KohaAloha, NZ
 #
 # This file is part of Koha.
 #
@@ -36,6 +37,13 @@ use C4::Biblio;  # GetBiblioData
 use C4::Koha;
 use C4::Tags qw(get_tags);
 use C4::Branch; # GetBranches
+
+
+use Smart::Comments '####';
+
+
+use C4::Ratings;
+
 use POSIX qw(ceil floor strftime);
 use URI::Escape;
 use Storable qw(thaw freeze);
@@ -357,6 +365,10 @@ if ($params->{'limit-yr'}) {
 # Params that can only have one value
 my $scan = $params->{'scan'};
 my $count = C4::Context->preference('OPACnumSearchResults') || 20;
+my $count = 3;
+
+
+
 my $countRSS         = C4::Context->preference('numSearchRSSResults') || 50;
 my $results_per_page = $params->{'count'} || $count;
 my $offset = $params->{'offset'} || 0;
@@ -482,11 +494,22 @@ for (my $i=0;$i<@servers;$i++) {
 										limit=>$tag_quantity });
 			}
 		}
-                if (C4::Context->preference('COinSinOPACResults')) {
+        if (C4::Context->preference('COinSinOPACResults')) {
 		    foreach (@newresults) {
 		      $_->{coins} = GetCOinSBiblio($_->{'biblionumber'});
 		    }
-                }
+        }
+
+        if ( C4::Context->preference('OpacStarRatings') == 1 ) {
+            foreach (@newresults) {
+                my $rating = get_rating( $_->{'biblionumber'}, $borrowernumber );
+                $_->{'my_rating'}     = $rating->{'my_rating'};
+                $_->{'rating_total'}  = $rating->{'total'};
+                $_->{'rating_avg'}    = $rating->{'avg'};
+                $_->{'rating_avgint'} = $rating->{'avgint'};
+            }
+        }
+
       
 	if ($results_hashref->{$server}->{"hits"}){
 	    $total = $total + $results_hashref->{$server}->{"hits"};
@@ -695,4 +718,5 @@ if (C4::Context->preference('GoogleIndicTransliteration')) {
         $template->param('GoogleIndicTransliteration' => 1);
 }
 
+	$template->param( borrowernumber    => $borrowernumber);
 output_with_http_headers $cgi, $cookie, $template->output, $content_type;
