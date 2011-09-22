@@ -80,6 +80,7 @@ BEGIN {
 		&GetBiblioIssues
 		&GetOpenIssue
 		&AnonymiseIssueHistory
+        &ReadAlready
 	);
 
 	# subs to deal with returns
@@ -100,6 +101,19 @@ BEGIN {
                 &DeleteBranchTransferLimits
 	);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 =head1 NAME
 
@@ -898,8 +912,53 @@ sub CanBookBeIssued {
             $needsconfirmation{'resreservedate'} = format_date($res->{'reservedate'});
         }
     }
+
+
+
+    my $read_already = ReadAlready( $borrower->{'borrowernumber'},  $item->{biblionumber},   $item->{itemnumber} ) 
+        if $borrower->{'reading_history'} == 1;
+
+    if ($read_already) {
+        my $read_date  = C4::Dates->new(  $read_already->{'issuedate'},'iso' );
+        my %emptyhash;
+        $needsconfirmation{READ_ALREADY}           = '1';
+        $needsconfirmation{READ_ALREADY_ISSUEDATE} =  $read_date->output("syspref"); 
+
+        #            return ( \%emptyhash, \%needsconfirmation );
+    }
+
+
 	return ( \%issuingimpossible, \%needsconfirmation );
 }
+
+
+
+sub ReadAlready  {
+    my ( $borrowernumber, $biblionumber, $itemnumber  ) = @_;
+    my $dbh = C4::Context->dbh;
+
+    my $q = qq|Select itemnumber from items where biblionumber = ? |;
+    my $sth =  $dbh->prepare($q);
+    $sth->execute( $biblionumber ) ;
+
+    my @arr;
+    while ( my $data = $sth->fetchrow_hashref ) {
+        push @arr, $data->{itemnumber};
+    }
+
+    my $q2 = qq{ SELECT issuedate FROM old_issues  WHERE borrowernumber = ? 
+            AND itemnumber IN (  }
+    . join(",", map( {$_} @arr) ) . qq{) ORDER BY issuedate DESC LIMIT 1 };
+
+    my $sth2 =  $dbh->prepare($q2);
+#    $sth2->trace(3);
+    $sth2->execute( $borrowernumber ) ;
+    my $rq = $sth2->fetchrow_hashref  ;
+    return ($rq);
+}
+
+
+
 
 =head2 AddIssue
 
