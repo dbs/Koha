@@ -4446,6 +4446,12 @@ if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
     SetVersion($DBversion);
 }
 
+$DBversion = "3.05.00.XXX";
+if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
+    $dbh->do("UPDATE marc_subfield_structure SET kohafield = NULL WHERE tagfield = 952 AND tagsubfield = 'f' AND kohafield = 'items.coded_location_qualifier'");
+    print "Upgrade to $DBversion done (remove non-existant 'items.coded_location_qualifier' column)\n";
+    SetVersion($DBversion);
+}
 
 =head1 FUNCTIONS
 

@@ -140,7 +140,7 @@ INSERT INTO marc_subfield_structure
 ('952',   'c',         'Загальне розташування полиці', '', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, '', '', '', NULL),
 ('952',   'd',         'Дата отримання', '', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, '', '', '', NULL),
 ('952',   'e',         'Джерело надходження', '', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, '', '', '', NULL),
-('952',   'f',         'Кодований визначник розташування', '', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, '', '', '', NULL),
+('952',   'f',         'Кодований визначник розташування', '', 0, 0, '', 10, '', '', '', NULL, 0, '', '', '', NULL),
 ('952',   'g',         'Вартість, звичайна закупівельна ціна', '', 0, 0, 'items.price', 10, '', '', '', 0, 0, '', '', '', NULL),
 ('952',   'h',         'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, '', '', '', NULL),
 ('952',   'j',         'Поличний контрольний номер', '', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, '', '', '', NULL),

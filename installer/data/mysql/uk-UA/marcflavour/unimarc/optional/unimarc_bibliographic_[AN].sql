@@ -91,7 +91,7 @@ INSERT INTO marc_subfield_structure
 ('952',   'c',         'Shelving location', '', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'AN', '', '', NULL),
 ('952',   'd',         'Дата отримання', '', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'AN', '', '', NULL),
 ('952',   'e',         'Source of acquisition', '', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'AN', '', '', NULL),
-('952',   'f',         'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'AN', '', '', NULL),
+('952',   'f',         'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'AN', '', '', NULL),
 ('952',   'g',         'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'AN', '', '', NULL),
 ('952',   'h',         'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'AN', '', '', NULL),
 ('952',   'j',         'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'AN', '', '', NULL),
