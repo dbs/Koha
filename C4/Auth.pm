@@ -344,6 +344,7 @@ sub get_template_and_user {
             LoginFirstname               => (C4::Context->userenv?C4::Context->userenv->{"firstname"}:"Bel"),
             LoginSurname                 => C4::Context->userenv?C4::Context->userenv->{"surname"}:"Inconnu",
             TagsEnabled                  => C4::Context->preference("TagsEnabled"),
+            OpacStarRatings              => C4::Context->preference("OpacStarRatings"),
             hide_marc                    => C4::Context->preference("hide_marc"),
             item_level_itypes            => C4::Context->preference('item-level_itypes'),
             patronimages                 => C4::Context->preference("patronimages"),

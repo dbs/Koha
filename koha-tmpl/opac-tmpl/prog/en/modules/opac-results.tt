@@ -6,8 +6,10 @@
     You did not specify any search criteria.
 [% END %]
 [% INCLUDE 'doc-head-close.inc' %]
-<link rel="alternate" type="application/rss+xml" title="[% LibraryName |html %] Search RSS Feed" href="[% OPACBaseURL %]/cgi-bin/koha/opac-search.pl?[% query_cgi |html %][% limit_cgi |html %]&amp;count=[% countrss |html %]&amp;sort_by=acqdate_dsc&amp;format=rss2" />
-
+<link rel="alternate" type="application/rss+xml" title="[% LibraryName |html %] Search RSS Feed" href="[% OPACBaseurl %]/cgi-bin/koha/opac-search.pl?[% query_cgi |html %][% limit_cgi |html %]&amp;count=[% countrss |html %]&amp;sort_by=acqdate_dsc&amp;format=rss2" />
+<script type="text/javascript" src="/opac-tmpl/prog/en/lib/jquery/jquery.js"></script>
+<script type="text/javascript" src="/opac-tmpl/prog/en/lib/jquery/plugins/jquery.rating.js"></script>
+<link rel="stylesheet" type="text/css" href="/opac-tmpl/prog/en/css/jquery.rating.css" />
 
 <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.checkboxes.min.js"></script>
 [% IF ( OpacHighlightedWords ) %]<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.highlight-3.js"></script>
@@ -231,6 +233,7 @@ $(document).ready(function(){
     [% IF OpenLibraryCovers %]KOHA.OpenLibrary.GetCoverFromIsbn();[% END %]
     [% IF ( GoogleJackets ) %]KOHA.Google.GetCoverFromIsbn();[% END %]
 });
+
 //]]>
 </script>
 </head>
@@ -478,6 +481,25 @@ $(document).ready(function(){
 
 				[% END %]
 				[% IF ( LibraryThingForLibrariesID ) %]<div class="ltfl_reviews"></div>[% END %]
+
+				[% IF ( OpacStarRatings == '1' ) %]
+                <div class="results_summary">
+                <form name="moo" method="post" action="/cgi-bin/koha/opac-ratings.pl">
+<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="1" [% IF ( SEARCH_RESULT.rating_avg == 1 ) %]checked="checked"[% END %] disabled="disabled" />
+<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="2" [% IF ( SEARCH_RESULT.rating_avg == 2 ) %]checked="checked"[% END %] disabled="disabled" />
+<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="3" [% IF ( SEARCH_RESULT.rating_avg == 3 ) %]checked="checked"[% END %] disabled="disabled" />
+<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="4" [% IF ( SEARCH_RESULT.rating_avg == 4 ) %]checked="checked"[% END %] disabled="disabled" />
+<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="5" [% IF ( SEARCH_RESULT.rating_avg == 5 ) %]checked="checked"[% END %] disabled="disabled" />
+                <input type="hidden" name='biblionumber'  value="[% SEARCH_RESULT.biblionumber %]" />
+                <input type="hidden" name='loggedinuser'  value="[% loggedinuser %]" />
+
+                <span id="rating_total_[% SEARCH_RESULT.biblionumber %]">&nbsp;&nbsp;([% SEARCH_RESULT.rating_total %] votes)</span>
+
+
+                </form>
+                </div>
+				[% END %]
+
 				[% IF ( opacuserlogin ) %][% IF ( TagsEnabled ) %]
                                 [% IF ( TagsShowOnList ) %]
                                 [% IF ( SEARCH_RESULT.TagLoop.size ) %]

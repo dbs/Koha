@@ -40,18 +40,22 @@ BEGIN {
     # set the version for version checking
     $VERSION = 3.03;
     require Exporter;
-    @ISA    = qw(Exporter);
-	@EXPORT_OK = qw(&is_ajax ajax_fail); # More stuff should go here instead
-	%EXPORT_TAGS = ( all =>[qw(&pagination_bar
-							   &output_with_http_headers &output_html_with_http_headers)],
-					ajax =>[qw(&output_with_http_headers is_ajax)],
-					html =>[qw(&output_with_http_headers &output_html_with_http_headers)]
-				);
-    push @EXPORT, qw(
-        &output_html_with_http_headers &output_with_http_headers FormatData FormatNumber pagination_bar
-    );
-}
 
+ @ISA    = qw(Exporter);
+    @EXPORT_OK = qw(&is_ajax ajax_fail); # More stuff should go here instead
+    %EXPORT_TAGS = ( all =>[qw(&themelanguage &gettemplate setlanguagecookie pagination_bar
+                                &output_with_http_headers &output_ajax_with_http_headers &output_html_with_http_headers)],
+                    ajax =>[qw(&output_with_http_headers &output_ajax_with_http_headers is_ajax)],
+                    html =>[qw(&output_with_http_headers &output_html_with_http_headers)]
+                );
+    push @EXPORT, qw(
+        &themelanguage &gettemplate setlanguagecookie getlanguagecookie pagination_bar
+    );
+    push @EXPORT, qw(
+        &output_html_with_http_headers &output_ajax_with_http_headers &output_with_http_headers FormatData FormatNumber
+    );
+
+}
 
 =head1 NAME
 
@@ -308,6 +312,18 @@ sub output_html_with_http_headers ($$$;$) {
     my ( $query, $cookie, $data, $status ) = @_;
     $data =~ s/\&amp\;amp\; /\&amp\; /g;
     output_with_http_headers( $query, $cookie, $data, 'html', $status );
+}
+
+
+sub output_ajax_with_http_headers ($$) {
+    my ( $query, $js ) = @_;
+    print $query->header(
+        -type            => 'text/javascript',
+        -charset         => 'UTF-8',
+        -Pragma          => 'no-cache',
+        -'Cache-Control' => 'no-cache',
+        -expires         => '-1d',
+    ), $js;
 }
 
 sub is_ajax () {
