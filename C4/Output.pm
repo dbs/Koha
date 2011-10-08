@@ -310,6 +310,18 @@ sub output_html_with_http_headers ($$$;$) {
     output_with_http_headers( $query, $cookie, $data, 'html', $status );
 }
 
+
+sub output_ajax_with_http_headers ($$) {
+    my ( $query, $js ) = @_;
+    print $query->header(
+        -type            => 'text/javascript',
+        -charset         => 'UTF-8',
+        -Pragma          => 'no-cache',
+        -'Cache-Control' => 'no-cache',
+        -expires         => '-1d',
+    ), $js;
+}
+
 sub is_ajax () {
     my $x_req = $ENV{HTTP_X_REQUESTED_WITH};
     return ( $x_req and $x_req =~ /XMLHttpRequest/i ) ? 1 : 0;

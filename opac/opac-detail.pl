@@ -2,6 +2,7 @@
 
 # Copyright 2000-2002 Katipo Communications
 # Copyright 2010 BibLibre
+# Copyright 2011 KohaAloha, NZ
 #
 # This file is part of Koha.
 #
@@ -37,6 +38,8 @@ use C4::XISBN qw(get_xisbns get_biblionumber_from_isbn);
 use C4::External::Amazon;
 use C4::External::Syndetics qw(get_syndetics_index get_syndetics_summary get_syndetics_toc get_syndetics_excerpt get_syndetics_reviews get_syndetics_anotes );
 use C4::Review;
+use C4::Ratings;
+use C4::Serials;
 use C4::Members;
 use C4::VirtualShelves;
 use C4::XSLT;
@@ -45,6 +48,8 @@ use C4::Charset;
 use MARC::Record;
 use MARC::Field;
 use List::MoreUtils qw/any none/;
+
+use Smart::Comments '####';
 
 BEGIN {
 	if (C4::Context->preference('BakerTaylorEnabled')) {
@@ -63,6 +68,12 @@ my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
         flagsrequired   => { borrow => 1 },
     }
 );
+
+
+
+#### $borrowernumber
+
+
 
 my $biblionumber = $query->param('biblionumber') || $query->param('bib');
 
@@ -306,6 +317,10 @@ if (!$@ and C4::Context->preference('ShowReviewer') and C4::Context->preference(
 
 my $reviews = getreviews( $biblionumber, 1 );
 my $loggedincommenter;
+
+
+
+
 foreach ( @$reviews ) {
     my $borrowerData   = GetMember('borrowernumber' => $_->{borrowernumber});
     # setting some borrower info into this hash
@@ -318,6 +333,7 @@ foreach ( @$reviews ) {
     $_->{userid}    = $borrowerData->{'userid'};
     $_->{cardnumber}    = $borrowerData->{'cardnumber'};
     $_->{datereviewed} = format_date($_->{datereviewed});
+
     if ($borrowerData->{'borrowernumber'} eq $borrowernumber) {
 		$_->{your_comment} = 1;
 		$loggedincommenter = 1;
@@ -562,6 +578,18 @@ if (C4::Context->preference("OPACURLOpenInNewWindow")) {
     $template->param(covernewwindow => 'true');
 } else {
     $template->param(covernewwindow => 'false');
+}
+
+
+if ( C4::Context->preference('OpacStarRatings') =~ /1|details/ ) {
+    my $rating = get_rating( $biblionumber, $borrowernumber );
+    $template->param(
+        my_rating      => $rating->{'my_rating'},
+        rating_total   => $rating->{'total'},
+        rating_avg     => $rating->{'avg'},
+        rating_avg_int => $rating->{'avg_int'},
+        borrowernumber => $borrowernumber
+    );
 }
 
 #Search for title in links

@@ -2654,6 +2654,20 @@ CREATE TABLE `fieldmapping` ( -- koha to keyword mapping
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+---
+--- 'Ratings' table. This tracks the star ratings set by borrowers.
+---
+
+DROP TABLE IF EXISTS `ratings`;
+CREATE TABLE `ratings` (
+    `borrowernumber` int(11) NOT NULL, --- the borrower this rating is for
+    `biblionumber` int(11) NOT NULL, --- the biblio it's for
+    `value` tinyint(1) NOT NULL, --- the rating, from 1-5
+    `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
+    PRIMARY KEY  (`borrowernumber`,`biblionumber`),
+    KEY `ratings_borrowers_fk_1` (`borrowernumber`),
+    KEY `ratings_biblionumber_fk_1` (`biblionumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
