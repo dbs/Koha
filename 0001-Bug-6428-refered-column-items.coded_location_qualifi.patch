@@ -1,0 +1,703 @@
+From f24d2876152478a3c786298d8783beb6579bce49 Mon Sep 17 00:00:00 2001
+From: Mason James <mtj@kohaaloha.com>
+Date: Sun, 9 Oct 2011 00:56:49 +1300
+Subject: [PATCH] Bug 6428 - refered column 'items.coded_location_qualifier' does not exist
+Content-Type: text/plain; charset="utf-8"
+http://koha-community.org
+
+---
+ .../marc21/mandatory/marc21_framework_DEFAULT.sql  |    2 +-
+ .../marc21/optional/marc21_fastadd_framework.sql   |    2 +-
+ .../optional/marc21_simple_bib_frameworks.sql      |   16 ++++++++--------
+ .../marc21/mandatory/marc21_framework_DEFAULT.sql  |    2 +-
+ .../marc21/optional/marc21_fastadd_framework.sql   |    2 +-
+ .../optional/marc21_simple_bib_frameworks.sql      |   16 ++++++++--------
+ .../Obligatoire/marc21_framework_DEFAULT.sql       |    2 +-
+ .../Optionnel/marc21_simple_bib_frameworks.sql     |   16 ++++++++--------
+ .../marc21/mandatory/marc21_framework_DEFAULT.sql  |    2 +-
+ .../marc21/optional/marc21_fastadd_framework.sql   |    2 +-
+ .../optional/marc21_simple_bib_frameworks.sql      |   16 ++++++++--------
+ .../marc21/mandatory/marc21_framework_DEFAULT.sql  |    2 +-
+ .../marc21/optional/marc21_fastadd_framework.sql   |    2 +-
+ .../optional/marc21_simple_bib_frameworks.sql      |   16 ++++++++--------
+ .../marcflavour/normarc/Obligatorisk/normarc.sql   |    2 +-
+ .../marc21/mandatory/marc21_framework_DEFAULT.sql  |    2 +-
+ .../marc21/optional/marc21_fastadd_framework.sql   |    2 +-
+ .../optional/marc21_simple_bib_frameworks.sql      |   16 ++++++++--------
+ .../mandatory/unimarc_bibliographic_[DEFAULT].sql  |    2 +-
+ .../mandatory/unimarc_bibliographic_[DEFAULT].sql  |    2 +-
+ .../optional/unimarc_bibliographic_[AN].sql        |    2 +-
+ installer/data/mysql/updatedatabase.pl             |    6 ++++++
+ 22 files changed, 69 insertions(+), 63 deletions(-)
+
+diff --git a/installer/data/mysql/de-DE/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql b/installer/data/mysql/de-DE/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+index aa5390f..f5341aa 100644
+--- a/installer/data/mysql/de-DE/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
++++ b/installer/data/mysql/de-DE/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+@@ -118,7 +118,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Aufstellungsort', 'Aufstellungsort', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'd', 'Erwerbungsdatum', 'Erwerbungsdatum', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, '', '', '', NULL),
+ 		('952', 'e', 'Lieferant', 'Lieferant', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, '', '', '', NULL),
+-		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, '', '', '', NULL),
++		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, '', 10, '', '', '', NULL, 0, '', '', '', NULL),
+ 		('952', 'g', 'Kaufpreis', 'Kaufpreis', 0, 0, 'items.price', 10, '', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'h', 'Heft/Jahrgang','Jahrgang/Heft', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, '', '', '', NULL),
+         ('952', 'i', 'Inventarnummer','Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, '', '', '', NULL),
+diff --git a/installer/data/mysql/de-DE/marcflavour/marc21/optional/marc21_fastadd_framework.sql b/installer/data/mysql/de-DE/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+index d1e6944..e157958 100644
+--- a/installer/data/mysql/de-DE/marcflavour/marc21/optional/marc21_fastadd_framework.sql
++++ b/installer/data/mysql/de-DE/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+@@ -115,7 +115,7 @@ INSERT IGNORE INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblib
+ 		('952','c','Aufstellungsort','Aufstellungsort',0,0,'items.location',10,'LOC','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','d','Erwerbungsdatum','Erwerbungsdatum',0,0,'items.dateaccessioned',10,'','','dateaccessioned.pl',NULL,0,'FA','',NULL,NULL),
+ 		('952','e','Lieferant','Lieferant',0,0,'items.booksellerid',10,'','','',NULL,0,'FA','',NULL,NULL),
+-		('952','f','Kodierter Standort-Qualifier','Kodierter Standort-Qualifier',0,0,'items.coded_location_qualifier',10,'','','',NULL,-5,'FA','',NULL,NULL),
++		('952','f','Kodierter Standort-Qualifier','Kodierter Standort-Qualifier',0,0,'',10,'','','',NULL,-5,'FA','',NULL,NULL),
+ 		('952','g','Kaufpreis','Kaufpreis',0,0,'items.price',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','h','Jahrgang/Heft','Jahrgang/Heft',0,0,'items.enumchron',10,'','','',NULL,0,'FA','',NULL,NULL),
+         ('952','i','Inventarnummer','Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'FA', '', NULL, NULL),
+diff --git a/installer/data/mysql/de-DE/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql b/installer/data/mysql/de-DE/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+index ffefd75..3f8475d 100644
+--- a/installer/data/mysql/de-DE/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
++++ b/installer/data/mysql/de-DE/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+@@ -177,7 +177,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Aufstellungsort', 'Aufstellungsort', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'd', 'Erwerbungsdatum', 'Erwerbungsdatum', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'e', 'Lieferant', 'Lieferant', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+-		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
++		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
+ 		('952', 'g', 'Kaufpreis', 'Kaufpreis', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'h', 'Jahrgang/Heft','Jahrgang/Heft', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+         ('952', 'i', 'Inventarnummer','Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+@@ -4102,7 +4102,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Aufstellungsort', 'Aufstellungsort', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'd', 'Erwerbungsdatum', 'Erwerbungsdatum', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'e', 'Lieferant', 'Lieferant', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+-		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
++		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
+ 		('952', 'g', 'Kaufpreis', 'Kaufpreis', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'h', 'Jahrgang/Heft','Jahrgang/Heft', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'i', 'Inventarnummer', 'Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+@@ -8028,7 +8028,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Aufstellungsort', 'Aufstellungsort', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'd', 'Erwerbungsdatum', 'Erwerbungsdatum', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'e', 'Lieferant', 'Lieferant', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+-		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
++		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
+ 		('952', 'g', 'Kaufpreis', 'Kaufpreis', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'h', 'Jahrgang/Heft','Jahrgang/Heft', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'i', 'Inventarnummer', 'Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+@@ -11953,7 +11953,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Aufstellungsort', 'Aufstellungsort', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'd', 'Erwerbungsdatum', 'Erwerbungsdatum', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'e', 'Lieferant', 'Lieferant', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+-		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
++		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
+ 		('952', 'g', 'Kaufpreis', 'Kaufpreis', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'h', 'Jahrgang/Heft','Jahrgang/Heft', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'i', 'Inventarnummer', 'Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+@@ -15877,7 +15877,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Aufstellungsort', 'Aufstellungsort', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'd', 'Erwerbungsdatum', 'Erwerbungsdatum', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'e', 'Lieferant', 'Lieferant', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+-		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
++		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
+ 		('952', 'g', 'Kaufpreis', 'Kaufpreis', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'h', 'Jahrgang/Heft','Jahrgang/Heft', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'i', 'Inventarnummer', 'Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+@@ -19800,7 +19800,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Aufstellungsort', 'Aufstellungsort', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'd', 'Erwerbungsdatum', 'Erwerbungsdatum', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'e', 'Lieferant', 'Lieferant', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+-		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
++		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
+ 		('952', 'g', 'Kaufpreis', 'Kaufpreis', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'h', 'Jahrgang/Heft','Jahrgang/Heft', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'i', 'Inventarnummer', 'Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+@@ -23724,7 +23724,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Aufstellungsort', 'Aufstellungsort', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'd', 'Erwerbungsdatum', 'Erwerbungsdatum', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'e', 'Lieferant', 'Lieferant', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+-		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
++		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
+ 		('952', 'g', 'Kaufpreis', 'Kaufpreis', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'h', 'Jahrgang/Heft','Jahrgang/Heft', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'i', 'Inventarnummer', 'Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+@@ -27646,7 +27646,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Aufstellungsort', 'Aufstellungsort', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'd', 'Erwerbungsdatum', 'Erwerbungsdatum', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'e', 'Lieferant', 'Lieferant', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+-		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
++		('952', 'f', 'Kodierter Standort-Qualifier', 'Kodierter Standort-Qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
+ 		('952', 'g', 'Kaufpreis', 'Kaufpreis', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'h', 'Jahrgang/Heft','Jahrgang/Heft', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'i', 'Inventarnummer', 'Inventarnummer', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+diff --git a/installer/data/mysql/en/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql b/installer/data/mysql/en/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+index 383a9d9..72663e5 100644
+--- a/installer/data/mysql/en/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
++++ b/installer/data/mysql/en/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+@@ -118,7 +118,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, '', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, '', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, '', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, '', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, '', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, '', '', '', NULL),
+diff --git a/installer/data/mysql/en/marcflavour/marc21/optional/marc21_fastadd_framework.sql b/installer/data/mysql/en/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+index 0ba4025..12c0367 100644
+--- a/installer/data/mysql/en/marcflavour/marc21/optional/marc21_fastadd_framework.sql
++++ b/installer/data/mysql/en/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+@@ -115,7 +115,7 @@ INSERT IGNORE INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblib
+ 		('952','c','Shelving location','Shelving location',0,0,'items.location',10,'LOC','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','d','Date acquired','Date acquired',0,0,'items.dateaccessioned',10,'','','dateaccessioned.pl',NULL,0,'FA','',NULL,NULL),
+ 		('952','e','Source of acquisition','Source of acquisition',0,0,'items.booksellerid',10,'','','',NULL,0,'FA','',NULL,NULL),
+-		('952','f','Coded location qualifier','Coded location qualifier',0,0,'items.coded_location_qualifier',10,'','','',NULL,0,'FA','',NULL,NULL),
++		('952','f','Coded location qualifier','Coded location qualifier',0,0,'',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','g','Cost, normal purchase price','Cost, normal purchase price',0,0,'items.price',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','h','Serial Enumeration / chronology','Serial Enumeration / chronology',0,0,'items.enumchron',10,'','','',NULL,0,'FA','',NULL,NULL),
+         ('952','i','Inventory number','Inventory number',0,0,'items.stocknumber',10,'','','',0,0,'FA','',NULL,NULL),
+diff --git a/installer/data/mysql/en/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql b/installer/data/mysql/en/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+index 701b1b9..e3034f1 100644
+--- a/installer/data/mysql/en/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
++++ b/installer/data/mysql/en/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+@@ -177,7 +177,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+@@ -4102,7 +4102,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+@@ -8028,7 +8028,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+@@ -11953,7 +11953,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+@@ -15877,7 +15877,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+@@ -19800,7 +19800,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+@@ -23724,7 +23724,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+@@ -27646,7 +27646,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+diff --git a/installer/data/mysql/fr-FR/marcflavour/marc21/Obligatoire/marc21_framework_DEFAULT.sql b/installer/data/mysql/fr-FR/marcflavour/marc21/Obligatoire/marc21_framework_DEFAULT.sql
+index bda6735..abe5dc6 100644
+--- a/installer/data/mysql/fr-FR/marcflavour/marc21/Obligatoire/marc21_framework_DEFAULT.sql
++++ b/installer/data/mysql/fr-FR/marcflavour/marc21/Obligatoire/marc21_framework_DEFAULT.sql
+@@ -118,7 +118,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, '', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, '', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, '', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, '', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, '', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, '', '', '', NULL),
+diff --git a/installer/data/mysql/fr-FR/marcflavour/marc21/Optionnel/marc21_simple_bib_frameworks.sql b/installer/data/mysql/fr-FR/marcflavour/marc21/Optionnel/marc21_simple_bib_frameworks.sql
+index a70abc6..8926432 100644
+--- a/installer/data/mysql/fr-FR/marcflavour/marc21/Optionnel/marc21_simple_bib_frameworks.sql
++++ b/installer/data/mysql/fr-FR/marcflavour/marc21/Optionnel/marc21_simple_bib_frameworks.sql
+@@ -177,7 +177,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+@@ -4102,7 +4102,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+@@ -8028,7 +8028,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+@@ -11953,7 +11953,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+@@ -15877,7 +15877,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+@@ -19800,7 +19800,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+@@ -23724,7 +23724,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+@@ -27646,7 +27646,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+diff --git a/installer/data/mysql/it-IT/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql b/installer/data/mysql/it-IT/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+index aeba01b..23874b7 100644
+--- a/installer/data/mysql/it-IT/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
++++ b/installer/data/mysql/it-IT/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+@@ -118,7 +118,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, '', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, '', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, '', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, '', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, '', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, '', '', '', NULL),
+diff --git a/installer/data/mysql/it-IT/marcflavour/marc21/optional/marc21_fastadd_framework.sql b/installer/data/mysql/it-IT/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+index 0ba4025..12c0367 100644
+--- a/installer/data/mysql/it-IT/marcflavour/marc21/optional/marc21_fastadd_framework.sql
++++ b/installer/data/mysql/it-IT/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+@@ -115,7 +115,7 @@ INSERT IGNORE INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblib
+ 		('952','c','Shelving location','Shelving location',0,0,'items.location',10,'LOC','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','d','Date acquired','Date acquired',0,0,'items.dateaccessioned',10,'','','dateaccessioned.pl',NULL,0,'FA','',NULL,NULL),
+ 		('952','e','Source of acquisition','Source of acquisition',0,0,'items.booksellerid',10,'','','',NULL,0,'FA','',NULL,NULL),
+-		('952','f','Coded location qualifier','Coded location qualifier',0,0,'items.coded_location_qualifier',10,'','','',NULL,0,'FA','',NULL,NULL),
++		('952','f','Coded location qualifier','Coded location qualifier',0,0,'',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','g','Cost, normal purchase price','Cost, normal purchase price',0,0,'items.price',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','h','Serial Enumeration / chronology','Serial Enumeration / chronology',0,0,'items.enumchron',10,'','','',NULL,0,'FA','',NULL,NULL),
+         ('952','i','Inventory number','Inventory number',0,0,'items.stocknumber',10,'','','',0,0,'FA','',NULL,NULL),
+diff --git a/installer/data/mysql/it-IT/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql b/installer/data/mysql/it-IT/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+index 6916217..5bfa38b 100644
+--- a/installer/data/mysql/it-IT/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
++++ b/installer/data/mysql/it-IT/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+@@ -177,7 +177,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+@@ -4098,7 +4098,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+@@ -8020,7 +8020,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+@@ -11941,7 +11941,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+@@ -15861,7 +15861,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+@@ -19780,7 +19780,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+@@ -23700,7 +23700,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+@@ -27618,7 +27618,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+diff --git a/installer/data/mysql/nb-NO/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql b/installer/data/mysql/nb-NO/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+index 8ab9400..f93b738 100644
+--- a/installer/data/mysql/nb-NO/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
++++ b/installer/data/mysql/nb-NO/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+@@ -118,7 +118,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, '', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, '', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, '', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, '', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, '', '', '', NULL),
+diff --git a/installer/data/mysql/nb-NO/marcflavour/marc21/optional/marc21_fastadd_framework.sql b/installer/data/mysql/nb-NO/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+index 45c2fda..58e960b 100644
+--- a/installer/data/mysql/nb-NO/marcflavour/marc21/optional/marc21_fastadd_framework.sql
++++ b/installer/data/mysql/nb-NO/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+@@ -115,7 +115,7 @@ INSERT IGNORE INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblib
+ 		('952','c','Shelving location','Shelving location',0,0,'items.location',10,'LOC','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','d','Date acquired','Date acquired',0,0,'items.dateaccessioned',10,'','','dateaccessioned.pl',NULL,0,'FA','',NULL,NULL),
+ 		('952','e','Source of acquisition','Source of acquisition',0,0,'items.booksellerid',10,'','','',NULL,0,'FA','',NULL,NULL),
+-		('952','f','Coded location qualifier','Coded location qualifier',0,0,'items.coded_location_qualifier',10,'','','',NULL,0,'FA','',NULL,NULL),
++		('952','f','Coded location qualifier','Coded location qualifier',0,0,'',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','g','Cost, normal purchase price','Cost, normal purchase price',0,0,'items.price',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','h','Serial Enumeration / chronology','Serial Enumeration / chronology',0,0,'items.enumchron',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','j','Shelving control number','Shelving control number',0,0,'items.stack',10,'STACK','','',NULL,0,'FA','',NULL,NULL),
+diff --git a/installer/data/mysql/nb-NO/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql b/installer/data/mysql/nb-NO/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+index 2586f51..4803dec 100644
+--- a/installer/data/mysql/nb-NO/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
++++ b/installer/data/mysql/nb-NO/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+@@ -177,7 +177,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'j', 'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'BKS', '', '', NULL),
+@@ -4101,7 +4101,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'j', 'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'CF', '', '', NULL),
+@@ -8026,7 +8026,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'j', 'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'SR', '', '', NULL),
+@@ -11950,7 +11950,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'j', 'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'VR', '', '', NULL),
+@@ -15873,7 +15873,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'j', 'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'AR', '', '', NULL),
+@@ -19795,7 +19795,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'j', 'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'KT', '', '', NULL),
+@@ -23718,7 +23718,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'j', 'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'IR', '', '', NULL),
+@@ -27639,7 +27639,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'j', 'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'SER', '', '', NULL),
+diff --git a/installer/data/mysql/nb-NO/marcflavour/normarc/Obligatorisk/normarc.sql b/installer/data/mysql/nb-NO/marcflavour/normarc/Obligatorisk/normarc.sql
+index bc7a7b5..b16ea86 100644
+--- a/installer/data/mysql/nb-NO/marcflavour/normarc/Obligatorisk/normarc.sql
++++ b/installer/data/mysql/nb-NO/marcflavour/normarc/Obligatorisk/normarc.sql
+@@ -968,7 +968,7 @@ INSERT INTO marc_subfield_structure (tagfield,tagsubfield,liblibrarian,libopac,r
+ INSERT INTO marc_subfield_structure (tagfield,tagsubfield,liblibrarian,libopac,repeatable,mandatory,kohafield,tab,authorised_value,authtypecode,value_builder,isurl,hidden,frameworkcode,seealso,link,defaultvalue) VALUES ('952','c','Hylleplassering','Hylleplassering','0','0','items.location','10','LOC','','','0','-1','','','',NULL);
+ INSERT INTO marc_subfield_structure (tagfield,tagsubfield,liblibrarian,libopac,repeatable,mandatory,kohafield,tab,authorised_value,authtypecode,value_builder,isurl,hidden,frameworkcode,seealso,link,defaultvalue) VALUES ('952','d','Anskaffelsesdato','Anskaffelsesdato','0','0','items.dateaccessioned','10','','','dateaccessioned.pl','0','-1','','','',NULL);
+ INSERT INTO marc_subfield_structure (tagfield,tagsubfield,liblibrarian,libopac,repeatable,mandatory,kohafield,tab,authorised_value,authtypecode,value_builder,isurl,hidden,frameworkcode,seealso,link,defaultvalue) VALUES ('952','e','Kilde for anskaffelse','Kilde for anskaffelse','0','0','items.booksellerid','10','','','','0','-1','','','',NULL);
+-INSERT INTO marc_subfield_structure (tagfield,tagsubfield,liblibrarian,libopac,repeatable,mandatory,kohafield,tab,authorised_value,authtypecode,value_builder,isurl,hidden,frameworkcode,seealso,link,defaultvalue) VALUES ('952','f','Kodet plasseringskvalifikator','Kodet plasseringskvalifikator','0','0','items.coded_location_qualifier','10','','','',NULL,'-1','','','',NULL);
++INSERT INTO marc_subfield_structure (tagfield,tagsubfield,liblibrarian,libopac,repeatable,mandatory,kohafield,tab,authorised_value,authtypecode,value_builder,isurl,hidden,frameworkcode,seealso,link,defaultvalue) VALUES ('952','f','Kodet plasseringskvalifikator','Kodet plasseringskvalifikator','0','0','','10','','','',NULL,'-1','','','',NULL);
+ INSERT INTO marc_subfield_structure (tagfield,tagsubfield,liblibrarian,libopac,repeatable,mandatory,kohafield,tab,authorised_value,authtypecode,value_builder,isurl,hidden,frameworkcode,seealso,link,defaultvalue) VALUES ('952','g','Pris (normal innkjøpspris)','Pris (normal innkjøpspris)','0','0','items.price','10','','','','0','-1','','','',NULL);
+ INSERT INTO marc_subfield_structure (tagfield,tagsubfield,liblibrarian,libopac,repeatable,mandatory,kohafield,tab,authorised_value,authtypecode,value_builder,isurl,hidden,frameworkcode,seealso,link,defaultvalue) VALUES ('952','h','Serienummerering / kronologi','Serienummerering / kronologi','0','0','items.enumchron','10','','','','0','-1','','','',NULL);
+ INSERT INTO marc_subfield_structure (tagfield,tagsubfield,liblibrarian,libopac,repeatable,mandatory,kohafield,tab,authorised_value,authtypecode,value_builder,isurl,hidden,frameworkcode,seealso,link,defaultvalue) VALUES ('952','j','Samling','Samling','0','0','items.stack','10','STACK','','',NULL,'-1','','','',NULL);
+diff --git a/installer/data/mysql/pl-PL/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql b/installer/data/mysql/pl-PL/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+index e79cb33..faf923d 100644
+--- a/installer/data/mysql/pl-PL/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
++++ b/installer/data/mysql/pl-PL/marcflavour/marc21/mandatory/marc21_framework_DEFAULT.sql
+@@ -118,7 +118,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, '', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, '', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, '', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, '', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, '', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, '', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, '', '', '', NULL),
+diff --git a/installer/data/mysql/pl-PL/marcflavour/marc21/optional/marc21_fastadd_framework.sql b/installer/data/mysql/pl-PL/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+index 36a435c..9e51f5d 100644
+--- a/installer/data/mysql/pl-PL/marcflavour/marc21/optional/marc21_fastadd_framework.sql
++++ b/installer/data/mysql/pl-PL/marcflavour/marc21/optional/marc21_fastadd_framework.sql
+@@ -115,7 +115,7 @@ INSERT IGNORE INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblib
+ 		('952','c','Shelving location','Shelving location',0,0,'items.location',10,'LOC','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','d','Date acquired','Date acquired',0,0,'items.dateaccessioned',10,'','','dateaccessioned.pl',NULL,0,'FA','',NULL,NULL),
+ 		('952','e','Source of acquisition','Source of acquisition',0,0,'items.booksellerid',10,'','','',NULL,0,'FA','',NULL,NULL),
+-		('952','f','Coded location qualifier','Coded location qualifier',0,0,'items.coded_location_qualifier',10,'','','',NULL,0,'FA','',NULL,NULL),
++		('952','f','Coded location qualifier','Coded location qualifier',0,0,'',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','g','Cost, normal purchase price','Cost, normal purchase price',0,0,'items.price',10,'','','',NULL,0,'FA','',NULL,NULL),
+ 		('952','h','Serial Enumeration / chronology','Serial Enumeration / chronology',0,0,'items.enumchron',10,'','','',NULL,0,'FA','',NULL,NULL),
+         ('952','i','Inventory number','Inventory number',0,0,'items.stocknumber',10,'','','',0,0,'CF','',NULL,NULL),
+diff --git a/installer/data/mysql/pl-PL/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql b/installer/data/mysql/pl-PL/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+index 1f5d38e..ec58ad1 100644
+--- a/installer/data/mysql/pl-PL/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
++++ b/installer/data/mysql/pl-PL/marcflavour/marc21/optional/marc21_simple_bib_frameworks.sql
+@@ -177,7 +177,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'BKS', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'BKS', '', '', NULL),
+@@ -4102,7 +4102,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'CF', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'CF', '', '', NULL),
+@@ -8028,7 +8028,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SR', '', '', NULL),
+@@ -11953,7 +11953,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'VR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'VR', '', '', NULL),
+@@ -15877,7 +15877,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'AR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'AR', '', '', NULL),
+@@ -19800,7 +19800,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'KT', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'KT', '', '', NULL),
+@@ -23724,7 +23724,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'IR', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'IR', '', '', NULL),
+@@ -27646,7 +27646,7 @@ INSERT INTO `marc_subfield_structure` (`tagfield`, `tagsubfield`, `liblibrarian`
+ 		('952', 'c', 'Shelving location', 'Shelving location', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'd', 'Date acquired', 'Date acquired', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'e', 'Source of acquisition', 'Source of acquisition', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+-		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
++		('952', 'f', 'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'SER', '', '', NULL),
+ 		('952', 'g', 'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+ 		('952', 'h', 'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+         ('952', 'i', 'Inventory number','Inventory number', 0, 0, 'items.stocknumber', 10, '', '', '', 0, 0, 'SER', '', '', NULL),
+diff --git a/installer/data/mysql/ru-RU/marcflavour/unimarc/mandatory/unimarc_bibliographic_[DEFAULT].sql b/installer/data/mysql/ru-RU/marcflavour/unimarc/mandatory/unimarc_bibliographic_[DEFAULT].sql
+index 0030c93..9b0cb84 100644
+--- a/installer/data/mysql/ru-RU/marcflavour/unimarc/mandatory/unimarc_bibliographic_[DEFAULT].sql
++++ b/installer/data/mysql/ru-RU/marcflavour/unimarc/mandatory/unimarc_bibliographic_[DEFAULT].sql
+@@ -108,7 +108,7 @@ INSERT INTO marc_subfield_structure
+ ('952',   'c',         'Общее расположение полки', '', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, '', '', '', NULL),
+ ('952',   'd',         'Дата получения', '', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, '', '', '', NULL),
+ ('952',   'e',         'Источник поступления', '', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, '', '', '', NULL),
+-('952',   'f',         'Кодированный определитель местоположения', '', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, '', '', '', NULL),
++('952',   'f',         'Кодированный определитель местоположения', '', 0, 0, '', 10, '', '', '', NULL, 0, '', '', '', NULL),
+ ('952',   'g',         'Стоимость, обычная закупочная цена', '', 0, 0, 'items.price', 10, '', '', '', 0, 0, '', '', '', NULL),
+ ('952',   'h',         'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, '', '', '', NULL),
+ ('952',   'j',         'Полочный контрольный номер', '', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, '', '', '', NULL),
+diff --git a/installer/data/mysql/uk-UA/marcflavour/unimarc/mandatory/unimarc_bibliographic_[DEFAULT].sql b/installer/data/mysql/uk-UA/marcflavour/unimarc/mandatory/unimarc_bibliographic_[DEFAULT].sql
+index f03b31b..554b1e0 100644
+--- a/installer/data/mysql/uk-UA/marcflavour/unimarc/mandatory/unimarc_bibliographic_[DEFAULT].sql
++++ b/installer/data/mysql/uk-UA/marcflavour/unimarc/mandatory/unimarc_bibliographic_[DEFAULT].sql
+@@ -140,7 +140,7 @@ INSERT INTO marc_subfield_structure
+ ('952',   'c',         'Загальне розташування полиці', '', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, '', '', '', NULL),
+ ('952',   'd',         'Дата отримання', '', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, '', '', '', NULL),
+ ('952',   'e',         'Джерело надходження', '', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, '', '', '', NULL),
+-('952',   'f',         'Кодований визначник розташування', '', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, '', '', '', NULL),
++('952',   'f',         'Кодований визначник розташування', '', 0, 0, '', 10, '', '', '', NULL, 0, '', '', '', NULL),
+ ('952',   'g',         'Вартість, звичайна закупівельна ціна', '', 0, 0, 'items.price', 10, '', '', '', 0, 0, '', '', '', NULL),
+ ('952',   'h',         'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, '', '', '', NULL),
+ ('952',   'j',         'Поличний контрольний номер', '', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, '', '', '', NULL),
+diff --git a/installer/data/mysql/uk-UA/marcflavour/unimarc/optional/unimarc_bibliographic_[AN].sql b/installer/data/mysql/uk-UA/marcflavour/unimarc/optional/unimarc_bibliographic_[AN].sql
+index 037efb7..43b5ca2 100644
+--- a/installer/data/mysql/uk-UA/marcflavour/unimarc/optional/unimarc_bibliographic_[AN].sql
++++ b/installer/data/mysql/uk-UA/marcflavour/unimarc/optional/unimarc_bibliographic_[AN].sql
+@@ -91,7 +91,7 @@ INSERT INTO marc_subfield_structure
+ ('952',   'c',         'Shelving location', '', 0, 0, 'items.location', 10, 'LOC', '', '', 0, 0, 'AN', '', '', NULL),
+ ('952',   'd',         'Дата отримання', '', 0, 0, 'items.dateaccessioned', 10, '', '', 'dateaccessioned.pl', 0, 0, 'AN', '', '', NULL),
+ ('952',   'e',         'Source of acquisition', '', 0, 0, 'items.booksellerid', 10, '', '', '', 0, 0, 'AN', '', '', NULL),
+-('952',   'f',         'Coded location qualifier', 'Coded location qualifier', 0, 0, 'items.coded_location_qualifier', 10, '', '', '', NULL, 0, 'AN', '', '', NULL),
++('952',   'f',         'Coded location qualifier', 'Coded location qualifier', 0, 0, '', 10, '', '', '', NULL, 0, 'AN', '', '', NULL),
+ ('952',   'g',         'Cost, normal purchase price', 'Cost, normal purchase price', 0, 0, 'items.price', 10, '', '', '', 0, 0, 'AN', '', '', NULL),
+ ('952',   'h',         'Serial Enumeration / chronology','Serial Enumeration / chronology', 0, 0, 'items.enumchron', 10, '', '', '', 0, 0, 'AN', '', '', NULL),
+ ('952',   'j',         'Shelving control number', 'Shelving control number', 0, 0, 'items.stack', 10, 'STACK', '', '', NULL, -1, 'AN', '', '', NULL),
+diff --git a/installer/data/mysql/updatedatabase.pl b/installer/data/mysql/updatedatabase.pl
+index 6b88c29..eadd5cc 100755
+--- a/installer/data/mysql/updatedatabase.pl
++++ b/installer/data/mysql/updatedatabase.pl
+@@ -4446,6 +4446,12 @@ if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
+     SetVersion($DBversion);
+ }
+ 
++$DBversion = "3.05.00.XXX";
++if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
++    $dbh->do("UPDATE marc_subfield_structure SET kohafield = NULL WHERE tagfield = 952 AND tagsubfield = 'f' AND kohafield = 'items.coded_location_qualifier'");
++    print "Upgrade to $DBversion done (remove non-existant 'items.coded_location_qualifier' column)\n";
++    SetVersion($DBversion);
++}
+ 
+ =head1 FUNCTIONS
+ 
+-- 
+1.7.1
+

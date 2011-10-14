@@ -1,0 +1,1432 @@
+From a138239b6f5458e385ed3bd9835678914a50bcd0 Mon Sep 17 00:00:00 2001
+From: Mason James <mtj@kohaaloha.com>
+Date: Sat, 8 Oct 2011 23:37:55 +1300
+Subject: [PATCH] Bug 5668 - Star ratings in the opac
+Content-Type: text/plain; charset="utf-8"
+http://koha-community.org
+
+---
+ C4/Auth.pm                                         |    1 +
+ C4/Output.pm                                       |   34 ++-
+ C4/Ratings.pm                                      |  163 +++++++++
+ installer/data/mysql/kohastructure.sql             |   14 +
+ installer/data/mysql/updatedatabase.pl             |   18 +
+ .../prog/en/modules/admin/preferences/opac.pref    |   12 +
+ koha-tmpl/opac-tmpl/prog/en/css/jquery.rating.css  |   12 +
+ .../prog/en/lib/jquery/plugins/jquery.rating.js    |  344 ++++++++++++++++++++
+ koha-tmpl/opac-tmpl/prog/en/modules/opac-detail.tt |   63 ++++-
+ .../opac-tmpl/prog/en/modules/opac-results.tt      |   26 ++-
+ koha-tmpl/opac-tmpl/prog/images/delete.gif         |  Bin 0 -> 752 bytes
+ koha-tmpl/opac-tmpl/prog/images/star.gif           |  Bin 0 -> 815 bytes
+ opac/opac-detail.pl                                |   28 ++
+ opac/opac-ratings-ajax.pl                          |  146 +++++++++
+ opac/opac-ratings.pl                               |   65 ++++
+ opac/opac-search.pl                                |   35 ++-
+ t/db_dependent/Ratings.t                           |   53 +++
+ t/db_dependent/lib/KohaTest.pm                     |    1 +
+ t/test-config.txt                                  |   53 +++
+ 19 files changed, 1052 insertions(+), 16 deletions(-)
+ create mode 100644 C4/Ratings.pm
+ create mode 100644 koha-tmpl/opac-tmpl/prog/en/css/jquery.rating.css
+ create mode 100644 koha-tmpl/opac-tmpl/prog/en/lib/jquery/plugins/jquery.rating.js
+ create mode 100755 koha-tmpl/opac-tmpl/prog/images/delete.gif
+ create mode 100644 koha-tmpl/opac-tmpl/prog/images/star.gif
+ create mode 100755 opac/opac-ratings-ajax.pl
+ create mode 100755 opac/opac-ratings.pl
+ create mode 100755 t/db_dependent/Ratings.t
+ create mode 100644 t/test-config.txt
+
+diff --git a/C4/Auth.pm b/C4/Auth.pm
+index 7211769..a8b3a55 100644
+--- a/C4/Auth.pm
++++ b/C4/Auth.pm
+@@ -344,6 +344,7 @@ sub get_template_and_user {
+             LoginFirstname               => (C4::Context->userenv?C4::Context->userenv->{"firstname"}:"Bel"),
+             LoginSurname                 => C4::Context->userenv?C4::Context->userenv->{"surname"}:"Inconnu",
+             TagsEnabled                  => C4::Context->preference("TagsEnabled"),
++            OpacStarRatings              => C4::Context->preference("OpacStarRatings"),
+             hide_marc                    => C4::Context->preference("hide_marc"),
+             item_level_itypes            => C4::Context->preference('item-level_itypes'),
+             patronimages                 => C4::Context->preference("patronimages"),
+diff --git a/C4/Output.pm b/C4/Output.pm
+index 41a0a28..2c2aca2 100644
+--- a/C4/Output.pm
++++ b/C4/Output.pm
+@@ -40,18 +40,22 @@ BEGIN {
+     # set the version for version checking
+     $VERSION = 3.03;
+     require Exporter;
+-    @ISA    = qw(Exporter);
+-	@EXPORT_OK = qw(&is_ajax ajax_fail); # More stuff should go here instead
+-	%EXPORT_TAGS = ( all =>[qw(&pagination_bar
+-							   &output_with_http_headers &output_html_with_http_headers)],
+-					ajax =>[qw(&output_with_http_headers is_ajax)],
+-					html =>[qw(&output_with_http_headers &output_html_with_http_headers)]
+-				);
++
++ @ISA    = qw(Exporter);
++    @EXPORT_OK = qw(&is_ajax ajax_fail); # More stuff should go here instead
++    %EXPORT_TAGS = ( all =>[qw(&themelanguage &gettemplate setlanguagecookie pagination_bar
++                                &output_with_http_headers &output_ajax_with_http_headers &output_html_with_http_headers)],
++                    ajax =>[qw(&output_with_http_headers &output_ajax_with_http_headers is_ajax)],
++                    html =>[qw(&output_with_http_headers &output_html_with_http_headers)]
++                );
+     push @EXPORT, qw(
+-        &output_html_with_http_headers &output_with_http_headers FormatData FormatNumber pagination_bar
++        &themelanguage &gettemplate setlanguagecookie getlanguagecookie pagination_bar
++    );
++    push @EXPORT, qw(
++        &output_html_with_http_headers &output_ajax_with_http_headers &output_with_http_headers FormatData FormatNumber
+     );
+-}
+ 
++}
+ 
+ =head1 NAME
+ 
+@@ -310,6 +314,18 @@ sub output_html_with_http_headers ($$$;$) {
+     output_with_http_headers( $query, $cookie, $data, 'html', $status );
+ }
+ 
++
++sub output_ajax_with_http_headers ($$) {
++    my ( $query, $js ) = @_;
++    print $query->header(
++        -type            => 'text/javascript',
++        -charset         => 'UTF-8',
++        -Pragma          => 'no-cache',
++        -'Cache-Control' => 'no-cache',
++        -expires         => '-1d',
++    ), $js;
++}
++
+ sub is_ajax () {
+     my $x_req = $ENV{HTTP_X_REQUESTED_WITH};
+     return ( $x_req and $x_req =~ /XMLHttpRequest/i ) ? 1 : 0;
+diff --git a/C4/Ratings.pm b/C4/Ratings.pm
+new file mode 100644
+index 0000000..fac0af7
+--- /dev/null
++++ b/C4/Ratings.pm
+@@ -0,0 +1,163 @@
++package C4::Ratings;
++
++# Copyright 2011 KohaAloha, NZ
++#
++# This file is part of Koha.
++#
++# Koha is free software; you can redistribute it and/or modify it under the
++# terms of the GNU General Public License as published by the Free Software
++# Foundation; either version 2 of the License, or (at your option) any later
++# version.
++#
++# Koha is distributed in the hope that it will be useful, but WITHOUT ANY
++# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
++# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License along
++# with Koha; if not, write to the Free Software Foundation, Inc.,
++# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++
++use strict;
++use warnings;
++use Carp;
++use Exporter;
++use POSIX;
++use C4::Debug;
++use C4::Context;
++
++#use Smart::Comments '####';
++
++use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
++
++BEGIN {
++    $VERSION = 3.00;
++    @ISA     = qw(Exporter);
++
++    @EXPORT = qw(
++      &get_rating
++      &add_rating
++      &mod_rating
++      &del_rating
++    );
++}
++
++sub get_rating {
++    my ( $biblionumber, $borrowernumber ) = @_;
++    my $query = qq| SELECT COUNT(*) AS total, SUM(value) AS sum 
++FROM ratings WHERE biblionumber = ? |;
++
++    my $sth = C4::Context->dbh->prepare($query);
++    $sth->execute($biblionumber);
++    my $res = $sth->fetchrow_hashref();
++
++    my ( $avg, $avg_int ) = 0;
++
++    if ( $res->{sum} and $res->{total} ) {
++        eval { $avg = $res->{sum} / $res->{total} };
++    }
++
++    $avg_int = sprintf( "%.1f", $avg );
++    $avg     = sprintf( "%.0f", $avg );
++
++    my %rating_hash;
++    $rating_hash{total}   = $res->{total};
++    $rating_hash{avg}     = $avg;
++    $rating_hash{avg_int} = $avg_int;
++
++    if ($borrowernumber) {
++        my $q2 = qq| SELECT value FROM ratings 
++WHERE biblionumber = ? AND borrowernumber = ?|;
++        my $sth1 = C4::Context->dbh->prepare($q2);
++        $sth1->execute( $biblionumber, $borrowernumber );
++        my $res1 = $sth1->fetchrow_hashref();
++        $rating_hash{'my_rating'} = $res1->{"value"};
++    }
++    return \%rating_hash;
++}
++
++sub add_rating {
++    my ( $biblionumber, $borrowernumber, $value ) = @_;
++    my $query = qq| INSERT INTO ratings (borrowernumber,biblionumber,value)
++        VALUES (?,?,?)|;
++    my $sth = C4::Context->dbh->prepare($query);
++    $sth->execute( $borrowernumber, $biblionumber, $value );
++    my $rating = get_rating( $biblionumber, $borrowernumber );
++    return $rating;
++}
++
++sub mod_rating {
++####  mod_rating
++    my ( $biblionumber, $borrowernumber, $value ) = @_;
++    my $query =
++qq|UPDATE ratings SET value = ? WHERE borrowernumber = ? AND biblionumber = ?|;
++    my $sth = C4::Context->dbh->prepare($query);
++    $sth->execute( $value, $borrowernumber, $biblionumber );
++    my $rating = get_rating( $biblionumber, $borrowernumber );
++    return $rating;
++}
++
++# del_rating is currently only used for passing the Ratings.t test
++sub del_rating {
++    my ( $biblionumber, $borrowernumber ) = @_;
++    my $dbh = C4::Context->dbh;
++    my $query =
++      "delete from ratings where borrowernumber = ? and biblionumber = ?";
++    my $sth    = C4::Context->dbh->prepare($query);
++    my $rv     = $sth->execute( $borrowernumber, $biblionumber );
++    my $rating = get_rating( $biblionumber, undef );
++    return $rating;
++}
++
++1;
++__END__
++
++=head1 NAME
++
++C4::Ratings - creates, updates and fetches Koha ratings
++
++=head1 SYNOPSIS
++
++# get a rating for a bib
++ my $rating = get_rating( $biblionumber, undef );
++ my $rating = get_rating( $biblionumber, $borrowernumber );
++
++# add a rating for a bib
++ my $rating = add_rating( $biblionumber, $borrowernumber, $my_rating );
++
++# mod a rating for a bib
++ my $rating = mod_rating( $biblionumber, $borrowernumber, $my_rating );
++
++# delete a rating for a bib
++ my $rv = del_rating( $biblionumber, $borrowernumber );
++
++=head1 DESCRIPTION
++
++This module provides simple functionality for a user to 'rate' a biblio, and to return a biblio's rating infor
++
++=head1 BUGS
++
++Please use bugs.koha-community.org for tracking bugs.
++
++=head1 SOURCE AVAILABILITY
++
++The source is available from the koha-community.org git server
++L<http://git.koha-community.org>
++
++=head1 AUTHOR
++
++Original code: Mason James <mtj@kohaaloha.com>
++
++=head1 COPYRIGHT
++
++Copyright (c) 2011 Mason James <mtj@kohaaloha.com>
++
++=head1 LICENSE
++
++C4::Ratings is free software. You can redistribute it and/or
++modify it under the same terms as Koha itself.
++
++=head1 CREDITS
++
++ Mason James <mtj@kohaaloha.com>
++
++=cut
+diff --git a/installer/data/mysql/kohastructure.sql b/installer/data/mysql/kohastructure.sql
+index 3a51df5..e073e0f 100644
+--- a/installer/data/mysql/kohastructure.sql
++++ b/installer/data/mysql/kohastructure.sql
+@@ -2654,6 +2654,20 @@ CREATE TABLE `fieldmapping` ( -- koha to keyword mapping
+   PRIMARY KEY  (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
++---
++--- 'Ratings' table. This tracks the star ratings set by borrowers.
++---
++
++DROP TABLE IF EXISTS `ratings`;
++CREATE TABLE `ratings` (
++    `borrowernumber` int(11) NOT NULL, --- the borrower this rating is for
++    `biblionumber` int(11) NOT NULL, --- the biblio it's for
++    `value` tinyint(1) NOT NULL, --- the rating, from 1-5
++    `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
++    PRIMARY KEY  (`borrowernumber`,`biblionumber`),
++    KEY `ratings_borrowers_fk_1` (`borrowernumber`),
++    KEY `ratings_biblionumber_fk_1` (`biblionumber`)
++) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ 
+ /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+ /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+diff --git a/installer/data/mysql/updatedatabase.pl b/installer/data/mysql/updatedatabase.pl
+index 6b88c29..adaac54 100755
+--- a/installer/data/mysql/updatedatabase.pl
++++ b/installer/data/mysql/updatedatabase.pl
+@@ -4447,6 +4447,24 @@ if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
+ }
+ 
+ 
++$DBversion = '3.05.00.XXX';
++if (C4::Context->preference("Version") < TransformToNum($DBversion)) {
++    $dbh->do( qq |
++ CREATE TABLE `ratings` (
++  `borrowernumber` int(11) NOT NULL,
++  `biblionumber` int(11) NOT NULL,
++  `value` tinyint(1) NOT NULL,
++  `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP,
++  PRIMARY KEY  (`rating_id`),
++  KEY `ratings_borrowers_fk_1` (`borrowernumber`),
++  KEY `ratings_biblionumber_fk_1` (`biblionumber`)
++) ENGINE=InnoDB DEFAULT CHARSET=utf8 |);
++
++    $dbh->do(qq|INSERT INTO `systempreferences` VALUES ('OpacStarRatings','0',NULL,NULL,NULL)|);
++    print "Upgrade to $DBversion done (Add 'ratings' table and 'OpacStarRatings' syspref)\n";
++    SetVersion($DBversion);
++}
++
+ =head1 FUNCTIONS
+ 
+ =head2 DropAllForeignKeys($table)
+diff --git a/koha-tmpl/intranet-tmpl/prog/en/modules/admin/preferences/opac.pref b/koha-tmpl/intranet-tmpl/prog/en/modules/admin/preferences/opac.pref
+index 8bbf692..4b12691 100644
+--- a/koha-tmpl/intranet-tmpl/prog/en/modules/admin/preferences/opac.pref
++++ b/koha-tmpl/intranet-tmpl/prog/en/modules/admin/preferences/opac.pref
+@@ -6,6 +6,10 @@ OPAC:
+               choices: opac-templates
+             - theme on the OPAC.
+         -
++
++
++
++
+             - "The OPAC is located at http://"
+             - pref: OPACBaseURL
+               class: url
+@@ -22,6 +26,14 @@ OPAC:
+                   no: Disable
+             - "Koha OPAC as public. Private OPAC requires authentification before accessing the OPAC."
+         -
++            - "Show star-ratings on"
++            - pref: OpacStarRatings
++              choices:
++                  yes: "results and details"
++                  no: "no"
++                  details: "only details"
++            - "pages."
++        -
+             - pref: OpacMaintenance
+               choices:
+                   yes: Show
+diff --git a/koha-tmpl/opac-tmpl/prog/en/css/jquery.rating.css b/koha-tmpl/opac-tmpl/prog/en/css/jquery.rating.css
+new file mode 100644
+index 0000000..18c0f3e
+--- /dev/null
++++ b/koha-tmpl/opac-tmpl/prog/en/css/jquery.rating.css
+@@ -0,0 +1,12 @@
++/* jQuery.Rating Plugin CSS - http://www.fyneworks.com/jquery/star-rating/ */
++div.rating-cancel,div.star-rating{float:left;width:15px;height:15px;text-indent:-999em;cursor:pointer;display:block;background:transparent;overflow:hidden}
++div.rating-cancel,div.rating-cancel a{background:url(../../images/delete.gif) no-repeat 0 -16px}
++div.star-rating,div.star-rating a{background:url(../../images/star.gif) no-repeat 0 0px}
++div.rating-cancel a,div.star-rating a{display:block;width:16px;height:100%;background-position:0 0px;border:0}
++div.star-rating-on a{background-position:0 -32px!important}
++div.star-rating-hover a{background-position:0 -16px}
++/* Read Only CSS */
++div.star-rating-readonly a{cursor:default !important}
++/* Partial Star CSS */
++div.star-rating{background:transparent!important;overflow:hidden!important}
++/* END jQuery.Rating Plugin CSS */
+diff --git a/koha-tmpl/opac-tmpl/prog/en/lib/jquery/plugins/jquery.rating.js b/koha-tmpl/opac-tmpl/prog/en/lib/jquery/plugins/jquery.rating.js
+new file mode 100644
+index 0000000..57a1c2a
+--- /dev/null
++++ b/koha-tmpl/opac-tmpl/prog/en/lib/jquery/plugins/jquery.rating.js
+@@ -0,0 +1,344 @@
++/*
++ ### jQuery Star Rating Plugin v3.10 - 2009-03-23 ###
++ * Home: http://www.fyneworks.com/jquery/star-rating/
++ * Code: http://code.google.com/p/jquery-star-rating-plugin/
++ *
++	* Dual licensed under the MIT and GPL licenses:
++ *   http://www.opensource.org/licenses/mit-license.php
++ *   http://www.gnu.org/licenses/gpl.html
++ ###
++*/
++
++/*# AVOID COLLISIONS #*/
++;if(window.jQuery) (function($){
++/*# AVOID COLLISIONS #*/
++	
++	// IE6 Background Image Fix
++	if ($.browser.msie) try { document.execCommand("BackgroundImageCache", false, true)} catch(e) { }
++	// Thanks to http://www.visualjquery.com/rating/rating_redux.html
++	
++	// plugin initialization
++	$.fn.rating = function(options){
++		if(this.length==0) return this; // quick fail
++		
++		// Handle API methods
++		if(typeof arguments[0]=='string'){
++			// Perform API methods on individual elements
++			if(this.length>1){
++				var args = arguments;
++				return this.each(function(){
++					$.fn.rating.apply($(this), args);
++    });
++			};
++			// Invoke API method handler
++			$.fn.rating[arguments[0]].apply(this, $.makeArray(arguments).slice(1) || []);
++			// Quick exit...
++			return this;
++		};
++		
++		// Initialize options for this call
++		var options = $.extend(
++			{}/* new object */,
++			$.fn.rating.options/* default options */,
++			options || {} /* just-in-time options */
++		);
++		
++		// loop through each matched element
++		this
++		 .not('.star-rating-applied')
++			.addClass('star-rating-applied')
++		.each(function(){
++			
++			// Load control parameters / find context / etc
++			var eid = (this.name || 'unnamed-rating').replace(/\[|\]+/g, "_");
++			var context = $(this.form || document.body);
++			var input = $(this);
++			var raters = context.data('rating') || { count:0 };
++			var rater = raters[eid];
++			var control;
++			
++			// if rater is available, verify that the control still exists
++			if(rater) control = rater.data('rating');
++			
++			if(rater && control){
++				// add star to control if rater is available and the same control still exists
++				control.count++;
++				
++			}
++			else{
++				// create new control if first star or control element was removed/replaced
++				
++				// Initialize options for this raters
++				control = $.extend(
++					{}/* new object */,
++					options || {} /* current call options */,
++					($.metadata? input.metadata(): ($.meta?input.data():null)) || {}, /* metadata options */
++					{ count:0, stars: [], inputs: [] }
++				);
++				
++				// increment number of rating controls
++				control.serial = raters.count++;
++				
++				// create rating element
++				rater = $('<span class="star-rating-control"/>');
++				input.before(rater);
++				
++				// Mark element for initialization (once all stars are ready)
++				rater.addClass('rating-to-be-drawn');
++				
++				// Accept readOnly setting from 'disabled' property
++				if(input.attr('disabled')) control.readOnly = true;
++				
++				// Create 'cancel' button
++				rater.append(
++					control.cancel = $('<div class="rating-cancel"><a title="' + control.cancel + '">' + control.cancelValue + '</a></div>')
++					.mouseover(function(){
++						$(this).rating('drain');
++						$(this).addClass('star-rating-hover');
++						//$(this).rating('focus');
++					})
++					.mouseout(function(){
++						$(this).rating('draw');
++						$(this).removeClass('star-rating-hover');
++						//$(this).rating('blur');
++					})
++					.click(function(){
++					 $(this).rating('select');
++					})
++					.data('rating', control)
++				);
++				
++			}; // first element of group
++			
++			// insert rating star
++			var star = $('<div class="star-rating rater-'+ control.serial +'"><a title="' + (this.title || this.value) + '">' + this.value + '</a></div>');
++			rater.append(star);
++			
++			// inherit attributes from input element
++			if(this.id) star.attr('id', this.id);
++			if(this.className) star.addClass(this.className);
++			
++			// Half-stars?
++			if(control.half) control.split = 2;
++			
++			// Prepare division control
++			if(typeof control.split=='number' && control.split>0){
++				var stw = ($.fn.width ? star.width() : 0) || control.starWidth;
++				var spi = (control.count % control.split), spw = Math.floor(stw/control.split);
++				star
++				// restrict star's width and hide overflow (already in CSS)
++				.width(spw)
++				// move the star left by using a negative margin
++				// this is work-around to IE's stupid box model (position:relative doesn't work)
++				.find('a').css({ 'margin-left':'-'+ (spi*spw) +'px' })
++			};
++			
++			// readOnly?
++			if(control.readOnly)//{ //save a byte!
++				// Mark star as readOnly so user can customize display
++				star.addClass('star-rating-readonly');
++			//}  //save a byte!
++			else//{ //save a byte!
++			 // Enable hover css effects
++				star.addClass('star-rating-live')
++				 // Attach mouse events
++					.mouseover(function(){
++						$(this).rating('fill');
++						$(this).rating('focus');
++					})
++					.mouseout(function(){
++						$(this).rating('draw');
++						$(this).rating('blur');
++					})
++					.click(function(){
++						$(this).rating('select');
++					})
++				;
++			//}; //save a byte!
++			
++			// set current selection
++			if(this.checked)	control.current = star;
++			
++			// hide input element
++			input.hide();
++			
++			// backward compatibility, form element to plugin
++			input.change(function(){
++    $(this).rating('select');
++   });
++			
++			// attach reference to star to input element and vice-versa
++			star.data('rating.input', input.data('rating.star', star));
++			
++			// store control information in form (or body when form not available)
++			control.stars[control.stars.length] = star[0];
++			control.inputs[control.inputs.length] = input[0];
++			control.rater = raters[eid] = rater;
++			control.context = context;
++			
++			input.data('rating', control);
++			rater.data('rating', control);
++			star.data('rating', control);
++			context.data('rating', raters);
++  }); // each element
++		
++		// Initialize ratings (first draw)
++		$('.rating-to-be-drawn').rating('draw').removeClass('rating-to-be-drawn');
++		
++		return this; // don't break the chain...
++	};
++	
++	/*--------------------------------------------------------*/
++	
++	/*
++		### Core functionality and API ###
++	*/
++	$.extend($.fn.rating, {
++		
++		focus: function(){
++			var control = this.data('rating'); if(!control) return this;
++			if(!control.focus) return this; // quick fail if not required
++			// find data for event
++			var input = $(this).data('rating.input') || $( this.tagName=='INPUT' ? this : null );
++   // focus handler, as requested by focusdigital.co.uk
++			if(control.focus) control.focus.apply(input[0], [input.val(), $('a', input.data('rating.star'))[0]]);
++		}, // $.fn.rating.focus
++		
++		blur: function(){
++			var control = this.data('rating'); if(!control) return this;
++			if(!control.blur) return this; // quick fail if not required
++			// find data for event
++			var input = $(this).data('rating.input') || $( this.tagName=='INPUT' ? this : null );
++   // blur handler, as requested by focusdigital.co.uk
++			if(control.blur) control.blur.apply(input[0], [input.val(), $('a', input.data('rating.star'))[0]]);
++		}, // $.fn.rating.blur
++		
++		fill: function(){ // fill to the current mouse position.
++			var control = this.data('rating'); if(!control) return this;
++			// do not execute when control is in read-only mode
++			if(control.readOnly) return;
++			// Reset all stars and highlight them up to this element
++			this.rating('drain');
++			this.prevAll().andSelf().filter('.rater-'+ control.serial).addClass('star-rating-hover');
++		},// $.fn.rating.fill
++		
++		drain: function() { // drain all the stars.
++			var control = this.data('rating'); if(!control) return this;
++			// do not execute when control is in read-only mode
++			if(control.readOnly) return;
++			// Reset all stars
++			control.rater.children().filter('.rater-'+ control.serial).removeClass('star-rating-on').removeClass('star-rating-hover');
++		},// $.fn.rating.drain
++		
++		draw: function(){ // set value and stars to reflect current selection
++			var control = this.data('rating'); if(!control) return this;
++			// Clear all stars
++			this.rating('drain');
++			// Set control value
++			if(control.current){
++				control.current.data('rating.input').attr('checked','checked');
++				control.current.prevAll().andSelf().filter('.rater-'+ control.serial).addClass('star-rating-on');
++			}
++			else
++			 $(control.inputs).removeAttr('checked');
++			// Show/hide 'cancel' button
++			control.cancel[control.readOnly || control.required?'hide':'show']();
++			// Add/remove read-only classes to remove hand pointer
++			this.siblings()[control.readOnly?'addClass':'removeClass']('star-rating-readonly');
++		},// $.fn.rating.draw
++		
++		select: function(value){ // select a value
++			var control = this.data('rating'); if(!control) return this;
++			// do not execute when control is in read-only mode
++			if(control.readOnly) return;
++			// clear selection
++			control.current = null;
++			// programmatically (based on user input)
++			if(typeof value!='undefined'){
++			 // select by index (0 based)
++				if(typeof value=='number')
++ 			 return $(control.stars[value]).rating('select');
++				// select by literal value (must be passed as a string
++				if(typeof value=='string')
++					//return 
++					$.each(control.stars, function(){
++						if($(this).data('rating.input').val()==value) $(this).rating('select');
++					});
++			}
++			else
++				control.current = this[0].tagName=='INPUT' ? 
++				 this.data('rating.star') : 
++					(this.is('.rater-'+ control.serial) ? this : null);
++			
++			// Update rating control state
++			this.data('rating', control);
++			// Update display
++			this.rating('draw');
++			// find data for event
++			var input = $( control.current ? control.current.data('rating.input') : null );
++			// click callback, as requested here: http://plugins.jquery.com/node/1655
++			if(control.callback) control.callback.apply(input[0], [input.val(), $('a', control.current)[0]]);// callback event
++		},// $.fn.rating.select
++		
++		readOnly: function(toggle, disable){ // make the control read-only (still submits value)
++			var control = this.data('rating'); if(!control) return this;
++			// setread-only status
++			control.readOnly = toggle || toggle==undefined ? true : false;
++			// enable/disable control value submission
++			if(disable) $(control.inputs).attr("disabled", "disabled");
++			else     			$(control.inputs).removeAttr("disabled");
++			// Update rating control state
++			this.data('rating', control);
++			// Update display
++			this.rating('draw');
++		},// $.fn.rating.readOnly
++		
++		disable: function(){ // make read-only and never submit value
++			this.rating('readOnly', true, true);
++		},// $.fn.rating.disable
++		
++		enable: function(){ // make read/write and submit value
++			this.rating('readOnly', false, false);
++		}// $.fn.rating.select
++		
++ });
++	
++	/*--------------------------------------------------------*/
++	
++	/*
++		### Default Settings ###
++		eg.: You can override default control like this:
++		$.fn.rating.options.cancel = 'Clear';
++	*/
++	$.fn.rating.options = { //$.extend($.fn.rating, { options: {
++			cancel: 'Cancel Rating',   // advisory title for the 'cancel' link
++			cancelValue: '',           // value to submit when user click the 'cancel' link
++			split: 0,                  // split the star into how many parts?
++			
++			// Width of star image in case the plugin can't work it out. This can happen if
++			// the jQuery.dimensions plugin is not available OR the image is hidden at installation
++			starWidth: 16//,
++			
++			//NB.: These don't need to be pre-defined (can be undefined/null) so let's save some code!
++			//half:     false,         // just a shortcut to control.split = 2
++			//required: false,         // disables the 'cancel' button so user can only select one of the specified values
++			//readOnly: false,         // disable rating plugin interaction/ values cannot be changed
++			//focus:    function(){},  // executed when stars are focused
++			//blur:     function(){},  // executed when stars are focused
++			//callback: function(){},  // executed when a star is clicked
++ }; //} });
++	
++	/*--------------------------------------------------------*/
++	
++	/*
++		### Default implementation ###
++		The plugin will attach itself to file inputs
++		with the class 'multi' when the page loads
++	*/
++	$(function(){ $('input[type=radio].star').rating(); });
++	
++	
++	
++/*# AVOID COLLISIONS #*/
++})(jQuery);
++/*# AVOID COLLISIONS #*/
+diff --git a/koha-tmpl/opac-tmpl/prog/en/modules/opac-detail.tt b/koha-tmpl/opac-tmpl/prog/en/modules/opac-detail.tt
+index 3e8586d..9f86faa 100644
+--- a/koha-tmpl/opac-tmpl/prog/en/modules/opac-detail.tt
++++ b/koha-tmpl/opac-tmpl/prog/en/modules/opac-detail.tt
+@@ -1,6 +1,9 @@
+ [% INCLUDE 'doc-head-open.inc' %][% IF ( LibraryNameTitle ) %][% LibraryNameTitle %][% ELSE %]Koha Online[% END %] Catalog &rsaquo; Details for: [% title |html %][% FOREACH subtitl IN subtitle %], [% subtitl.subfield %][% END %]
+ [% INCLUDE 'doc-head-close.inc' %]
+ <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.tablesorter.min.js"></script>
++<script type="text/javascript" src="/opac-tmpl/prog/en/lib/jquery/plugins/jquery.rating.js"></script>
++<link rel="stylesheet" type="text/css" href="/opac-tmpl/prog/en/css/jquery.rating.css" />
++
+ <script type="text/JavaScript" language="JavaScript">
+ //<![CDATA[
+      $(document).ready(function() { 
+@@ -31,6 +34,42 @@
+ 	[% IF ( opacuserlogin ) %][% IF ( loggedinusername ) %][% IF ( TagsEnabled ) %]
+         $(".tagbutton").click(KOHA.Tags.add_tag_button);[% END %][% END %][% END %]
+ 
++    // ratings code
++    // hide 'rate' button
++    $('input[name="rate_button"]').remove();
++
++
++$(".auto-submit-star").rating({
++   callback: function (value, link) {
++     $.post("/cgi-bin/koha/opac-ratings-ajax.pl", {
++       my_rating: $("#my_rating").attr("value"),
++       borrowernumber: "[% borrowernumber %]",
++       biblionumber: "[% biblionumber %]",
++       value: value,
++     }, function (data) {
++
++       if (data.no_op == 1) {
++            //no-op
++       } else { 
++         $("#rating_avg_text").text('average ' + data.avg_int);
++
++         if (data.my_rating == null) {  //delete
++           $("#my_rating_text").text('your rating: none, ');
++           $("#my_rating").val(data.my_rating);
++
++         } else {  // an add or mod
++           $("#my_rating_text").text('your rating: ' + data.my_rating + ', ');
++           $("#my_rating").val(data.my_rating);
++         }
++
++         $("#rating_avg").text('average: ' + data.avg_int);
++         $("#rating_total").text(' (' + data.rating_total + ' votes)');
++       }
++     }, "json");
++   }
++});
++
++
+ });
+ 
+ YAHOO.util.Event.onContentReady("furtherm", function () {
+@@ -47,7 +86,6 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
+ 		YAHOO.util.Event.addListener("furthersearches", "click", furthersearchesMenu.show, null, furthersearchesMenu);
+ 		YAHOO.widget.Overlay.windowResizeEvent.subscribe(positionfurthersearchesMenu);
+  });
+-	
+ //]]>
+ </script>
+ [% IF ( opacuserlogin ) %][% IF ( loggedinusername ) %][% IF ( TagsEnabled ) %]<style type="text/css">
+@@ -311,7 +349,28 @@ YAHOO.util.Event.onContentReady("furtherm", function () {
+         </span>
+         [% END %][% END %][% END %]
+ 
+-    [% IF ( BakerTaylorContentURL ) %]
++    [% IF ( OpacStarRatings ) %]
++        <form method="post" action="/cgi-bin/koha/opac-ratings.pl">
++        <div class="results_summary">   
++<input class="auto-submit-star" type="radio" name="rating" value="1"[% IF rating_avg == 1 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
++<input class="auto-submit-star" type="radio" name="rating" value="2"[% IF rating_avg == 2 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
++<input class="auto-submit-star" type="radio" name="rating" value="3"[% IF rating_avg == 3 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
++<input class="auto-submit-star" type="radio" name="rating" value="4"[% IF rating_avg == 4 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
++<input class="auto-submit-star" type="radio" name="rating" value="5"[% IF rating_avg == 5 %]checked="1"[% END %][% UNLESS borrowernumber %]disabled="disabled"[% END %]/>
++        <input  type="hidden" name='biblionumber'  value="[% biblionumber %]" />
++        <input  type="hidden" name='borrowernumber'  value="[% borrowernumber %]" />
++        <input  type="hidden" name='my_rating' id='my_rating' value="[% my_rating %]" />
++
++        [% UNLESS ( rating_readonly ) %]&nbsp;  <INPUT name="rate_button" type="submit" value="Rate me">[% END %]&nbsp;
++
++        <span id="my_rating_text">your rating: [% IF my_rating %][% my_rating %][% ELSE %]none[% END %],</span>
++        <span id="rating_avg">average: [% rating_avg_int %]</span><span id="rating_total">&nbsp;([% rating_total %] votes)</span>
++
++        </div>
++        </FORM>
++    [% END %]
++
++    [% IF ( BakerTaylorContenturl ) %]
+         <span class="results_summary">
+         <span class="label">Enhanced Content: </span> 
+         [% IF ( OPACurlOpenInNewWindow ) %]<a href="[% BakerTaylorContentURL |html %]" target="_blank">Content Cafe</a>[% ELSE %]<a href="[% BakerTaylorContentURL |html %]">Content Cafe</a>[% END %]
+diff --git a/koha-tmpl/opac-tmpl/prog/en/modules/opac-results.tt b/koha-tmpl/opac-tmpl/prog/en/modules/opac-results.tt
+index b7fbcb3..e5c70bf 100644
+--- a/koha-tmpl/opac-tmpl/prog/en/modules/opac-results.tt
++++ b/koha-tmpl/opac-tmpl/prog/en/modules/opac-results.tt
+@@ -6,8 +6,10 @@
+     You did not specify any search criteria.
+ [% END %]
+ [% INCLUDE 'doc-head-close.inc' %]
+-<link rel="alternate" type="application/rss+xml" title="[% LibraryName |html %] Search RSS Feed" href="[% OPACBaseURL %]/cgi-bin/koha/opac-search.pl?[% query_cgi |html %][% limit_cgi |html %]&amp;count=[% countrss |html %]&amp;sort_by=acqdate_dsc&amp;format=rss2" />
+-
++<link rel="alternate" type="application/rss+xml" title="[% LibraryName |html %] Search RSS Feed" href="[% OPACBaseurl %]/cgi-bin/koha/opac-search.pl?[% query_cgi |html %][% limit_cgi |html %]&amp;count=[% countrss |html %]&amp;sort_by=acqdate_dsc&amp;format=rss2" />
++<script type="text/javascript" src="/opac-tmpl/prog/en/lib/jquery/jquery.js"></script>
++<script type="text/javascript" src="/opac-tmpl/prog/en/lib/jquery/plugins/jquery.rating.js"></script>
++<link rel="stylesheet" type="text/css" href="/opac-tmpl/prog/en/css/jquery.rating.css" />
+ 
+ <script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.checkboxes.min.js"></script>
+ [% IF ( OpacHighlightedWords ) %]<script type="text/javascript" src="[% themelang %]/lib/jquery/plugins/jquery.highlight-3.js"></script>
+@@ -231,6 +233,7 @@ $(document).ready(function(){
+     [% IF OpenLibraryCovers %]KOHA.OpenLibrary.GetCoverFromIsbn();[% END %]
+     [% IF ( GoogleJackets ) %]KOHA.Google.GetCoverFromIsbn();[% END %]
+ });
++
+ //]]>
+ </script>
+ </head>
+@@ -478,6 +481,25 @@ $(document).ready(function(){
+ 
+ 				[% END %]
+ 				[% IF ( LibraryThingForLibrariesID ) %]<div class="ltfl_reviews"></div>[% END %]
++
++				[% IF ( OpacStarRatings == '1' ) %]
++                <div class="results_summary">
++                <form name="moo" method="post" action="/cgi-bin/koha/opac-ratings.pl">
++<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="1" [% IF ( SEARCH_RESULT.rating_avg == 1 ) %]checked="checked"[% END %] disabled="disabled" />
++<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="2" [% IF ( SEARCH_RESULT.rating_avg == 2 ) %]checked="checked"[% END %] disabled="disabled" />
++<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="3" [% IF ( SEARCH_RESULT.rating_avg == 3 ) %]checked="checked"[% END %] disabled="disabled" />
++<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="4" [% IF ( SEARCH_RESULT.rating_avg == 4 ) %]checked="checked"[% END %] disabled="disabled" />
++<input class="star" type="radio" name="rating-[% SEARCH_RESULT.biblionumber %]" value="5" [% IF ( SEARCH_RESULT.rating_avg == 5 ) %]checked="checked"[% END %] disabled="disabled" />
++                <input type="hidden" name='biblionumber'  value="[% SEARCH_RESULT.biblionumber %]" />
++                <input type="hidden" name='loggedinuser'  value="[% loggedinuser %]" />
++
++                <span id="rating_total_[% SEARCH_RESULT.biblionumber %]">&nbsp;&nbsp;([% SEARCH_RESULT.rating_total %] votes)</span>
++
++
++                </form>
++                </div>
++				[% END %]
++
+ 				[% IF ( opacuserlogin ) %][% IF ( TagsEnabled ) %]
+                                 [% IF ( TagsShowOnList ) %]
+                                 [% IF ( SEARCH_RESULT.TagLoop.size ) %]
+diff --git a/koha-tmpl/opac-tmpl/prog/images/delete.gif b/koha-tmpl/opac-tmpl/prog/images/delete.gif
+new file mode 100755
+index 0000000000000000000000000000000000000000..43c6ca8763d79bde87bcf437e497af00c8be562d
+GIT binary patch
+literal 752
+zcmZ?wbhEHb6kt$bc*el6GthYN-n}zt&b)vB{*)<GZZDnssVwQ*wQJ8pz3-M6ef|3N
+zTw?I^BRjWl-THaiqIb<TR|-<zzkh%9=+U)n*M2*H{@2X5mq}6Aa+CK)+kfaTd)M9Y
+zW&YeVXU=?m_V93u_p1$S-kmu7EY$ycOu&bh{H05m9`-kWR9EwH&eRVR>i+-#|NQy$
+zABXln&Q1FL`t{#CH*SY|{oJwc*Qz;h;)0))7aYq9ewP~fc2e)_P3vAY)$9wl{IzJp
+zy{ydlr;a^HiGHwZ{*SH8FZkJhE{gei`OM?;ir*_{?@ji478&@mD*tSH_`A&5@6Vqe
+z@G<&xeCOwiq-WvY-<q?(PpbX8Zpp{q%CC#&{pc>eS5f?;vgCP8#IHGBw=+^cY}xvy
+zx8c*8mDl2ff1W;kCeZrNm9vlQYJg5<pbb#`$->Caki?(^G9DBs4DA0KlA4-ZT3fl8
+z8F_gb*}2-1v>0WWwY1oIg_&Emc-aM+Wn|bpRc1GF^$N-etzA1qr9X*XNNWw_j-BjG
+zGEKc(x)1gUF{(82E@ad^eMXp9hUxg0Q)f<}lVRDncBb&%dq*yAR+(|<o-jL$(28?2
+zo;??45^QExc`no~#IC}^-ui`UvIUER!h-n=LseJ=rYP`FI@~V6z4by;((yhm^C*W!
+z21kx@DaO@p*l}R7K&xy_%z+DytsIk;xgB`2439K+b7?GbXmoN_5mIg1@_?b4)vHb2
+zW4=iz(~<TC27yT_6CAg$YSazO;JC%ee5xbs^c)q-iOvDjBs>l-D@bZwvw%g)cL7VG
+z)An_f*+XqOetkIP*eg{wS7K(+qJ{-x0ue3?v&y~1d1To>MqD_2keNGNE=Pc|!BJ7b
+fV_(F^#N=Z_Jo9)pKRPly^YODPxtB<AFjxZs(@{iI
+
+literal 0
+HcmV?d00001
+
+diff --git a/koha-tmpl/opac-tmpl/prog/images/star.gif b/koha-tmpl/opac-tmpl/prog/images/star.gif
+new file mode 100644
+index 0000000000000000000000000000000000000000..d0948a70843bf01952d1f81dcfcdadc92976a04a
+GIT binary patch
+literal 815
+zcmZ?wbhEHb6ksr5c*el6(A@m!(W5UnOP^`reSRqFN=wUy;^KSv?mbz*{y;*);~mc5
+z-|RUW6m;#{wMW}bp6pHg_U+rN({8s`u6+0I-Q5+MAMeb%w`<p%^ObAe+`hkj`DTyO
+z+d~E~k2$_RJM(N#&bNn2U+&-kax?1Vx!~u|pC6Bkx;a<%e0BBpNt3?6-n!q(>5!M#
+z{q=^=j}*N*e*EQepZ7;K-(U6l^W*)qy-uI5Mx04YJ9FmD@2@w0e|`3BzvYV!svmDJ
+zy1UBt<DL4wUS5~`l~&o?KiTc|?y&dMwH9wLt^WW2|BarW%QZD$t~tCq+4%9S{-+DB
+zU+=}f+^q2P-MdfMLf>A9dUx3IVz=bW<9TmSpMHPB|LHc1x92?H@6~*NPV?1P?R#4d
+zPbMV1-s|#ytJ9}D;U7+0e!n;8#jahi&$Zv4GUd&Fk1akv*Jf&ey1!wEi_7<GUO*ce
+zC<BT=Ss2+FvKVwg#(?64f&G6&R#S79fN)Dk2QP1DuW+|=Z&!EEq$XuvcJ`T_!n3+(
+zPg$TWFniYgMJuxwEHYhZ+HLC6v}WVFjRGxe*Yle0Y?-ll&zz2hYr8v-tu*bNVmfR6
+znT~Z6o0Ux&=T2&$rVu=>gU#eYv#yB=$CE4*Ha3+f942mV(XO4k$!yUkYI4!<crrvB
+zCM=xaSm|bCkl=8r*<OezWJO^_0~=?DVCaekf*U&*6uTK@`5X*vJ?{A5Yn6wikt>^v
+z(7()>%8M?Gl%7kx>Gn`^RAQF96>H<Z$Y)U-PmqX3BO7nCe5XmDq6#B(gG-`HBtv>~
+zqm`q-QcY~aQ7_g~!8sNO9r=2u3Mlqi#CWtc9T(=ypIRf>c$iT@(<;xV@nLFbqN;ve
+z&H|wp@2R5NS2`L#KJ=KR(rKEJaLDyUmqb%cL}by=)-=YHmH-A@k7GPXma%d?aC*qL
+zh)X7I#x;cnUQ^jS^;|kOFmg@Nv0U}W!=<5%L(6DYL1B*CL?*3JjSUV#i&`dVbSiW!
+SUO9NY!6jXVS5kz7!5RQ<r+B^q
+
+literal 0
+HcmV?d00001
+
+diff --git a/opac/opac-detail.pl b/opac/opac-detail.pl
+index e18e046..3a57101 100755
+--- a/opac/opac-detail.pl
++++ b/opac/opac-detail.pl
+@@ -2,6 +2,7 @@
+ 
+ # Copyright 2000-2002 Katipo Communications
+ # Copyright 2010 BibLibre
++# Copyright 2011 KohaAloha, NZ
+ #
+ # This file is part of Koha.
+ #
+@@ -37,6 +38,8 @@ use C4::XISBN qw(get_xisbns get_biblionumber_from_isbn);
+ use C4::External::Amazon;
+ use C4::External::Syndetics qw(get_syndetics_index get_syndetics_summary get_syndetics_toc get_syndetics_excerpt get_syndetics_reviews get_syndetics_anotes );
+ use C4::Review;
++use C4::Ratings;
++use C4::Serials;
+ use C4::Members;
+ use C4::VirtualShelves;
+ use C4::XSLT;
+@@ -46,6 +49,8 @@ use MARC::Record;
+ use MARC::Field;
+ use List::MoreUtils qw/any none/;
+ 
++use Smart::Comments '####';
++
+ BEGIN {
+ 	if (C4::Context->preference('BakerTaylorEnabled')) {
+ 		require C4::External::BakerTaylor;
+@@ -64,6 +69,12 @@ my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
+     }
+ );
+ 
++
++
++#### $borrowernumber
++
++
++
+ my $biblionumber = $query->param('biblionumber') || $query->param('bib');
+ 
+ $template->param( 'AllowOnShelfHolds' => C4::Context->preference('AllowOnShelfHolds') );
+@@ -306,6 +317,10 @@ if (!$@ and C4::Context->preference('ShowReviewer') and C4::Context->preference(
+ 
+ my $reviews = getreviews( $biblionumber, 1 );
+ my $loggedincommenter;
++
++
++
++
+ foreach ( @$reviews ) {
+     my $borrowerData   = GetMember('borrowernumber' => $_->{borrowernumber});
+     # setting some borrower info into this hash
+@@ -318,6 +333,7 @@ foreach ( @$reviews ) {
+     $_->{userid}    = $borrowerData->{'userid'};
+     $_->{cardnumber}    = $borrowerData->{'cardnumber'};
+     $_->{datereviewed} = format_date($_->{datereviewed});
++
+     if ($borrowerData->{'borrowernumber'} eq $borrowernumber) {
+ 		$_->{your_comment} = 1;
+ 		$loggedincommenter = 1;
+@@ -564,6 +580,18 @@ if (C4::Context->preference("OPACURLOpenInNewWindow")) {
+     $template->param(covernewwindow => 'false');
+ }
+ 
++
++if ( C4::Context->preference('OpacStarRatings') =~ /1|details/ ) {
++    my $rating = get_rating( $biblionumber, $borrowernumber );
++    $template->param(
++        my_rating      => $rating->{'my_rating'},
++        rating_total   => $rating->{'total'},
++        rating_avg     => $rating->{'avg'},
++        rating_avg_int => $rating->{'avg_int'},
++        borrowernumber => $borrowernumber
++    );
++}
++
+ #Search for title in links
+ my $marccontrolnumber   = GetMarcControlnumber   ($record, $marcflavour);
+ 
+diff --git a/opac/opac-ratings-ajax.pl b/opac/opac-ratings-ajax.pl
+new file mode 100755
+index 0000000..03a160a
+--- /dev/null
++++ b/opac/opac-ratings-ajax.pl
+@@ -0,0 +1,146 @@
++#!/usr/bin/perl
++
++# Copyright 2011 KohaAloha, NZ
++#
++# This file is part of Koha.
++#
++# Koha is free software; you can redistribute it and/or modify it under the
++# terms of the GNU General Public License as published by the Free Software
++# Foundation; either version 2 of the License, or (at your option) any later
++# version.
++#
++# Koha is distributed in the hope that it will be useful, but WITHOUT ANY
++# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
++# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License along
++# with Koha; if not, write to the Free Software Foundation, Inc.,
++# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++
++=head1 DESCRIPTION
++
++A script that takes an ajax json query, and then inserts or modifies a star-rating.
++
++=cut
++
++use strict;
++
++#use warnings;
++use CGI;
++use
++  CGI::Cookie;  # need to check cookies before having CGI parse the POST request
++
++#use JSON;
++
++use C4::Auth qw(:DEFAULT check_cookie_auth);
++use C4::Context;
++use C4::Debug;
++use C4::Output 3.02 qw(:html :ajax pagination_bar);
++use C4::Dates qw(format_date);
++use C4::Ratings;
++use Data::Dumper;
++use Smart::Comments '####';
++
++my $is_ajax       = is_ajax();
++my $query         = ($is_ajax) ? &ajax_auth_cgi( {} ) : CGI->new();
++my $biblionumber  = $query->param('biblionumber');
++my $my_rating     = $query->param('value');
++my $my_old_rating = $query->param('my_rating');
++
++#### aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
++#### aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
++#### aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
++#### aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
++
++#### $query
++
++my ( $template, $loggedinuser, $cookie );
++if ($is_ajax) {
++
++    # must occur AFTER auth
++    $loggedinuser = C4::Context->userenv->{'number'};
++
++}
++else {
++    ( $template, $loggedinuser, $cookie ) = get_template_and_user(
++        {
++            template_name   => "opac-ratings.tmpl",
++            query           => $query,
++            type            => "opac",
++            authnotrequired => 0,                    # auth required to add tags
++            debug           => 1,
++        }
++    );
++}
++
++my $rating;
++my $no_op ;
++
++undef $my_old_rating if $my_old_rating eq '';
++undef $my_rating     if $my_rating     eq '';
++
++####  $my_rating
++####  $my_old_rating
++
++if ( !$my_rating ) {
++#### delete
++    $rating = del_rating( $biblionumber, $loggedinuser );
++}
++
++elsif ( $my_rating and !$my_old_rating ) {
++#### insert
++    $rating = add_rating( $biblionumber, $loggedinuser, $my_rating );
++}
++
++elsif ( $my_rating ne $my_old_rating ) {
++#### mod
++    $rating = mod_rating( $biblionumber, $loggedinuser, $my_rating );
++}
++else {
++#### noop
++    $no_op = 1;
++}
++
++my %js_reply = (
++    rating_total => $rating->{'total'},
++    avg          => $rating->{'avg'},
++    avg_int      => $rating->{'avg_int'},
++    my_rating    => $rating->{'my_rating'},
++    no_op        => $no_op
++
++);
++
++use JSON;
++my $json_reply = JSON->new->encode( \%js_reply );
++
++#### $rating
++#### %js_reply
++#### $json_reply
++
++output_ajax_with_http_headers( $query, $json_reply );
++exit;
++
++# TODO: move this sub() to C4:Auth...
++sub ajax_auth_cgi ($) {    # returns CGI object
++    my $needed_flags = shift;
++    my %cookies      = fetch CGI::Cookie;
++    my $input        = CGI->new;
++    my $sessid = $cookies{'CGISESSID'}->value || $input->param('CGISESSID');
++    my ( $auth_status, $auth_sessid ) =
++      check_cookie_auth( $sessid, $needed_flags );
++    $debug
++      and print STDERR
++      "($auth_status, $auth_sessid) = check_cookie_auth($sessid,"
++      . Dumper($needed_flags) . ")\n";
++    if ( $auth_status ne "ok" ) {
++        output_ajax_with_http_headers $input,
++          "window.alert('Your CGI session cookie ($sessid) is not current.  "
++          . "Please refresh the page and try again.');\n";
++        exit 0;
++    }
++    $debug
++      and print STDERR "AJAX request: " . Dumper($input),
++      "\n(\$auth_status,\$auth_sessid) = ($auth_status,$auth_sessid)\n";
++    return $input;
++}
++
+diff --git a/opac/opac-ratings.pl b/opac/opac-ratings.pl
+new file mode 100755
+index 0000000..9c720de
+--- /dev/null
++++ b/opac/opac-ratings.pl
+@@ -0,0 +1,65 @@
++#!/usr/bin/perl
++
++# Copyright 2011 KohaAloha, NZ
++#
++# This file is part of Koha.
++#
++# Koha is free software; you can redistribute it and/or modify it under the
++# terms of the GNU General Public License as published by the Free Software
++# Foundation; either version 2 of the License, or (at your option) any later
++# version.
++#
++# Koha is distributed in the hope that it will be useful, but WITHOUT ANY
++# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
++# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License along
++# with Koha; if not, write to the Free Software Foundation, Inc.,
++# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++
++=head1
++
++A script to add a rating for a bib, and return rating information.
++
++=cut
++
++use strict;
++use warnings;
++use CGI;
++use CGI::Cookie;
++use C4::Auth qw(:DEFAULT check_cookie_auth);
++use C4::Context;
++use C4::Output 3.02 qw(:html :ajax pagination_bar);
++use C4::Dates qw(format_date);
++use C4::Biblio;
++use C4::Ratings;
++#use C4::Debug;
++#use Data::Dumper;
++#use Smart::Comments '####';
++
++my $query = CGI->new();
++####  $query
++my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
++    {   template_name   => "",
++        query           => $query,
++        type            => "opac",
++        authnotrequired => 0,        # auth required to add tags
++        debug           => 1,
++    }
++);
++
++my $biblionumber  = $query->param('biblionumber');
++my $my_rating     = $query->param('my_rating');
++my $my_new_rating = $query->param('rating');
++my $rating;
++
++#### $loggedinuser
++if ( $my_rating == '' ) {
++####insert
++    $rating = add_rating( $biblionumber, $loggedinuser, $my_new_rating );
++#### do nothing.
++} elsif ( $my_new_rating ne $my_rating ) {
++#### update
++    $rating = mod_rating( $biblionumber, $loggedinuser, $my_new_rating );
++}
++print $query->redirect("/cgi-bin/koha/opac-detail.pl?biblionumber=$biblionumber");
+diff --git a/opac/opac-search.pl b/opac/opac-search.pl
+index ff437da..2dcd81e 100755
+--- a/opac/opac-search.pl
++++ b/opac/opac-search.pl
+@@ -1,7 +1,8 @@
+ #!/usr/bin/perl
+ 
+-# Copyright 2008 Garry Collum and the Koha Koha Development team
++# Copyright 2008 Garry Collum and the Koha Development team
+ # Copyright 2010 BibLibre
++# Copyright 2011 KohaAloha, NZ
+ #
+ # This file is part of Koha.
+ #
+@@ -36,6 +37,13 @@ use C4::Biblio;  # GetBiblioData
+ use C4::Koha;
+ use C4::Tags qw(get_tags);
+ use C4::Branch; # GetBranches
++
++
++use Smart::Comments '####';
++
++
++use C4::Ratings;
++
+ use POSIX qw(ceil floor strftime);
+ use URI::Escape;
+ use Storable qw(thaw freeze);
+@@ -359,6 +367,10 @@ if ($params->{'limit-yr'}) {
+ # Params that can only have one value
+ my $scan = $params->{'scan'};
+ my $count = C4::Context->preference('OPACnumSearchResults') || 20;
++my $count = 3;
++
++
++
+ my $countRSS         = C4::Context->preference('numSearchRSSResults') || 50;
+ my $results_per_page = $params->{'count'} || $count;
+ my $offset = $params->{'offset'} || 0;
+@@ -485,11 +497,27 @@ for (my $i=0;$i<@servers;$i++) {
+ 										limit=>$tag_quantity });
+ 			}
+ 		}
+-                if (C4::Context->preference('COinSinOPACResults')) {
++        if (C4::Context->preference('COinSinOPACResults')) {
+ 		    foreach (@newresults) {
+ 		      $_->{coins} = GetCOinSBiblio($_->{'biblionumber'});
+ 		    }
+-                }
++        }
++
++        if ( C4::Context->preference('OpacStarRatings') == 1 ) {
++            foreach (@newresults) {
++                my $rating = get_rating( $_->{'biblionumber'}, $borrowernumber );
++                ####  $rating 
++
++
++                $_->{'my_rating'}     = $rating->{'my_rating'};
++                $_->{'rating_total'}  = $rating->{'total'};
++                $_->{'rating_avg'}    = $rating->{'avg'};
++                $_->{'rating_avgint'} = $rating->{'avg_int'};
++
++#### $_
++            }
++        }
++
+       
+ 	if ($results_hashref->{$server}->{"hits"}){
+ 	    $total = $total + $results_hashref->{$server}->{"hits"};
+@@ -698,4 +726,5 @@ if (C4::Context->preference('GoogleIndicTransliteration')) {
+         $template->param('GoogleIndicTransliteration' => 1);
+ }
+ 
++	$template->param( borrowernumber    => $borrowernumber);
+ output_with_http_headers $cgi, $cookie, $template->output, $content_type;
+diff --git a/t/db_dependent/Ratings.t b/t/db_dependent/Ratings.t
+new file mode 100755
+index 0000000..4bce698
+--- /dev/null
++++ b/t/db_dependent/Ratings.t
+@@ -0,0 +1,53 @@
++#!/usr/bin/perl
++#
++use strict;
++use warnings;
++use Test::More tests => 12;
++
++# use Smart::Comments '####';
++
++BEGIN {
++
++    use FindBin;
++    use C4::Ratings;
++    use_ok('C4::Ratings');
++
++    my $rating1 = add_rating( 1, 1, 3 );
++    my $rating2 = add_rating( 1, 2, 4 );
++    my $rating3 = mod_rating( 1, 1, 5 );
++    my $rating4 = get_rating( 1, 1 );
++    my $rating5 = get_rating( 1, undef );
++    my $rating6 = del_rating( 1, 1 );
++    my $rating7 = del_rating( 1, 2 );
++
++    ok( defined $rating1, 'add a rating' );
++    ok( defined $rating2, 'add another rating' );
++    ok( defined $rating3, 'update a rating' );
++    ok( defined $rating4, 'get a rating' );
++    ok( defined $rating5, 'get a rating, passing no userid' );
++    ok( $rating3->{'avg'} == '4',     "get a bib's average(float) rating" );
++    ok( $rating3->{'avg_int'} == 4.5, "get a bib's average(int) rating" );
++    ok( $rating3->{'total'} == 2,     "get a bib's total number of ratings" );
++    ok( $rating3->{'my_rating'} == 5, "get a users rating for a bib" );
++    ok( defined $rating6,             'delete a rating' );
++    ok( defined $rating7,             'delete another rating' );
++}
++
++=c
++
++$ perl  ./t/db_dependent/Ratings.t 
++1..12
++ok 1 - use C4::Ratings;
++ok 2 - add a rating
++ok 3 - add another rating
++ok 4 - update a rating
++ok 5 - get a rating
++ok 6 - get a rating, passing no userid
++ok 7 - get a bib's average(float) rating
++ok 8 - get a bib's average(int) rating
++ok 9 - get a bib's total number of ratings
++ok 10 - get a users rating for a bib
++ok 11 - delete a rating
++ok 12 - delete another rating
++
++=cut
+diff --git a/t/db_dependent/lib/KohaTest.pm b/t/db_dependent/lib/KohaTest.pm
+index 70c963d..369d6b5 100644
+--- a/t/db_dependent/lib/KohaTest.pm
++++ b/t/db_dependent/lib/KohaTest.pm
+@@ -228,6 +228,7 @@ sub startup_15_truncate_tables : Test( startup => 1 ) {
+                               subscriptionroutinglist
+                               suggestions
+                               tags
++                              ratings
+                               virtualshelfcontents
+                         );
+ 
+diff --git a/t/test-config.txt b/t/test-config.txt
+new file mode 100644
+index 0000000..fb61d63
+--- /dev/null
++++ b/t/test-config.txt
+@@ -0,0 +1,53 @@
++# This configuration file lets the t/Makefile prepare a test koha-conf.xml file.
++# It is generated by the top-level Makefile.PL.
++# It is separate from the standard koha-conf.xml so that you can edit this by hand and test with different configurations.
++ZEBRA_DATA_DIR = /home/mason/git.xen1/head/t/run/var/lib/zebradb
++INTRANET_WWW_DIR = /home/mason/git.xen1/head/koha-tmpl
++OPAC_CGI_DIR = /home/mason/git.xen1/head
++PERL_MODULE_DIR = /home/mason/git.xen1/head
++ZEBRA_LOCK_DIR = /home/mason/git.xen1/head/t/run/var/lock/zebradb
++INTRANET_CGI_DIR = /home/mason/git.xen1/head
++OPAC_TMPL_DIR = /home/mason/git.xen1/head/koha-tmpl/opac-tmpl
++SCRIPT_NONDEV_DIR = /home/mason/koha-dev/bin
++ZEBRA_RUN_DIR = /home/mason/git.xen1/head/t/run/var/run/zebradb
++MAN_DIR = /home/mason/koha-dev/man
++LOG_DIR = /home/mason/git.xen1/head/t/run/var/log
++PAZPAR2_CONF_DIR = /home/mason/koha-dev/etc/pazpar2
++KOHA_CONF_DIR = /home/mason/git.xen1/head/t/run/etc
++OPAC_WWW_DIR = /home/mason/git.xen1/head/koha-tmpl
++SCRIPT_DIR = /home/mason/git.xen1/head/t/run/bin
++DOC_DIR = /home/mason/koha-dev/doc
++INTRANET_TMPL_DIR = /home/mason/git.xen1/head/koha-tmpl/intranet-tmpl
++MISC_DIR = /home/mason/koha-dev/misc
++ZEBRA_CONF_DIR = /home/mason/git.xen1/head/t/run/etc/zebradb
++
++TEST_DB_PASS = kohakoha
++AUTH_INDEX_MODE = dom
++DB_PASS = kohakoha
++INSTALL_PAZPAR2 = no
++PATH_TO_ZEBRA = /usr/bin
++INSTALL_ZEBRA = yes
++USE_MEMCACHED = no
++DB_NAME = koha
++ZEBRA_USER = kohauser
++ZEBRA_SRU_BIBLIOS_PORT = 9998
++INSTALL_SRU = yes
++RUN_DATABASE_TESTS = yes
++DB_USER = kohaadmin
++TEST_DB_NAME = kohatest
++DB_HOST = localhost
++ZEBRA_MARC_FORMAT = marc21
++ZEBRA_PASS = zebrastripes
++DB_PORT = 3306
++TEST_DB_TYPE = mysql
++TEST_DB_HOST = localhost
++KOHA_INSTALLED_VERSION = 3.05.00.004
++ZEBRA_SRU_HOST = localhost
++ZEBRA_SRU_AUTHORITIES_PORT = 9999
++DB_TYPE = mysql
++ZEBRA_LANGUAGE = en
++TEST_DB_USER = kohaadmin
++AUTH_RETRIEVAL_CFG = retrieval-info-auth-dom.xml
++ZEBRA_AUTH_CFG = zebra-authorities-dom.cfg
++INSTALL_BASE = /home/mason/koha-dev
++INSTALL_MODE = dev
+-- 
+1.7.1
+
