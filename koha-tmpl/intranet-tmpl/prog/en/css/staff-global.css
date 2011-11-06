@@ -2081,3 +2081,10 @@ div.pager input.pagedisplay {
 	font-weight: bold;
 	text-align : center;
 }
+div.ohloh-table table, td, tr {
+    margin: 100 left;
+    text-align: left;
+    border: 0px solid white;
+    border-left: 30px solid white;
+    border-collapse:collapse;
+}
