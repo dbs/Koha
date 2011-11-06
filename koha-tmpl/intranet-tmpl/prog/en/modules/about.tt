@@ -16,12 +16,12 @@
 <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; About Koha</div>
 
 <div id="doc3" class="yui-t7">
-   
+
    <div id="bd">
     <div id="yui-main">
     <div class="yui-g">
             <h1>About Koha</h1>
-    
+
     <div id="abouttabs" class="toptabs numbered">
         <ul>
         <li><a href="about.pl#about">Server Information</a></li>
@@ -29,10 +29,12 @@
         <li><a href="about.pl#team">Koha Team</a></li>
         <li><a href="about.pl#licenses">Licenses</a></li>
         <li><a href="about.pl#translations">Translations</a></li>
+        <li><a href="about.pl#stats">Koha Stats</a></li>
+
         </ul>
-        
+
         <div id="about">
-            
+
         <table>
             <caption>Server information</caption>
             <tr><th scope="row">Koha version: </th><td>[% kohaVersion |html %]</td></tr>
@@ -95,8 +97,8 @@
                 <li>The <strong><a href="http://library.neu.edu.tr">Near East University</a></strong>, Cyprus</li>
                 <li><strong>OPUS International Consultants</strong>, Wellington, New Zealand (Corporate Serials sponsorship)</li>
                 <li><strong><a href="http://www.famfamfam.com/">famfamfam.com</a></strong> Birmingham (UK) based developer Mark James for the famfamfam Silk iconset.</li>
-            </ul>   
-                
+            </ul>
+
             <h2>Koha Release Team</h2>
             <ul>
                <li><strong>Colin Campbell</strong>(Koha 3.4 QA Manager)</li>
@@ -286,7 +288,7 @@
                 <li><strong>Katipo Communications</strong>, New Zealand</li>
                 <li><strong>KohaAloha</strong>, New Zealand</li>
                 <li><strong>LibLime</strong>, USA</li>
-                <li><strong>Libriotech</strong>, Norway</li> 
+                <li><strong>Libriotech</strong>, Norway</li>
 		<li><strong>Nelsonville Public Library</strong>, Ohio, USA</li>
 		<li><strong>PTFS</strong>, Maryland, USA</li>
 		<li><strong>PTFS Europe Ltd</strong>, United Kingdom</li>
@@ -296,7 +298,7 @@
 		<li><strong>Tamil</strong>, France</li>
 		<li><strong>Xercode</strong>, Spain</li>
             </ul>
-			
+
             <h2>Additional Thanks To...</h2>
             <ul>
 	    <li>Jo Ransom</li>
@@ -307,6 +309,9 @@
                 <li>Nicolas Morin (French Translation in 2.0)</li>
             </ul>
         </div>
+
+
+
         <div id="licenses">
             <h2>Koha</h2>
             <p>
@@ -315,7 +320,7 @@
             <h2>YUI</h2>
             <p>
             <a href="http://developer.yahoo.com/auth/license.txt">BSD License</a>
-            </p> 
+            </p>
             <h2>Famfamfam iconset</h2>
               <ul>
                 <li><a href="http://www.famfamfam.com/lab/icons/silk/">FamFamFam Site</a></li>
@@ -329,6 +334,9 @@
                   by the Bridge Consortium of Carleton College and St. Olaf College.</li>
               </ul>
         </div>
+
+
+
         <div id="translations">
             <h2>Translation</h2>
             <ul>
@@ -380,8 +388,36 @@
 <li><strong>&#1575;&#1585;&#1583;&#1608;(Urdu)</strong> Ata ur Rehman</li>
 <li><strong>&#1059;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072; (Ukrainian)</strong> Victor Titarchuk and Serhij Dubyk</li>
             </ul>
-    
+
         </div>
+
+        <div id="stats">
+        <h2><a target="_top" href="http://www.ohloh.net/p/koha">Koha Ohloh Stats</a></h2>
+
+  <div class="ohloh-table">
+    <table>
+      <tr>
+        <td>
+          <script type="text/javascript" src=
+          "http://www.ohloh.net/p/1541/widgets/project_basic_stats.js">
+</script>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <script type="text/javascript" src=
+          "http://www.ohloh.net/p/1541/widgets/project_languages.js">
+</script>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <p><a href="http://www.ohloh.net"><img src=
+  "http://www.ohloh.net/images/badges/mini.gif" width="80" height="15"></a></p>
+        </div>
+
     </div>
 </div></div></div>
 [% INCLUDE 'intranet-bottom.inc' %]
