@@ -1,6 +1,6 @@
 language: perl
 perl:
-  - "5.10"
+#  - "5.10"
 #  - "5.12"
 #  - "5.14"
 #  - "5.16"
@@ -10,6 +10,7 @@ perl:
 before_install:
     - git config --global user.email "you@example.com"
     - git config --global user.name "Your Name"
+      sudo apt-get install  $( < install_misc/debian.packages)
 #    - sudo apt-get install aptitude
 
 install:
