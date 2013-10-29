@@ -553,16 +553,16 @@ branchaddress1 text,
 branchaddress2 text,
 branchaddress3 text,
 branchzip varchar(25) default NULL,  
-branchcity mediumtext,
+branchcity text,
 branchcountry text,
 branchphone text,
 branchfax text,
 branchemail text,
-branchurl mediumtext,
+branchurl text,
 issuing int default NULL,
 branchip varchar(15) default NULL,
 branchprinter varchar(100) default NULL,
-branchnotes mediumtext
+branchnotes text
 );
 
 -- 
@@ -1665,8 +1665,7 @@ CREATE TABLE branch_transfer_limits (
 limitId int PRIMARY KEY DEFAULT nextval('branch_transfer_limits_limitId_seq'),
 toBranch varchar(4) NOT NULL,
 fromBranch varchar(4) NOT NULL,
-itemtype varchar(4) NOT NULL,
-PRIMARY KEY  (limitId)
+itemtype varchar(4) NOT NULL
 );
 
 
